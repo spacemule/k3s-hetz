@@ -1,0 +1,106 @@
+---
+# Code here strongly based on:
+# https://dev.to/tangramvision/exploring-ansible-via-setting-up-a-wireguard-vpn-3389
+# Adapted for modern distros using firewalld
+- name: setup vpn server
+  hosts: "{{ target }}"
+  become: yes
+  become_user: root
+  tasks:
+  - name: load wireguard module
+    community.general.modprobe:
+      name: wireguard
+      state: present
+
+  - name: Install packages
+    community.general.zypper:
+      name:
+        - wireguard-tools
+        - firewalld
+        - python3-selinux
+        - bash-completion
+      state: present
+    register: package_added
+
+  - name: reboot
+    ansible.builtin.reboot:
+    when: package_added.changed
+
+  - name: enable firewall
+    systemd:
+      daemon_reload: yes
+      name: firewalld
+      enabled: yes
+      state: restarted
+
+  - name: persist firewall
+    ansible.posix.firewalld:
+      port: "{{ server_port }}/udp"
+      permanent: yes
+      state: enabled
+      zone: "{{ item }}"
+      immediate: yes
+    loop: '{{ inbound_firewall_zones }}'
+
+  - name: create wireguard directory
+    file:
+      state: directory
+      path: /etc/wireguard
+      mode: '0700'
+      owner: root
+      group: root
+
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/copy_module.html
+  - name: create server wireguard config
+    template:
+      dest: /etc/wireguard/wg{{ network_number }}.conf
+      src: wgX.conf.j2
+      owner: root
+      group: root
+      mode: '0600'
+
+  # https://docs.ansible.com/ansible/latest/collections/ansible/posix/sysctl_module.html
+  - name: enable and persist ip forwarding
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: "1"
+      state: present
+      sysctl_set: yes
+      reload: yes
+
+  # https://docs.ansible.com/ansible/latest/collections/ansible/builtin/systemd_module.html
+  - name: start wireguard and enable on boot
+    systemd:
+      daemon_reload: yes
+      name: wg-quick@wg{{ network_number }}
+      enabled: yes
+      state: restarted
+
+  - name: persist move wg to firewall zone
+    ansible.posix.firewalld:
+      zone: "{{ wg_firewall_zone }}"
+      interface: wg{{ network_number }}
+      permanent: yes
+      state: enabled
+      immediate: yes
+
+#  - name: persist masquerade
+#    ansible.posix.firewalld:
+#      masquerade: yes
+#      state: enabled
+#      zone: "{{ firewall_zone }}"
+#      permanent: yes
+#      immediate: yes
+
+- name: setup vpn clients
+  hosts: localhost
+  connection: local
+  tasks:
+  - name: create client wireguard config
+    template:
+      dest: ./client_conf/{{ output_dir }}/{{ item.name }}.conf
+      src: client.conf.j2
+      owner: 1000
+      group: 1000
+      mode: '0600'
+    loop: "{{ clients }}"

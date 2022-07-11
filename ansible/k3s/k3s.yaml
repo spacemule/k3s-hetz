@@ -1,0 +1,67 @@
+- name: Setup up k3s cluster
+  hosts: master:workers
+  gather_facts: no
+  tasks:
+  - name: install python bindings for selinux
+    community.general.zypper:
+      name: python3-selinux
+      state: present
+    register: package_added
+
+  - name: reboot after install
+    ansible.builtin.reboot:
+    when: package_added.changed
+
+  - name: Enable IPv4 forwarding
+    sysctl:
+      name: net.ipv4.ip_forward
+      value: "1"
+      state: present
+      reload: yes
+
+  - name: install k3s master
+    shell: "curl -sfL https://get.k3s.io | sh -"
+    args:
+      creates: "/etc/rancher/k3s/k3s.yaml"
+    when: "'master' in group_names"
+    register: master
+
+  - name: reboot after install
+    ansible.builtin.reboot:
+    when: master.changed
+
+  - name: pull k3s token
+    shell: "cat /var/lib/rancher/k3s/server/node-token"
+    when: "'master' in group_names"
+    register: k3s_token
+
+  - name: uninstall k3s worker
+    shell: "k3s-uninstall.sh"
+    when:
+      - "'workers' in group_names"
+      - master.changed
+    ignore_errors: yes
+
+  - name: install k3s worker
+    shell: "curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['k3s_0'].private_ip }}:6443 K3S_TOKEN={{ hostvars['k3s_0'].k3s_token.stdout }} sh -"
+    args:
+      creates: "/etc/systemd/system/k3s.service"
+    when: "'workers' in group_names"
+    register: node_init
+
+  - name: install k3s worker
+    shell: "curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['k3s_0'].private_ip }}:6443 K3S_TOKEN={{ hostvars['k3s_0'].k3s_token.stdout }} sh -"
+    when:
+      - "'workers' in group_names"
+      - master.changed
+    register: new_master
+
+  - name: reboot after install
+    ansible.builtin.reboot:
+    when: node_init.changed or new_master.changed
+
+  - name: pull kubeconfig
+    fetch:
+      src: /etc/rancher/k3s/k3s.yaml
+      dest: ./kubeconfig.yml
+    when: "'master' in group_names"

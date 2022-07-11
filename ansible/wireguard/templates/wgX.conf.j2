@@ -1,0 +1,13 @@
+# {{ ansible_managed }}
+
+[Interface]
+Address = {{ wireguard_net }}
+PrivateKey = {{ server_key }}
+ListenPort = {{ server_port }}
+
+{% for client in clients %}
+[Peer]
+PublicKey = {{ client.public_key }}
+PresharedKey = {{ client.psk }}
+AllowedIPs = {{ client.ip }}/32
+{% endfor %}

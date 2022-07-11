@@ -1,0 +1,4 @@
+hcloud_token = "dV67QWXjaY5vLkEcMiaHwnCJb4Tz9rbLbydNDcd2TPpYUtNsCG9wfw1R8EkRTk7M"
+ssh_pubkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlBDIjDIpkWjZNlvTn199HBv6NBgyx0zSASrV77hfCh noah@spacemule"
+control_plane_count = 1
+standard_worker_count = 2

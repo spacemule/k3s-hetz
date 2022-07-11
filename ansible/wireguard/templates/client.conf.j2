@@ -1,0 +1,10 @@
+[Interface]
+Address = {{ item.ip }}/32
+PrivateKey = {{ item.key }}
+ListenPort = {{ item.port }}
+
+[Peer]
+PublicKey = {{ server_pubkey }}
+PresharedKey = {{ item.psk }}
+AllowedIPs = {{ wireguard_exposed_nets }}
+Endpoint = {{ endpoint }}:{{ server_port }}
