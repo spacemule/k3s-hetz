@@ -1,5 +1,0 @@
-kube:
-  hosts:
-    node_master:
-     ansible_host: 135.181.83.65
-     ansible_user: root
