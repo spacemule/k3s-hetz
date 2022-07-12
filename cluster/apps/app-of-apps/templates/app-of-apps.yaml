@@ -23,11 +23,11 @@ spec:
     path: {{$app.path}}
     repoURL: {{ $app.repoURL | default "git@github.com:spacemule/k3s-hetz.git"  }}
     targetRevision: {{ $app.targetRevision | default "main" }}
-  {{ - if hasKey $app "include" }}
-  directory:
-    include: {{ $.app.include }}
-  {{ end }}
-  syncPolicy:
+    {{ - if hasKey $app "include" }}
+    directory:
+      include: {{ $.app.include }}
+    {{ end }}
+    syncPolicy:
     automated:
       prune: true
       selfHeal: true
