@@ -12,6 +12,6 @@ apps:
 
   - name: nextcloud
     path: nextcloud
-    targetRevision: HEAD
+    targetRevision: master
     repoURL: https://nextcloud.github.io/helm/
     namespace: nextcloud
