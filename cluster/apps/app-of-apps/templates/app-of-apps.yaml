@@ -21,8 +21,8 @@ spec:
       {{- if hasKey $app "setParam" }}
       parameters:
         {{- range $setParam := $app.setParams }}
-        - name: {{ $app.setParam.name }}
-          value: {{ $app.setParam.value }}
+        - name: {{ $setParam.name }}
+          value: {{ $setParam.value }}
         {{ end }}
       {{ end }}
     {{ end }}
