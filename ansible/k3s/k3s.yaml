@@ -2,11 +2,10 @@
   hosts: master:workers
   vars:
     control_ip: 10.0.0.2
-    cluster_cidr: 10.0.0.0/16
-    all_opts: |
-      INSTALL_K3S_EXEC="--flannel-backend=none --cluster-cidr={{ cluster_cidr }} --disable-network-policy --disable=traefik" \
-      sh -
-    worker_opts: K3S_URL=https://{{ control_ip }}:6443
+    cluster_cidr: 10.16.0.0/16
+    all_opts: sh -
+    server_opts: INSTALL_K3S_EXEC="--flannel-backend=none --cluster-cidr={{ cluster_cidr }} --disable-network-policy --disable=traefik"
+    worker_opts: K3S_URL="https://{{ control_ip }}:6443"
   gather_facts: no
   tasks:
   - name: install python bindings for selinux
@@ -27,7 +26,7 @@
       reload: yes
 
   - name: install k3s master
-    shell: "curl -sfL https://get.k3s.io | {{ all_opts }}"
+    shell: "curl -sfL https://get.k3s.io | {{ server_opts }} {{ all_opts }}"
     args:
       creates: "/etc/rancher/k3s/k3s.yaml"
     when: "'master' in group_names"
