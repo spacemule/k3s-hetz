@@ -12,7 +12,7 @@ data "hcloud_image" "k3-base" {
 }
 
 resource "hcloud_network" "kube-net" {
-  ip_range = "10.0.0.0/8"
+  ip_range = "10.0.0.0/12"
   # 10.0.0.0 - 10.15.255.255
   name     = "kube-net"
 }
