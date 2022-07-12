@@ -118,7 +118,7 @@ resource "hcloud_server" "control-plane" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index].rendered
-  firewall_ids       = [hcloud_firewall.k8s-control.id, hcloud_firewall.default.id]
+#  firewall_ids       = [hcloud_firewall.k8s-control.id, hcloud_firewall.default.id]
 
   depends_on = [
     hcloud_network_subnet.k8s-sub
@@ -134,7 +134,7 @@ resource "hcloud_server" "standard-worker" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count].rendered
-  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
+#  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
 
   depends_on = [
     hcloud_network_subnet.k8s-sub
