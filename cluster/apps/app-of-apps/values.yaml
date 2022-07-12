@@ -5,6 +5,6 @@ apps:
 #    targetRevision: master
 
   - name: Hetzner CCM
-    repoURL: https://github.com/hetznercloud/hcloud-cloud-controller-manager
+    repoURL: https://github.com/hetznercloud/hcloud-cloud-controller-manager.git
     path: deploy/ccm.yaml
     targetRevision: main
