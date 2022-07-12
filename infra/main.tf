@@ -118,7 +118,7 @@ resource "hcloud_server" "control-plane" {
 resource "hcloud_server" "standard-worker" {
   count              = var.standard_worker_count
   name               = "k3s-node-${count.index + var.control_plane_count}"
-  server_type        = "cpx31"
+  server_type        = "cpx21"
   placement_group_id = hcloud_placement_group.k8s-places.id
   image              = data.hcloud_image.k3-base.id
   location           = "hel1"
