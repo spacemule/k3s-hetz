@@ -8,3 +8,4 @@ apps:
     repoURL: https://github.com/hetznercloud/hcloud-cloud-controller-manager.git
     path: deploy/ccm.yaml
     targetRevision: main
+    namespace: kube-system
