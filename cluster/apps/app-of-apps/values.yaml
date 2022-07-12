@@ -1,8 +1,11 @@
 apps:
 
   - name: hetzner-ccm
-    repoURL: https://github.com/hetznercloud/hcloud-cloud-controller-manager.git
-    path: deploy
-    include: ccm.yaml
+    path: cluster/apps/hetzner-ccm
+    targetRevision: main
+    namespace: kube-system
+
+  - name: hetzner-csi
+    path: cluster/apps/hetzner-csi
     targetRevision: main
     namespace: kube-system
