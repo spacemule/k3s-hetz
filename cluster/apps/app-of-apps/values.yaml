@@ -1,5 +1,5 @@
 apps:
-  - name: calico
-    repoURL: https://projectcalico.docs.tigera.io/charts
-    namespace: tigera-operator
-    targetRevision: master
+#  - name: calico
+#    repoURL: https://projectcalico.docs.tigera.io/charts
+#    namespace: tigera-operator
+#    targetRevision: master

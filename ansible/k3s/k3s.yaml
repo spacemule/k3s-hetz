@@ -2,9 +2,9 @@
   hosts: master:workers
   vars:
     control_ip: 10.0.0.2
-    cluster_cidr: 10.16.0.0/16
+    cluster_cidr: 10.16.0.0/12
     all_opts: sh -
-    server_opts: INSTALL_K3S_EXEC="--flannel-backend=none --cluster-cidr={{ cluster_cidr }} --disable-network-policy --disable=traefik"
+    server_opts: INSTALL_K3S_EXEC="--cluster-cidr={{ cluster_cidr }}"
     worker_opts: K3S_URL="https://{{ control_ip }}:6443"
   gather_facts: no
   tasks:
@@ -51,7 +51,7 @@
   - name: install k3s worker
     shell: "curl -sfL https://get.k3s.io | K3S_TOKEN={{ hostvars['k3s_0'].k3s_token.stdout }} {{ worker_opts }} {{ all_opts }}"
     args:
-      creates: "/etc/systemd/system/k3s.service"
+      creates: "/etc/systemd/system/k3s-agent.service"
     when: "'workers' in group_names"
     register: node_init
 
