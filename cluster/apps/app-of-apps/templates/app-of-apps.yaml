@@ -23,11 +23,11 @@ spec:
     path: {{$app.path}}
     repoURL: {{ $app.repoURL | default "git@github.com:spacemule/k3s-hetz.git"  }}
     targetRevision: {{ $app.targetRevision | default "main" }}
-    syncPolicy:
+  syncPolicy:
     automated:
       prune: true
       selfHeal: true
     syncOptions:
-      - CreateNamespace=true
+     - CreateNamespace=true
 ---
 {{ end }}
