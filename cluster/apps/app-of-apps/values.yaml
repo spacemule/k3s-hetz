@@ -11,7 +11,7 @@ apps:
     namespace: kube-system
 
   - name: nextcloud
-    chart: nextcloud
+    path: nextcloud
     targetRevision: HEAD
     repoURL: https://nextcloud.github.io/helm/
     namespace: nextcloud

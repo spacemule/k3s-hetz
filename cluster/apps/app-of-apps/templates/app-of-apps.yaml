@@ -17,9 +17,6 @@ spec:
       valueFiles:
         - {{  $app.valueFiles }}
     {{ end }}
-      {{- if hasKey $app "chart" }}
-      chart: {{ $.app.chart }}
-      {{ end }}
     path: {{$app.path}}
     repoURL: {{ $app.repoURL | default "git@github.com:spacemule/k3s-hetz.git"  }}
     targetRevision: {{ $app.targetRevision | default "main" }}
