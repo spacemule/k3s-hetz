@@ -4,7 +4,7 @@ apps:
 #    namespace: tigera-operator
 #    targetRevision: master
 
-  - name: Hetzner CCM
+  - name: hetzner-ccm
     repoURL: https://github.com/hetznercloud/hcloud-cloud-controller-manager.git
     path: deploy/ccm.yaml
     targetRevision: main
