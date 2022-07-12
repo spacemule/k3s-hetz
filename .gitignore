@@ -4,3 +4,4 @@ vault.key
 /ansible/wireguard/client_conf/
 /ansible/k3s/kubeconfig.yml/
 inventory.yml
+kubeconfig.yml

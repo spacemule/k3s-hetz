@@ -1,5 +1,12 @@
 - name: Setup up k3s cluster
   hosts: master:workers
+  vars:
+    control_ip: 10.0.0.2
+    cluster_cidr: 10.0.0.0/16
+    all_opts: |
+      INSTALL_K3S_EXEC="--flannel-backend=none --cluster-cidr={{ cluster_cidr }} --disable-network-policy --disable=traefik" \
+      sh -
+    worker_opts: K3S_URL=https://{{ control_ip }}:6443
   gather_facts: no
   tasks:
   - name: install python bindings for selinux
@@ -20,7 +27,7 @@
       reload: yes
 
   - name: install k3s master
-    shell: "curl -sfL https://get.k3s.io | sh -"
+    shell: "curl -sfL https://get.k3s.io | {{ all_opts }}"
     args:
       creates: "/etc/rancher/k3s/k3s.yaml"
     when: "'master' in group_names"
@@ -43,14 +50,14 @@
     ignore_errors: yes
 
   - name: install k3s worker
-    shell: "curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['k3s_0'].private_ip }}:6443 K3S_TOKEN={{ hostvars['k3s_0'].k3s_token.stdout }} sh -"
+    shell: "curl -sfL https://get.k3s.io | K3S_TOKEN={{ hostvars['k3s_0'].k3s_token.stdout }} {{ worker_opts }} {{ all_opts }}"
     args:
       creates: "/etc/systemd/system/k3s.service"
     when: "'workers' in group_names"
     register: node_init
 
   - name: install k3s worker
-    shell: "curl -sfL https://get.k3s.io | K3S_URL=https://{{ hostvars['k3s_0'].private_ip }}:6443 K3S_TOKEN={{ hostvars['k3s_0'].k3s_token.stdout }} sh -"
+    shell: "curl -sfL https://get.k3s.io | K3S_TOKEN={{ hostvars['k3s_0'].k3s_token.stdout }} {{ worker_opts }} {{ all_opts }}"
     when:
       - "'workers' in group_names"
       - master.changed
@@ -64,4 +71,5 @@
     fetch:
       src: /etc/rancher/k3s/k3s.yaml
       dest: ./kubeconfig.yml
+      flat: yes
     when: "'master' in group_names"
