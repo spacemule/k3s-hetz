@@ -1,9 +1,18 @@
+locals {
+  hetzner_ips =[
+ "169.254.169.254/32",
+  "213.239.246.1/32",
+  "10.0.0.0/8",
+  "127.0.0.1/32"
+  ]
+}
+
 data "hcloud_image" "k3-base" {
   with_selector = "type=base"
 }
 
 resource "hcloud_network" "kube-net" {
-  ip_range = "10.0.0.0/12"
+  ip_range = "10.0.0.0/8"
   # 10.0.0.0 - 10.15.255.255
   name     = "kube-net"
 }
@@ -15,21 +24,12 @@ resource "hcloud_network_subnet" "k8s-sub" {
   type         = "cloud"
 }
 
-resource "hcloud_firewall" "k8s-control" {
-  name = "k8s-control"
-  rule {
-    direction  = "in"
-    protocol   = "icmp"
-    source_ips = [
-      "0.0.0.0/0",
-      "::/0"
-    ]
-  }
+resource hcloud_firewall "default" {
+  name = "default"
 
   rule {
     direction  = "in"
-    protocol   = "tcp"
-    port       = "6443"
+    protocol   = "icmp"
     source_ips = [
       "0.0.0.0/0",
       "::/0"
@@ -45,18 +45,38 @@ resource "hcloud_firewall" "k8s-control" {
       "::/0"
     ]
   }
+
+  rule {
+    direction = "in"
+    protocol = "tcp"
+    port = "any"
+    source_ips = local.hetzner_ips
+  }
+
+  rule {
+    direction = "in"
+    protocol = "udp"
+    port = "any"
+    source_ips = local.hetzner_ips
+  }
 }
 
-resource "hcloud_firewall" "k8s-wall-of-china" {
-  name = "k8s-wall-of-china"
+resource "hcloud_firewall" "k8s-control" {
+  name = "k8s-control"
+
   rule {
     direction  = "in"
-    protocol   = "icmp"
+    protocol   = "tcp"
+    port       = "6443"
     source_ips = [
       "0.0.0.0/0",
       "::/0"
     ]
   }
+}
+
+resource "hcloud_firewall" "k8s-wall-of-china" {
+  name = "k8s-wall-of-china"
 
   rule {
     direction  = "in"
@@ -72,16 +92,6 @@ resource "hcloud_firewall" "k8s-wall-of-china" {
     direction  = "in"
     protocol   = "tcp"
     port       = "443"
-    source_ips = [
-      "0.0.0.0/0",
-      "::/0"
-    ]
-  }
-
-  rule {
-    direction  = "in"
-    protocol   = "tcp"
-    port       = "22"
     source_ips = [
       "0.0.0.0/0",
       "::/0"
@@ -108,7 +118,8 @@ resource "hcloud_server" "control-plane" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index].rendered
-  firewall_ids       = [hcloud_firewall.k8s-control.id]
+  firewall_ids = []
+#  firewall_ids       = [hcloud_firewall.k8s-control.id, hcloud_firewall.default.id]
 
   depends_on = [
     hcloud_network_subnet.k8s-sub
@@ -124,7 +135,8 @@ resource "hcloud_server" "standard-worker" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count].rendered
-  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id]
+  firewall_ids = []
+  #  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
 
   depends_on = [
     hcloud_network_subnet.k8s-sub

@@ -3,3 +3,8 @@ apps:
 #    repoURL: https://projectcalico.docs.tigera.io/charts
 #    namespace: tigera-operator
 #    targetRevision: master
+
+  - name: Hetzner CCM
+    repoURL: https://github.com/hetznercloud/hcloud-cloud-controller-manager.git
+    path: releases/latest/download/ccm.yaml
+    targetRevision: main
