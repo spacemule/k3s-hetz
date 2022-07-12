@@ -164,7 +164,7 @@ spec:
             - name: HCLOUD_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: hcloud-csi
+                  name: hcloud
                   key: token
           volumeMounts:
             - name: socket-dir
@@ -262,7 +262,7 @@ spec:
             - name: HCLOUD_TOKEN
               valueFrom:
                 secretKeyRef:
-                  name: hcloud-csi
+                  name: hcloud
                   key: token
             - name: KUBE_NODE_NAME
               valueFrom:
