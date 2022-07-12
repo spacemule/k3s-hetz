@@ -1,9 +1,9 @@
 locals {
-  hetzner_ips =[
- "169.254.169.254/32",
-  "213.239.246.1/32",
-  "10.0.0.0/8",
-  "127.0.0.1/32"
+  hetzner_ips = [
+    "169.254.169.254/32",
+    "213.239.246.1/32",
+    "10.0.0.0/8",
+    "127.0.0.1/32"
   ]
 }
 
@@ -12,13 +12,13 @@ data "hcloud_image" "k3-base" {
 }
 
 resource "hcloud_network" "kube-net" {
-  ip_range = "10.0.0.0/12"
+  ip_range = var.network_cidr
   # 10.0.0.0 - 10.15.255.255
   name     = "kube-net"
 }
 
 resource "hcloud_network_subnet" "k8s-sub" {
-  ip_range     = "10.0.0.0/16"
+  ip_range     = var.subnet_cidr
   network_id   = hcloud_network.kube-net.id
   network_zone = "eu-central"
   type         = "cloud"
@@ -47,16 +47,16 @@ resource hcloud_firewall "default" {
   }
 
   rule {
-    direction = "in"
-    protocol = "tcp"
-    port = "any"
+    direction  = "in"
+    protocol   = "tcp"
+    port       = "any"
     source_ips = local.hetzner_ips
   }
 
   rule {
-    direction = "in"
-    protocol = "udp"
-    port = "any"
+    direction  = "in"
+    protocol   = "udp"
+    port       = "any"
     source_ips = local.hetzner_ips
   }
 }
@@ -118,8 +118,7 @@ resource "hcloud_server" "control-plane" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index].rendered
-  firewall_ids = []
-#  firewall_ids       = [hcloud_firewall.k8s-control.id, hcloud_firewall.default.id]
+  firewall_ids       = [hcloud_firewall.k8s-control.id, hcloud_firewall.default.id]
 
   depends_on = [
     hcloud_network_subnet.k8s-sub
@@ -135,8 +134,7 @@ resource "hcloud_server" "standard-worker" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count].rendered
-  firewall_ids = []
-  #  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
+  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
 
   depends_on = [
     hcloud_network_subnet.k8s-sub
@@ -147,14 +145,14 @@ resource "hcloud_server_network" "control-plane-ips" {
   count      = length(hcloud_server.control-plane)
   server_id  = hcloud_server.control-plane[count.index].id
   network_id = hcloud_network.kube-net.id
-  ip         = "10.0.0.${2 + count.index}"
+  ip         = cidrhost(var.subnet_cidr, count.index + 2 )
 }
 
 resource "hcloud_server_network" "worker-ips" {
   count      = length(hcloud_server.standard-worker)
   server_id  = hcloud_server.standard-worker[count.index].id
   network_id = hcloud_network.kube-net.id
-  ip         = "10.0.0.${2 + var.control_plane_count + count.index}"
+  ip         = cidrhost(var.subnet_cidr, var.control_plane_count + count.index + 2 )
 }
 
 data "cloudinit_config" "k3s-init" {

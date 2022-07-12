@@ -2,9 +2,9 @@
   hosts: master:workers
   vars:
     control_ip: 10.0.0.2
-    cluster_cidr: 10.16.0.0/14
+    cluster_cidr: 10.16.0.0/16
     all_opts: sh -
-    server_opts: INSTALL_K3S_EXEC="--cluster-cidr={{ cluster_cidr }} --flannel-backend=none --disable-network-policy"
+    server_opts: INSTALL_K3S_EXEC="--cluster-cidr={{ cluster_cidr }}"
     worker_opts: K3S_URL="https://{{ control_ip }}:6443"
   gather_facts: no
   tasks:
@@ -45,7 +45,7 @@
     shell: "k3s-uninstall.sh"
     when:
       - "'workers' in group_names"
-      - master.changed
+      - hostvars['k3s_0'].master.changed
     ignore_errors: yes
 
   - name: install k3s worker
@@ -59,7 +59,7 @@
     shell: "curl -sfL https://get.k3s.io | K3S_TOKEN={{ hostvars['k3s_0'].k3s_token.stdout }} {{ worker_opts }} {{ all_opts }}"
     when:
       - "'workers' in group_names"
-      - master.changed
+      - hostvars['k3s_0'].master.changed
     register: new_master
 
   - name: reboot after install

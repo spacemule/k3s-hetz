@@ -1,24 +1,14 @@
-resource "helm_release" "cilium" {
-  chart           = "cilium"
-  name            = "cilium"
-  repository      = "https://helm.cilium.io/"
-  version         = "1.11.6"
-  namespace       = "kube-system"
-  cleanup_on_fail = true
-
-  set {
-    name  = "tunnel"
-    value = "disabled"
-  }
-
-  set {
-    name = "ipv4NativeRoutingCIDR"
-    value = "10.16.0.0/14"
-  }
+module "k3s" {
+  source                = "../../infra"
+  ssh_pubkey            = var.ssh_pubkey
+  hcloud_token          = var.hcloud_token
+  control_plane_count   = var.control_plane_count
+  standard_worker_count = var.standard_worker_count
+  subnet_cidr           = "10.0.0.0/16"
+  network_cidr          = "10.0.0.0/12"
 }
 
 resource "helm_release" "argocd" {
-  depends_on       = [helm_release.cilium]
   name             = "argocd"
   repository       = "https://argoproj.github.io/argo-helm"
   chart            = "argo-cd"

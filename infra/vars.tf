@@ -22,3 +22,11 @@ variable "standard_worker_count" {
   default = 2
   description = "Number of standard worker nodes"
 }
+
+variable "network_cidr" {
+  type = string
+}
+
+variable "subnet_cidr" {
+  type = string
+}
