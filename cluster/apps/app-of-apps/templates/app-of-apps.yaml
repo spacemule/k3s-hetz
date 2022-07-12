@@ -12,10 +12,19 @@ spec:
     server: {{ $app.server | default "https://kubernetes.default.svc"}}
   project: default
   source:
-    {{- if hasKey $app "valueFiles" }}
+    {{- if hasKey $app "valueFiles" or hasKey $app "setParams" }}
     helm:
+      {{- if hasKey $app "valueFiles" }}
       valueFiles:
         - {{  $app.valueFiles }}
+      {{ end }}
+      {{- if hasKey $app "setParam" }}
+      parameters:
+        {{- range $setParam := $app.setParams }}
+        - name: {{ $app.setParam.name }}
+          value: {{ $app.setParam.value }}
+        {{ end }}
+      {{ end }}
     {{ end }}
     path: {{$app.path}}
     repoURL: {{ $app.repoURL | default "git@github.com:spacemule/k3s-hetz.git"  }}
