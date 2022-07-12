@@ -15,3 +15,9 @@ apps:
     targetRevision: master
     repoURL: https://github.com/nextcloud/helm.git
     namespace: nextcloud
+
+  - name: loki-stack
+    path: charts/loki-stack
+    targetRevision: loki-stack-2.6.5
+    repoURL: https://github.com/grafana/helm-charts.git
+    namespace: monitoring
