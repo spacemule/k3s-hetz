@@ -12,7 +12,7 @@ spec:
     server: {{ $app.server | default "https://kubernetes.default.svc"}}
   project: default
   source:
-    {{- if hasKey $app "valueFiles" or hasKey $app "setParams" }}
+    {{- if or (hasKey $app "valueFiles") (hasKey $app "setParams") }}
     helm:
       {{- if hasKey $app "valueFiles" }}
       valueFiles:
