@@ -9,3 +9,9 @@ apps:
     path: cluster/apps/hetzner-csi
     targetRevision: main
     namespace: kube-system
+
+  - name: nextcloud
+    chart: nextcloud
+    targetRevision: HEAD
+    repoURL: https://nextcloud.github.io/helm/
+    namespace: nextcloud
