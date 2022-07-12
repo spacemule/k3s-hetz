@@ -2,9 +2,9 @@
   hosts: master:workers
   vars:
     control_ip: 10.0.0.2
-    cluster_cidr: 10.16.0.0/12
+    cluster_cidr: 10.16.0.0/14
     all_opts: sh -
-    server_opts: INSTALL_K3S_EXEC="--cluster-cidr={{ cluster_cidr }}"
+    server_opts: INSTALL_K3S_EXEC="--cluster-cidr={{ cluster_cidr }} --flannel-backend=none --disable-network-policy"
     worker_opts: K3S_URL="https://{{ control_ip }}:6443"
   gather_facts: no
   tasks:
