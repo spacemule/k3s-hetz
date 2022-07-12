@@ -1,11 +1,8 @@
 apps:
-#  - name: calico
-#    repoURL: https://projectcalico.docs.tigera.io/charts
-#    namespace: tigera-operator
-#    targetRevision: master
 
   - name: hetzner-ccm
     repoURL: https://github.com/hetznercloud/hcloud-cloud-controller-manager.git
-    path: deploy/ccm.yaml
+    path: deploy
+    include: ccm.yaml
     targetRevision: main
     namespace: kube-system
