@@ -40,7 +40,7 @@ apps:
         value: true
       - name: nextcloud.extraEnv
         value:
-          REDIS_HOST: 10.15.1.2
+          REDIS_HOST: "10.15.1.2"
       - name: redis.enabled
         value: true
       - name: redis.auth.enabled
