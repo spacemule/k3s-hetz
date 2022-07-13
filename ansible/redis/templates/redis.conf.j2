@@ -1,0 +1,13 @@
+bind {{ private_ip }}
+bind-source-addr {{ private_ip }}
+protected-mode no
+port 6379
+tcp-backlog 511
+timeout 60
+tcp-keepalive 300
+supervised systemd
+pidfile /var/run/redis_6379.pid
+syslog-enabled yes
+syslog-ident redis
+syslog-facility local0
+databases 16

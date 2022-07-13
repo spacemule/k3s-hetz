@@ -1,0 +1,54 @@
+- name: Setup up redis server
+  hosts: redis
+  vars:
+    private_ip: 10.15.1.2
+  collections:
+    - community.general
+  gather_facts: no
+  tasks:
+  - name: install needed packages
+    zypper:
+      name:
+        - python3-selinux
+        - redis
+      state: present
+    register: package_added
+
+  - name: reboot after install
+    ansible.builtin.reboot:
+    when: package_added.changed
+
+  - name: create redis directory
+    file:
+      state: directory
+      path: /etc/redis
+      mode: '0755'
+      owner: root
+      group: root
+
+  - name: create redis config
+    template:
+      dest: /etc/redis/redis.conf
+      src: redis.conf.j2
+      owner: redis
+      group: redis
+      mode: '0644'
+
+  - name: create redis group
+    group:
+      name: redis
+      gid: 1001
+
+  - name: create redis user
+    user:
+      group: redis
+      uid: 1001
+      name: redis
+      password_lock: yes
+
+  - name: enable redis
+    systemd:
+      name: redis@redis.service
+      state: started
+      enabled: yes
+      daemon-reload: yes

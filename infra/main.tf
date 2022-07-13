@@ -2,12 +2,16 @@ locals {
   hetzner_ips = [
     "169.254.169.254/32",
     "213.239.246.1/32",
-    "10.0.0.0/8",
-    "127.0.0.1/32"
+    "127.0.0.1/32",
+    var.network_cidr,
   ]
 }
 
 data "hcloud_image" "k3-base" {
+  with_selector = "app=k3s"
+}
+
+data "hcloud_image" "microOS" {
   with_selector = "type=base"
 }
 
@@ -15,6 +19,13 @@ resource "hcloud_network" "kube-net" {
   ip_range = var.network_cidr
   # 10.0.0.0 - 10.15.255.255
   name     = "kube-net"
+}
+
+resource "hcloud_network_subnet" "services-sub" {
+  ip_range     = var.services_cidr
+  network_id   = hcloud_network.kube-net.id
+  network_zone = "eu-central"
+  type         = "cloud"
 }
 
 resource "hcloud_network_subnet" "k8s-sub" {
@@ -58,6 +69,35 @@ resource hcloud_firewall "default" {
     protocol   = "udp"
     port       = "any"
     source_ips = local.hetzner_ips
+  }
+
+  rule {
+    direction = "out"
+    protocol = "tcp"
+    port     = "any"
+    destination_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction = "out"
+    protocol = "udp"
+    port     = "any"
+    destination_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction = "out"
+    protocol = "icmp"
+    destination_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
   }
 }
 
@@ -112,7 +152,7 @@ resource "hcloud_placement_group" "k8s-places" {
 resource "hcloud_server" "control-plane" {
   count              = var.control_plane_count
   name               = "k3s-node-${count.index}"
-  server_type        = "cpx11"
+  server_type        = var.control_plane_instance
   placement_group_id = hcloud_placement_group.k8s-places.id
   image              = data.hcloud_image.k3-base.id
   location           = "hel1"
@@ -128,7 +168,7 @@ resource "hcloud_server" "control-plane" {
 resource "hcloud_server" "standard-worker" {
   count              = var.standard_worker_count
   name               = "k3s-node-${count.index + var.control_plane_count}"
-  server_type        = "cpx21"
+  server_type        = var.standard_worker_instance
   placement_group_id = hcloud_placement_group.k8s-places.id
   image              = data.hcloud_image.k3-base.id
   location           = "hel1"

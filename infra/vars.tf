@@ -30,3 +30,27 @@ variable "network_cidr" {
 variable "subnet_cidr" {
   type = string
 }
+
+variable "services_cidr" {
+  type = string
+}
+
+variable "standard_worker_instance" {
+  type = string
+  default = "cpx21"
+}
+
+variable "control_plane_instance" {
+  type = string
+  default = "cpx11"
+}
+
+variable "redis_instance" {
+  type = string
+  default = "cpx11"
+}
+
+variable "postgres_instance" {
+  type = string
+  default = "cpx11"
+}

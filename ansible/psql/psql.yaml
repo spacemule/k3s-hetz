@@ -1,0 +1,113 @@
+- name: Setup up postgres server
+  hosts: postgres
+  vars:
+    private_ip: 10.15.1.3
+    kube_net: 10.0.0.0/16
+    db_admin_pass: !vault |
+      $ANSIBLE_VAULT;1.1;AES256
+      62363963313138353430306464363162343235626137366232353761303330336533323833616635
+      3931653831303337626464336131373166313932666562390a306537363837363535626637666536
+      31313535633532303030326430303064663365633236383365343333633333636332323437396163
+      3738623833366232360a383366316330633361343438343037313765346534396632646562626466
+      30353531366462336536386631633935633863653565643231623966393932323466
+    db_users:
+      - name: nextcloud
+        pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          66663766303862323362386436323866616337393836366439646139633738626462343963363034
+          3532386330306262643139313037653265613365366334300a333665303032383030646533343232
+          36633839343862636464656430323332613564313662636539353364366634363437383939383465
+          3236636461316433650a353331336630333136326565356339353134396430343565646366656662
+          66396134636330386261653332626461373066623230306536643630313838313731
+        db: nextcloud
+    dbs:
+      - nextcloud
+  collections:
+    - community.general
+  gather_facts: no
+  tasks:
+  - name: install needed packages
+    zypper:
+      name:
+        - python3-selinux
+        - python3-psycopg2
+      state: present
+    register: package_added
+
+  - name: install postgres
+    zypper:
+      name:
+        - postgresql14
+        - postgresql14-contrib
+        - postgresql14-server
+      state: present
+      disable_recommends: no
+    register: postgres_added
+
+  - name: reboot after install
+    ansible.builtin.reboot:
+    when: package_added.changed or postgres_added.changed
+
+  - name: enable postgres
+    systemd:
+      name: postgresql.service
+      state: started
+      enabled: yes
+      daemon-reload: yes
+
+  - name: add access to k8s cluster
+    ansible.builtin.lineinfile:
+      path: /var/lib/pgsql/data/pg_hba.conf
+      line: host all all {{ kube_net }} scram-sha-256
+      create: no
+    register: add_access
+
+  - name: listen on interfaces
+    ansible.builtin.lineinfile:
+      path: /var/lib/pgsql/data/postgresql.conf
+      regexp: '^listen_addresses'
+      line: "listen_addresses = '*'"
+      create: no
+    register: add_listen
+
+  - name: restart db
+    systemd:
+      name: postgresql.service
+      state: restarted
+      enabled: yes
+      daemon-reload: yes
+    when: add_access.changed or add_listen.changed
+
+  - name: create superuser
+    postgresql_user:
+      name: dbmaster
+      password: "{{ db_admin_pass }}"
+      role_attr_flags: CREATEDB,SUPERUSER,CREATEROLE,LOGIN
+    become: yes
+    become_user: postgres
+
+  - name: create dbs
+    postgresql_db:
+      name: "{{ item }}"
+    loop: "{{ dbs }}"
+    become: yes
+    become_user: postgres
+
+  - name: create users
+    postgresql_user:
+      name: "{{ item.name }}"
+      password: "{{ item.pass }}"
+      db: "{{ item.db }}"
+    loop: "{{ db_users }}"
+    become: yes
+    become_user: postgres
+
+  - name: grant user perms
+    postgresql_privs:
+      roles: "{{ item.name }}"
+      database: "{{ item.db }}"
+      privs: ALL
+      type: database
+    loop: "{{ db_users }}"
+    become: yes
+    become_user: postgres

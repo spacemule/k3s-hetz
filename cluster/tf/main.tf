@@ -5,6 +5,7 @@ module "k3s" {
   control_plane_count   = var.control_plane_count
   standard_worker_count = var.standard_worker_count
   subnet_cidr           = "10.0.0.0/16"
+  services_cidr         = "10.15.1.0/24"
   network_cidr          = "10.0.0.0/12"
 }
 

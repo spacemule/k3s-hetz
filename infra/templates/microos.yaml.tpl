@@ -24,22 +24,6 @@ write_files:
     AuthorizedKeysFile .ssh/authorized_keys
   path: /etc/ssh/sshd_config.d/kube-hetzner.conf
 
-# Set reboot method as "kured"
-- content: |
-    REBOOT_METHOD=kured
-  path: /etc/transactional-update.conf
-
-# Create Rancher repo config
-- content: |
-    [rancher-k3s-common-stable]
-    name=Rancher K3s Common (stable)
-    baseurl=https://rpm.rancher.io/k3s/stable/common/microos/noarch
-    enabled=1
-    gpgcheck=1
-    repo_gpgcheck=0
-    gpgkey=https://rpm.rancher.io/public.key
-  path: /etc/zypp/repos.d/rancher-k3s-common.repo
-
 # Add ssh authorized keys
 ssh_authorized_keys:
 %{ for key in sshAuthorizedKeys ~}
@@ -70,6 +54,3 @@ runcmd:
 # Reduces the default number of snapshots from 2-10 number limit, to 4 and from 4-10 number limit important, to 2
 - [sed, '-i', 's/NUMBER_LIMIT="2-10"/NUMBER_LIMIT="4"/g', /etc/snapper/configs/root]
 - [sed, '-i', 's/NUMBER_LIMIT_IMPORTANT="4-10"/NUMBER_LIMIT_IMPORTANT="3"/g', /etc/snapper/configs/root]
-
-# Disables unneeded services
-- [systemctl, disable, '--now', 'rebootmgr.service']

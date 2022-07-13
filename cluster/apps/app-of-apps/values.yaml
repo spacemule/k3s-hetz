@@ -15,6 +15,36 @@ apps:
     targetRevision: master
     repoURL: https://github.com/nextcloud/helm.git
     namespace: nextcloud
+    setParams:
+      - name: nginx.enabled
+        value: true
+      - name: image.flavor
+        value: php-fpm
+      - name: internalDatabase.enabled
+        value: false
+      - name: externalDatabase.type
+        value: postgresql
+      - name: externalDatabase.host
+        value: 10.15.1.3:5432
+      - name: externalDatabase.existingSecret.enabled
+        value: true
+      - name: externalDatabase.existingSecret.secretName
+        value: nextcloud-db
+      - name: externalDatabase.existingSecret.usernameKey
+        value: user
+      - name: externalDatabase.existingSecret.passwordKey
+        value: pass
+      - name: persistence.enabled
+        value: true
+      - name: hpa.enabled
+        value: true
+      - name: nextcloud.extraEnv
+        value:
+          REDIS_HOST: 10.15.1.2
+      - name: redis.enabled
+        value: true
+      - name: redis.auth.enabled
+        value: false
 
   - name: loki-stack
     path: charts/loki-stack
