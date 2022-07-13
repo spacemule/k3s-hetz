@@ -40,11 +40,8 @@ apps:
         value: true
       - name: nextcloud.extraEnv
         value:
-          REDIS_HOST: "10.15.1.2"
-      - name: redis.enabled
-        value: true
-      - name: redis.auth.enabled
-        value: false
+          - name: REDIS_HOST
+            value: "10.15.1.2"
 
   - name: loki-stack
     path: charts/loki-stack
