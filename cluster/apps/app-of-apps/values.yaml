@@ -19,7 +19,7 @@ apps:
       - name: nginx.enabled
         value: true
       - name: image.flavor
-        value: php-fpm
+        value: fpm
       - name: internalDatabase.enabled
         value: false
       - name: externalDatabase.type
