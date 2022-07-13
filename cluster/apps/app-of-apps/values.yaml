@@ -16,10 +16,10 @@ apps:
     repoURL: https://github.com/nextcloud/helm.git
     namespace: nextcloud
     setParams:
-      - name: nginx.enabled
-        value: true
-      - name: image.flavor
-        value: fpm
+#      - name: nginx.enabled
+#        value: true
+#      - name: image.flavor
+#        value: fpm
       - name: internalDatabase.enabled
         value: false
       - name: externalDatabase.type
