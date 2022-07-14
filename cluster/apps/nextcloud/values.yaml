@@ -24,7 +24,7 @@ replicaCount: 1
 ingress:
   enabled: true
   className: nginx
-  annotations: {}
+  annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 4G
     kubernetes.io/tls-acme: "true"
     cert-manager.io/cluster-issuer: letsencrypt
