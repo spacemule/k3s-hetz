@@ -41,7 +41,7 @@ apps:
       - name: nextcloud.defaultConfigs.redis\.config\.php
         value: false
       - name: nextcloud.configs.hosted-redis\.config\.php
-        value: |-
+        value: |
           <?php
           {
             $CONFIG = array (
