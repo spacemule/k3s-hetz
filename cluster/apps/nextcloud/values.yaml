@@ -73,8 +73,8 @@ phpClientHttpsFix:
 
 nextcloud:
   host: cloud.spacemule.net
-#  username: admin
-#  password: changeme
+  username: admin
+  password: changeme
   ## Use an existing secret
   existingSecret:
     enabled: false
