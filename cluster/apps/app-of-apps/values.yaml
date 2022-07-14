@@ -68,19 +68,19 @@ apps:
     setParams:
       - name: fullnameOverride
         value: ingress-nginx
-      - name: controller
-        value: |-
-          kind: DaemonSet
-          hostNetwork: true
-          hostPort:
-            enabled: true
-          service:
-            enabled: false
-          publishService:
-            enabled: false
-          metrics:
-            enabled: true
-            serviceMonitor:
-              enabled: true
-          config:
-            use-forwarded-headers: "true"
+      - name: controller.kind
+        value: DaemonSet
+      - name: controller.hostNetwork
+        value: true
+      - name: controller.hostPort.enabled
+        value: true
+      - name: controller.service.enabled
+        value: false
+      - name: controller.publishService.enabled
+        value: false
+      - name: controller.metrics.enabled
+        value: true
+      - name: controller.serviceMonitor.enabled:
+        value: true
+      - name: controller.config.use-forwarded-headers
+      - value: "true"
