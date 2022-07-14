@@ -42,7 +42,7 @@ apps:
         value: false
       - name: nextcloud.configs
         value:
-          redis.config.php: |-
+          redis.config.php: >
             <?php
             {
               $CONFIG = array (
