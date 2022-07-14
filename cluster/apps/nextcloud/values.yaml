@@ -55,7 +55,7 @@ ingress:
    tls:
      - secretName: nextcloud-tls
        hosts:
-         - nextcloud.kube.home
+         - cloud.spacemule.net
   labels: {}
   path: /
   pathType: Prefix
