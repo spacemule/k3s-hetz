@@ -36,3 +36,12 @@ apps:
     targetRevision: longhorn-1.3.0
     repoURL: https://github.com/longhorn/charts.git
     namespace: longhorn-system
+
+  - name: sealed-secrets
+    path: helm/sealed-secrets
+    targetRevision: v0.18.0
+    repoURL: https://github.com/bitnami-labs/sealed-secrets.git
+    namespace: sealed-secrets
+    setParams:
+      - name: metrics.serviceMonitor.namespace
+        value: monitoring
