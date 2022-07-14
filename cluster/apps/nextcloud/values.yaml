@@ -214,20 +214,20 @@ nginx:
   resources: {}
 
 internalDatabase:
-  enabled: true
+  enabled: false
   name: nextcloud
 
 ##
 ## External database configuration
 ##
 externalDatabase:
-  enabled: false
+  enabled: true
 
   ## Supported database engines: mysql or postgresql
-  type: mysql
+  type: postgresql
 
   ## Database host
-  host:
+  host: 10.15.1.3
 
   ## Database user
   user: nextcloud
@@ -240,10 +240,10 @@ externalDatabase:
 
   ## Use a existing secret
   existingSecret:
-    enabled: false
-    # secretName: nameofsecret
-    # usernameKey: username
-    # passwordKey: password
+    enabled: true
+     secretName: nextcloud-db
+     usernameKey: user
+     passwordKey: pass
 
 ##
 ## MariaDB chart configuration
