@@ -55,32 +55,13 @@ apps:
     path: cluster/apps/secrets
     targetRevision: main
 
-  - name: cert-manager-init
-    path: cluster/apps/cert-manager-init
-
-  - name: cert-manager
-    path: cluster/apps/cert-manager
+#  - name: cert-manager-init
+#    path: cluster/apps/cert-manager-init
+#
+#  - name: cert-manager
+#    path: cluster/apps/cert-manager
 
   - name: nginx-ingress
     path: charts/ingress-nginx
     repoURL: https://github.com/kubernetes/ingress-nginx/
     targetRevision: helm-chart-4.2.0
-#    setParams:
-#      - name: fullnameOverride
-#        value: ingress-nginx
-#      - name: controller.kind
-#        value: DaemonSet
-#      - name: controller.hostNetwork
-#        value: true
-#      - name: controller.hostPort.enabled
-#        value: true
-#      - name: controller.service.enabled
-#        value: false
-#      - name: controller.publishService.enabled
-#        value: false
-#      - name: controller.metrics.enabled
-#        value: true
-#      - name: controller.serviceMonitor.enabled
-#        value: true
-#      - name: controller.config.use-forwarded-headers
-#      - value: true
