@@ -80,7 +80,7 @@ apps:
         value: false
       - name: controller.metrics.enabled
         value: true
-      - name: controller.serviceMonitor.enabled:
+      - name: controller.serviceMonitor.enabled
         value: true
       - name: controller.config.use-forwarded-headers
-      - value: "true"
+      - value: true
