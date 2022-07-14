@@ -48,5 +48,5 @@ apps:
     setParams:
       - name: metrics.serviceMonitor.namespace
         value: monitoring
-      - name: nameOverride
+      - name: fullnameOverride
         value: sealed-secrets-controller
