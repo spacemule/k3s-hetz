@@ -119,7 +119,7 @@ nextcloud:
     # Apps directory configs
     apps.config.php: true
     # Used for auto configure database
-    autoconfig.php: true
+    autoconfig.php: false
     # SMTP default configuration
     smtp.config.php: true
   # Extra config files created in /var/www/html/config/
