@@ -40,7 +40,7 @@ apps:
         value: true
       - name: nextcloud.defaultConfigs.redis\.config\.php
         value: false
-      - name: nextcloud.configs.redis\.config\.php
+      - name: nextcloud.configs.hosted-redis\.config\.php
         value: |-
           <?php
           {
