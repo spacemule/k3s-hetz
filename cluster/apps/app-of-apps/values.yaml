@@ -54,3 +54,11 @@ apps:
   - name: secrets
     path: cluster/apps/secrets
     targetRevision: main
+
+  - name: cert-manager-init
+    path: cluster/apps/cert-manager-init
+
+  - name: cert-manager
+    path: deploy/charts/cert-manager
+    repoURL: https://github.com/cert-manager/cert-manager
+    targetRevision: v1.8.2
