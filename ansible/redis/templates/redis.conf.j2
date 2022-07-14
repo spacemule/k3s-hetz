@@ -1,5 +1,5 @@
-bind {{ private_ip }}
-bind-source-addr {{ private_ip }}
+bind 127.0.0.1 {{ private_ip }}
+#bind-source-addr {{ private_ip }}
 protected-mode no
 port 6379
 tcp-backlog 511
