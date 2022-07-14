@@ -16,10 +16,10 @@ apps:
     repoURL: https://github.com/nextcloud/helm.git
     namespace: nextcloud
     setParams:
-#      - name: nginx.enabled
-#        value: true
-#      - name: image.flavor
-#        value: fpm
+      - name: nginx.enabled
+        value: true
+      - name: image.flavor
+        value: php-fpm
       - name: internalDatabase.enabled
         value: false
       - name: externalDatabase.type
@@ -38,10 +38,21 @@ apps:
         value: true
       - name: hpa.enabled
         value: true
-      - name: nextcloud.extraEnv
-        value:
-          - name: REDIS_HOST
-            value: "10.15.1.2"
+      - name: nextcloud.defaultConfigs.redis\.config\.php
+        value: false
+      - name: nextcloud.configs.redis\.config\.php
+        value: |-
+          <?php
+          {
+            $CONFIG = array (
+              'memcache.distributed' => '\OC\Memcache\Redis',
+              'memcache.locking' => '\OC\Memcache\Redis',
+              'redis' => array(
+                'host' => getenv('10.15.1.2'),
+                'port' => getenv('REDIS_HOST_PORT') ?: 6379,
+              ),
+            );
+          }
 
   - name: loki-stack
     path: charts/loki-stack
