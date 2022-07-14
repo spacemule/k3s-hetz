@@ -3,7 +3,7 @@
 ##
 image:
   repository: nextcloud
-  flavor: php-fpm
+  flavor: fpm
   # If unset, uses flavor + .Chart.AppVersion to create tag
   # tag:
   pullPolicy: IfNotPresent
