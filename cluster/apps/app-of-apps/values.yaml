@@ -36,9 +36,9 @@ apps:
     targetRevision: longhorn-1.3.0
     repoURL: https://github.com/longhorn/charts.git
     namespace: longhorn-system
-    setParams:
-      - name: persistence.defaultFsType
-        value: btrfs
+#    setParams:
+#      - name: persistence.defaultFsType
+#        value: btrfs
 
   - name: sealed-secrets
     path: helm/sealed-secrets
