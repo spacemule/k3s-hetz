@@ -3,7 +3,7 @@
 ##
 image:
   repository: nextcloud
-  flavor: fpm
+  flavor: apache
   # If unset, uses flavor + .Chart.AppVersion to create tag
   # tag:
   pullPolicy: IfNotPresent
@@ -199,7 +199,7 @@ nextcloud:
 
 nginx:
   ## You need to set an fpm version of the image for nextcloud if you want to use nginx!
-  enabled: true
+  enabled: false
   image:
     repository: nginx
     tag: alpine
