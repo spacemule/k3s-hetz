@@ -230,10 +230,10 @@ externalDatabase:
 
   ## Use a existing secret
   existingSecret:
-    enabled: true
-     secretName: nextcloud-db
-     usernameKey: user
-     passwordKey: pass
+#    enabled: true
+    secretName: nextcloud-db
+    usernameKey: user
+    passwordKey: pass
 
 ##
 ## MariaDB chart configuration
