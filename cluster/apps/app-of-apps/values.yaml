@@ -62,6 +62,4 @@ apps:
     path: cluster/apps/cert-manager
 
   - name: nginx-ingress
-    path: charts/ingress-nginx
-    repoURL: https://github.com/kubernetes/ingress-nginx/
-    targetRevision: helm-chart-4.2.0
+    path: cluster/apps/ingress-nginx
