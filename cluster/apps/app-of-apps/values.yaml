@@ -10,21 +10,21 @@ apps:
 #    targetRevision: main
 #    namespace: kube-system
 
-#  - name: nextcloud
-#    path: cluster/apps/nextcloud
-#    namespace: nextcloud
-#    valueFiles: values.yaml
+  - name: nextcloud
+    path: cluster/apps/nextcloud
+    namespace: nextcloud
+    valueFiles: values.yaml
 
-#  - name: loki-stack
-#    path: charts/loki-stack
-#    targetRevision: loki-stack-2.6.5
-#    repoURL: https://github.com/grafana/helm-charts.git
-#    namespace: monitoring
-#    setParams:
-#      - name: grafana.enabled
-#        value: true
-#      - name: prometheus.enabled
-#        value: true
+  - name: loki-stack
+    path: charts/loki-stack
+    targetRevision: loki-stack-2.6.5
+    repoURL: https://github.com/grafana/helm-charts.git
+    namespace: monitoring
+    setParams:
+      - name: grafana.enabled
+        value: true
+      - name: prometheus.enabled
+        value: true
 
   - name: kured
     path: charts/kured

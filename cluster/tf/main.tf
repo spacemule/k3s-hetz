@@ -99,3 +99,9 @@ resource "kubernetes_manifest" "app_of_apps" {
     }
   }
 }
+
+resource "kubernetes_namespace" "nextcloud" {
+  metadata {
+    name = "nextcloud"
+  }
+}
