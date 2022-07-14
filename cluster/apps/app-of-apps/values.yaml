@@ -11,49 +11,9 @@ apps:
     namespace: kube-system
 
   - name: nextcloud
-    path: charts/nextcloud
-    targetRevision: master
-    repoURL: https://github.com/nextcloud/helm.git
+    path: cluster/apps/nextcloud
     namespace: nextcloud
-    setParams:
-      - name: nginx.enabled
-        value: true
-      - name: image.flavor
-        value: php-fpm
-      - name: internalDatabase.enabled
-        value: false
-      - name: externalDatabase.type
-        value: postgresql
-      - name: externalDatabase.host
-        value: '10.15.1.3:5432'
-      - name: externalDatabase.existingSecret.enabled
-        value: true
-      - name: externalDatabase.existingSecret.secretName
-        value: nextcloud-db
-      - name: externalDatabase.existingSecret.usernameKey
-        value: user
-      - name: externalDatabase.existingSecret.passwordKey
-        value: pass
-      - name: persistence.enabled
-        value: true
-      - name: hpa.enabled
-        value: true
-      - name: nextcloud.defaultConfigs.redis\.config\.php
-        value: false
-      - name: nextcloud.configs
-        value:
-          redis.config.php: >
-            <?php
-            {
-              $CONFIG = array (
-                'memcache.distributed' => '\OC\Memcache\Redis',
-                'memcache.locking' => '\OC\Memcache\Redis',
-                'redis' => array(
-                  'host' => '10.15.1.2',
-                  'port' => 6379,
-                ),
-              );
-            }
+    valueFiles: values.yaml
 
   - name: loki-stack
     path: charts/loki-stack
