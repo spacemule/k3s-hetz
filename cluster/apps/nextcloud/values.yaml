@@ -3,7 +3,7 @@
 ##
 image:
   repository: nextcloud
-  flavor: apache
+  flavor: php-fpm
   # If unset, uses flavor + .Chart.AppVersion to create tag
   # tag:
   pullPolicy: IfNotPresent
@@ -65,7 +65,7 @@ ingress:
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/
 lifecycle: {}
   # postStartCommand: []
-  # preStopCommand: []
+# preStopCommand: []
 
 phpClientHttpsFix:
   enabled: false
@@ -158,9 +158,12 @@ nextcloud:
 
   ##
   ## Extra environment variables
-#  extraEnv:
-#    - name: REDIS_HOST
-#      value: 10.15.1.2
+  extraEnv:
+  #  - name: SOME_SECRET_ENV
+  #    valueFrom:
+  #      secretKeyRef:
+  #        name: nextcloud
+  #        key: secret_key
 
   # Extra init containers that runs before pods start.
   extraInitContainers: []
@@ -189,7 +192,7 @@ nextcloud:
 
 nginx:
   ## You need to set an fpm version of the image for nextcloud if you want to use nginx!
-  enabled: false
+  enabled: true
   image:
     repository: nginx
     tag: alpine
@@ -204,20 +207,20 @@ nginx:
   resources: {}
 
 internalDatabase:
-  enabled: false
-#  name: nextcloud
+  enabled: true
+  name: nextcloud
 
 ##
 ## External database configuration
 ##
 externalDatabase:
-  enabled: true
+  enabled: false
 
   ## Supported database engines: mysql or postgresql
-  type: postgresql
+  type: mysql
 
   ## Database host
-  host: 10.15.1.3
+  host:
 
   ## Database user
   user: nextcloud
@@ -230,10 +233,10 @@ externalDatabase:
 
   ## Use a existing secret
   existingSecret:
-    enabled: true
-    secretName: nextcloud-db
-    usernameKey: user
-    passwordKey: pass
+    enabled: false
+    # secretName: nameofsecret
+    # usernameKey: username
+    # passwordKey: password
 
 ##
 ## MariaDB chart configuration
@@ -289,16 +292,16 @@ redis:
 
 ## Cronjob to execute Nextcloud background tasks
 ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#webcron
-##false
+##
 cronjob:
-  enabled: true
+  enabled: false
   # Nexcloud image is used as default but only curl is needed
-  image:
-     repository: nextcloud
-     tag: apache
-     pullPolicy: IfNotPresent
+  image: {}
+    # repository: nextcloud
+    # tag: 16.0.3-apache
+    # pullPolicy: IfNotPresent
     # pullSecrets:
-    #   - myRegistrKeySecretName
+  #   - myRegistrKeySecretName
   # Every 5 minutes
   # Note: Setting this to any any other value than 5 minutes might
   #  cause issues with how nextcloud background jobs are executed
@@ -308,8 +311,8 @@ cronjob:
   curlInsecure: false
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 2
-  # If not set, nextcloud deployment one will be set
-  # resources:
+    # If not set, nextcloud deployment one will be set
+    # resources:
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
@@ -319,7 +322,7 @@ cronjob:
     #  memory: 128Mi
     # requests:
     #  cpu: 100m
-    #  memory: 128Mi
+  #  memory: 128Mi
 
   # If not set, nextcloud deployment one will be set
   # nodeSelector: {}
@@ -341,7 +344,7 @@ service:
 ##
 persistence:
   # Nextcloud Data (/var/www/html)
-  enabled: true
+  enabled: false
   annotations: {}
   ## nextcloud data Persistent Volume Storage Class
   ## If defined, storageClassName: <storageClass>
@@ -357,8 +360,8 @@ persistence:
   ## If defined, PVC must be created manually before volume will be bound
   # existingClaim:
 
-  accessMode: ReadWriteMany
-  size: 10Gi
+  accessMode: ReadWriteOnce
+  size: 8Gi
 
   ## Use an additional pvc for the data directory rather than a subpath of the default PVC
   ## Useful to store data on a different storageClass (e.g. on slower disks)
@@ -371,17 +374,17 @@ persistence:
     accessMode: ReadWriteOnce
     size: 8Gi
 
-resources:
+resources: {}
   # We usually recommend not to specify default resources and to leave this as a conscious
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-   limits:
-    cpu: 1000m
-    memory: 2048Mi
-   requests:
-    cpu: 1000m
-    memory: 2048Mi
+  # limits:
+  #  cpu: 100m
+  #  memory: 128Mi
+  # requests:
+  #  cpu: 100m
+#  memory: 128Mi
 
 ## Liveness and readiness probe values
 ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
@@ -468,7 +471,7 @@ metrics:
   ##
   serviceMonitor:
     ## @param metrics.serviceMonitor.enabled Create ServiceMonitor Resource for scraping metrics using PrometheusOperator
-      ##
+    ##
     enabled: false
 
     ## @param metrics.serviceMonitor.namespace Namespace in which Prometheus is running
