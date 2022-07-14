@@ -230,7 +230,7 @@ externalDatabase:
 
   ## Use a existing secret
   existingSecret:
-#    enabled: true
+    enabled: true
     secretName: nextcloud-db
     usernameKey: user
     passwordKey: pass
