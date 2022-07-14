@@ -40,19 +40,20 @@ apps:
         value: true
       - name: nextcloud.defaultConfigs.redis\.config\.php
         value: false
-      - name: nextcloud.configs.hosted-redis\.config\.php
-        value: |
-          <?php
-          {
-            $CONFIG = array (
-              'memcache.distributed' => '\OC\Memcache\Redis',
-              'memcache.locking' => '\OC\Memcache\Redis',
-              'redis' => array(
-                'host' => '10.15.1.2',
-                'port' => 6379,
-              ),
-            );
-          }
+      - name: nextcloud.configs
+        value:
+          redis.config.php: |-
+            <?php
+            {
+              $CONFIG = array (
+                'memcache.distributed' => '\OC\Memcache\Redis',
+                'memcache.locking' => '\OC\Memcache\Redis',
+                'redis' => array(
+                  'host' => '10.15.1.2',
+                  'port' => 6379,
+                ),
+              );
+            }
 
   - name: loki-stack
     path: charts/loki-stack
