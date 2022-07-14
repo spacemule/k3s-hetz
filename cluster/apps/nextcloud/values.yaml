@@ -289,9 +289,9 @@ redis:
 
 ## Cronjob to execute Nextcloud background tasks
 ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#webcron
-##
+##false
 cronjob:
-  enabled: false
+  enabled: true
   # Nexcloud image is used as default but only curl is needed
   image: {}
     # repository: nextcloud
@@ -376,12 +376,12 @@ resources: {}
   # choice for the user. This also increases chances charts run on environments with little
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-  # limits:
-  #  cpu: 100m
-  #  memory: 128Mi
-  # requests:
-  #  cpu: 100m
-  #  memory: 128Mi
+   limits:
+    cpu: 1000m
+    memory: 2048Mi
+   requests:
+    cpu: 1000m
+    memory: 2048Mi
 
 ## Liveness and readiness probe values
 ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
