@@ -25,3 +25,8 @@ apps:
         value: true
       - name: prometheus.enabled
         value: true
+
+  - name: kured
+    path: kured
+    repoURL: https://weaveworks.github.io/kured
+    namespace: kube-system
