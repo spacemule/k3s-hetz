@@ -65,22 +65,22 @@ apps:
     path: charts/ingress-nginx
     repoURL: https://github.com/kubernetes/ingress-nginx/
     targetRevision: helm-chart-4.2.0
-    setParams:
-      - name: fullnameOverride
-        value: ingress-nginx
-      - name: controller.kind
-        value: DaemonSet
-      - name: controller.hostNetwork
-        value: true
-      - name: controller.hostPort.enabled
-        value: true
-      - name: controller.service.enabled
-        value: false
-      - name: controller.publishService.enabled
-        value: false
-      - name: controller.metrics.enabled
-        value: true
-      - name: controller.serviceMonitor.enabled
-        value: true
-      - name: controller.config.use-forwarded-headers
-      - value: true
+#    setParams:
+#      - name: fullnameOverride
+#        value: ingress-nginx
+#      - name: controller.kind
+#        value: DaemonSet
+#      - name: controller.hostNetwork
+#        value: true
+#      - name: controller.hostPort.enabled
+#        value: true
+#      - name: controller.service.enabled
+#        value: false
+#      - name: controller.publishService.enabled
+#        value: false
+#      - name: controller.metrics.enabled
+#        value: true
+#      - name: controller.serviceMonitor.enabled
+#        value: true
+#      - name: controller.config.use-forwarded-headers
+#      - value: true
