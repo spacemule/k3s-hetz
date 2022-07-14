@@ -111,7 +111,7 @@ nextcloud:
     # To protect /var/www/html/config
     .htaccess: true
     # Redis default configuration
-    redis.config.php: false
+    redis.config.php: true
     # Apache configuration for rewrite urls
     apache-pretty-urls.config.php: true
     # Define APCu as local cache
