@@ -27,6 +27,6 @@ apps:
         value: true
 
   - name: kured
-    path: kured
-    repoURL: https://weaveworks.github.io/kured
+    path: charts/kured
+    repoURL: https://github.com/weaveworks/kured.git
     namespace: kube-system
