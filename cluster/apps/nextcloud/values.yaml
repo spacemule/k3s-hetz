@@ -293,10 +293,10 @@ redis:
 cronjob:
   enabled: true
   # Nexcloud image is used as default but only curl is needed
-  image: {}
-    # repository: nextcloud
-    # tag: 16.0.3-apache
-    # pullPolicy: IfNotPresent
+  image:
+     repository: nextcloud
+     tag: apache
+     pullPolicy: IfNotPresent
     # pullSecrets:
     #   - myRegistrKeySecretName
   # Every 5 minutes
