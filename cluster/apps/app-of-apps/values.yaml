@@ -44,7 +44,9 @@ apps:
     path: helm/sealed-secrets
     targetRevision: v0.18.0
     repoURL: https://github.com/bitnami-labs/sealed-secrets.git
-    namespace: sealed-secrets
+    namespace: kube-system
     setParams:
       - name: metrics.serviceMonitor.namespace
         value: monitoring
+      - name: nameOverride
+        value: sealed-secrets-controller
