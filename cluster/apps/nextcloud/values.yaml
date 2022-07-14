@@ -127,11 +127,14 @@ nextcloud:
   configs:
     redis.config.php: |-
       <?php
-      'memcache.distributed' => '\OC\Memcache\Redis',
-        'redis' => [
-        'host' => '10.15.1.2',
-        'port' => 6379,
-        ],
+      $CONFIG = array (
+        'memcache.distributed' => '\OC\Memcache\Redis',
+        'memcache.locking' => '\OC\Memcache\Redis',
+        'redis' => array(
+          'host' => getenv('REDIS_HOST'),
+          'port' => 6379,
+        ),
+      );
 
 # For example, to use S3 as primary storage
   # ref: https://docs.nextcloud.com/server/13/admin_manual/configuration_files/primary_storage.html#simple-storage-service-s3
