@@ -113,7 +113,7 @@ nextcloud:
     # Redis default configuration
     redis.config.php: false
     # Apache configuration for rewrite urls
-    apache-pretty-urls.config.php: true
+    apache-pretty-urls.config.php: false
     # Define APCu as local cache
     apcu.config.php: true
     # Apps directory configs
@@ -133,6 +133,8 @@ nextcloud:
         'redis' => [
           'host' => '10.15.1.2',
           'port' => 6379,
+          'timeout' => 1.0,
+          'read_timeout' => 1.0,
         ],
       );
 
