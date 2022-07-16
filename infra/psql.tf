@@ -6,7 +6,7 @@ resource "hcloud_server" "postgres" {
   name               = "postgres"
   server_type        = var.postgres_instance
   placement_group_id = hcloud_placement_group.k8s-places.id
-  image              = data.hcloud_image.microOS.id
+  image              = data.hcloud_image.postgres.id
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.redis-init.rendered
