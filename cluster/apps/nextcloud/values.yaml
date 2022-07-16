@@ -106,7 +106,7 @@ nextcloud:
   phpConfigs:
     redis-cluster.ini: |-
       session.save_handler = redis
-      session.save_path = "seed[]=10.15.1.2&timeout=2&read_timeout=2&failover=error&persistent=1&auth[user]=default"
+      session.save_path = "seed[]=10.15.1.2:6379&timeout=2&read_timeout=2&failover=error&persistent=1"
   # Default config files
   # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
   # Default confgurations can be found here: https://github.com/nextcloud/docker/tree/master/16.0/apache/config
