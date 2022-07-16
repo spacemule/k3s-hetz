@@ -106,6 +106,7 @@ nextcloud:
   phpConfigs:
     redis-session.ini: |-
       session.save_handler = redis
+      session.save_path = tcp://10.15.1.2:6379
       redis.session.locking_enabled = 1
       redis.session.lock_retries = 4000
   # Default config files
