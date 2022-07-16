@@ -3,7 +3,7 @@
 ##
 image:
   repository: nextcloud
-  flavor: apache
+  flavor: fpm-alpine
   # If unset, uses flavor + .Chart.AppVersion to create tag
   # tag:
   pullPolicy: IfNotPresent
@@ -16,7 +16,7 @@ podAnnotations: {}
 deploymentAnnotations: {}
 
 # Number of replicas to be deployed
-replicaCount: 3
+replicaCount: 1
 
 ## Allowing use of ingress controllers
 ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
@@ -208,7 +208,7 @@ nextcloud:
 
 nginx:
   ## You need to set an fpm version of the image for nextcloud if you want to use nginx!
-  enabled: false
+  enabled: true
   image:
     repository: nginx
     tag: alpine
