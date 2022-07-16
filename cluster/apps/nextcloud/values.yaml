@@ -111,7 +111,7 @@ nextcloud:
     # To protect /var/www/html/config
     .htaccess: true
     # Redis default configuration
-    redis.config.php: false
+    redis.config.php: true
     # Apache configuration for rewrite urls
     apache-pretty-urls.config.php: false
     # Define APCu as local cache
@@ -296,21 +296,21 @@ postgresql:
 ##
 
 redis:
-  enabled: false
+  enabled: true
   auth:
-    enabled: true
+    enabled: false
     password: 'changeme'
 
 ## Cronjob to execute Nextcloud background tasks
 ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#webcron
 ##
 cronjob:
-  enabled: false
+  enabled: true
   # Nexcloud image is used as default but only curl is needed
-  image: {}
-    # repository: nextcloud
-    # tag: 16.0.3-apache
-    # pullPolicy: IfNotPresent
+  image:
+     repository: nextcloud
+     tag: fpm
+     pullPolicy: IfNotPresent
     # pullSecrets:
   #   - myRegistrKeySecretName
   # Every 5 minutes
@@ -323,17 +323,17 @@ cronjob:
   failedJobsHistoryLimit: 5
   successfulJobsHistoryLimit: 2
     # If not set, nextcloud deployment one will be set
-    # resources:
+  resources:
     # We usually recommend not to specify default resources and to leave this as a conscious
     # choice for the user. This also increases chances charts run on environments with little
     # resources, such as Minikube. If you do want to specify resources, uncomment the following
     # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
-    # limits:
-    #  cpu: 100m
-    #  memory: 128Mi
-    # requests:
-    #  cpu: 100m
-  #  memory: 128Mi
+    limits:
+      cpu: "100m"
+      memory: "128Mi"
+    requests:
+      cpu: "100m"
+      memory: "128Mi"
 
   # If not set, nextcloud deployment one will be set
   # nodeSelector: {}
