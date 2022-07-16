@@ -170,7 +170,9 @@ nextcloud:
 
   ##
   ## Extra environment variables
-  extraEnv: {}
+  extraEnv:
+    - name: PHP_MEMORY_LIMIT
+      value: 512M
 #    - name: REDIS_HOST
 #      value: 10.15.1.2
 
