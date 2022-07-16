@@ -43,10 +43,7 @@ controller:
     https: 443
 
   # -- Will add custom configuration options to Nginx https://kubernetes.github.io/ingress-nginx/user-guide/nginx-configuration/configmap/
-  config:
-    use-forwarded-headers: "true"
-    compute-full-forwarded-for: "true"
-    use-proxy-protocol: "true"
+  config: {}
 
   # -- Annotations to be added to the controller config configuration configmap.
   configAnnotations: {}
@@ -203,7 +200,7 @@ controller:
 
   # -- Labels to be added to the controller Deployment or DaemonSet and other resources that do not have option to specify labels
   ##
-  labels:
+  labels: {}
   #  keel.sh/policy: patch
   #  keel.sh/trigger: poll
 
@@ -620,12 +617,7 @@ controller:
     existingPsp: ""
 
     service:
-      annotations:
-        load-balancer.hetzner.cloud/name: kube-lb
-        load-balancer.hetzner.cloud/http-redirect-https: 'true'
-        load-balancer.hetzner.cloud/location: hel1
-        load-balancer.hetzner.cloud/uses-proxyprotocol: 'true'
-        load-balancer.hetzner.cloud/use-private-ip: "true"
+      annotations: {}
       # clusterIP: ""
       externalIPs: []
       # loadBalancerIP: ""
