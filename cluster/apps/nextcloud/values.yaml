@@ -104,9 +104,10 @@ nextcloud:
   # PHP Configuration files
   # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
   phpConfigs:
-    redis-cluster.ini: |-
+    redis-session.ini: |-
       session.save_handler = redis
-      session.save_path = "seed[]=10.15.1.2:6379&timeout=2&read_timeout=2&failover=error&persistent=1"
+      redis.session.locking_enabled = 1
+      redis.session.lock_retries = 4000
   # Default config files
   # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
   # Default confgurations can be found here: https://github.com/nextcloud/docker/tree/master/16.0/apache/config
@@ -131,6 +132,7 @@ nextcloud:
     redis.config.php: |-
       <?php
       $CONFIG = array (
+        'memcache.local' => '\OC\Memcache\Redis',
         'memcache.distributed' => '\OC\Memcache\Redis',
         'memcache.locking' => '\OC\Memcache\Redis',
         'redis' => [
