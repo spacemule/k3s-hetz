@@ -13,13 +13,8 @@ resource "hcloud_server" "postgres" {
   firewall_ids       = [hcloud_firewall.default.id]
 
   public_net {
-    ipv4_enabled = true
+    ipv4_enabled = false
     ipv6_enabled = false
-  }
-
-  network {
-    network_id = hcloud_network.kube-net.id
-    ip         = cidrhost(var.services_cidr, 3 )
   }
 
   depends_on = [
@@ -28,7 +23,7 @@ resource "hcloud_server" "postgres" {
 }
 
 resource "hcloud_server_network" "postgres-ip" {
-  server_id  = hcloud_server.redis.id
+  server_id  = hcloud_server.postgres.id
   network_id = hcloud_network.kube-net.id
   ip         = cidrhost(var.services_cidr, 3 )
 }

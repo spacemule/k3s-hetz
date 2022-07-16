@@ -23,6 +23,12 @@ variable "standard_worker_count" {
   description = "Number of standard worker nodes"
 }
 
+variable "big_worker_count" {
+  type = number
+  default = 1
+  description = "Number of big worker nodes"
+}
+
 variable "network_cidr" {
   type = string
 }
@@ -38,6 +44,11 @@ variable "services_cidr" {
 variable "standard_worker_instance" {
   type = string
   default = "cpx21"
+}
+
+variable "big_worker_instance" {
+  type = string
+  default = "cpx31"
 }
 
 variable "control_plane_instance" {

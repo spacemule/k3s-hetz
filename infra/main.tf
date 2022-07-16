@@ -191,6 +191,27 @@ resource "hcloud_server" "standard-worker" {
   ]
 }
 
+resource "hcloud_server" "big-worker" {
+  count              = var.big_worker_count
+  name               = "k3s-node-${count.index + var.control_plane_count + var.standard_worker_count}"
+  server_type        = var.big_worker_instance
+  placement_group_id = hcloud_placement_group.k8s-places.id
+  image              = data.hcloud_image.microOS.id
+  location           = "hel1"
+  ssh_keys           = [hcloud_ssh_key.k8s-key.id]
+  user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count + var.standard_worker_count].rendered
+  #  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
+
+  public_net {
+    ipv4_enabled = true
+    ipv6_enabled = false
+  }
+
+  depends_on = [
+    hcloud_network_subnet.k8s-sub
+  ]
+}
+
 resource "hcloud_server_network" "control-plane-ips" {
   count      = length(hcloud_server.control-plane)
   server_id  = hcloud_server.control-plane[count.index].id
@@ -198,15 +219,22 @@ resource "hcloud_server_network" "control-plane-ips" {
   ip         = cidrhost(var.subnet_cidr, count.index + 2 )
 }
 
-resource "hcloud_server_network" "worker-ips" {
+resource "hcloud_server_network" "standard-worker-ips" {
   count      = length(hcloud_server.standard-worker)
   server_id  = hcloud_server.standard-worker[count.index].id
   network_id = hcloud_network.kube-net.id
   ip         = cidrhost(var.subnet_cidr, var.control_plane_count + count.index + 2 )
 }
 
+resource "hcloud_server_network" "big-worker-ips" {
+  count      = length(hcloud_server.big-worker)
+  server_id  = hcloud_server.big-worker[count.index].id
+  network_id = hcloud_network.kube-net.id
+  ip         = cidrhost(var.subnet_cidr, var.control_plane_count + var.standard_worker_count + count.index + 2 )
+}
+
 data "cloudinit_config" "k3s-init" {
-  count         = var.standard_worker_count + var.control_plane_count
+  count         = var.standard_worker_count + var.control_plane_count + var.big_worker_count
   gzip          = true
   base64_encode = true
 

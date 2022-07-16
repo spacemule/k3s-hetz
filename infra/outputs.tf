@@ -6,6 +6,10 @@ output "worker_ips" {
   value = hcloud_server.standard-worker[*].ipv4_address
 }
 
+output "big_worker_ips" {
+  value = hcloud_server.big-worker[*].ipv4_address
+}
+
 output "postgres_ip" {
   value = hcloud_server.postgres.ipv4_address
 }
