@@ -622,6 +622,10 @@ controller:
     service:
       annotations:
         load-balancer.hetzner.cloud/name: kube-lb
+        load-balancer.hetzner.cloud/http-redirect-https: 'true'
+        load-balancer.hetzner.cloud/location: hel1
+        load-balancer.hetzner.cloud/uses-proxyprotocol: 'true'
+        load-balancer.hetzner.cloud/use-private-ip: "true"
       # clusterIP: ""
       externalIPs: []
       # loadBalancerIP: ""
