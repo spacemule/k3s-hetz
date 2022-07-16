@@ -9,7 +9,7 @@ resource "hcloud_server" "postgres" {
   image              = data.hcloud_image.postgres.id
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
-  user_data          = data.cloudinit_config.redis-init.rendered
+  user_data          = data.cloudinit_config.postgres-init.rendered
   firewall_ids       = [hcloud_firewall.default.id]
 
   public_net {
