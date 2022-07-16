@@ -32,13 +32,8 @@ apps:
     namespace: kube-system
 
   - name: longhorn
-    path: charts/longhorn
-    targetRevision: longhorn-1.3.0
-    repoURL: https://github.com/longhorn/charts.git
+    path: cluster/apps/longhorn
     namespace: longhorn-system
-#    setParams:
-#      - name: persistence.defaultFsType
-#        value: btrfs
 
   - name: sealed-secrets
     path: helm/sealed-secrets
