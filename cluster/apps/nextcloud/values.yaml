@@ -105,7 +105,7 @@ nextcloud:
   # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
   phpConfigs:
     redis-cluster.ini: |-
-      session.save_handler = rediscluster
+      session.save_handler = redis
       session.save_path = "seed[]=10.15.1.2&timeout=2&read_timeout=2&failover=error&persistent=1&auth[user]=default"
   # Default config files
   # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
