@@ -10,6 +10,6 @@ output "postgres_ip" {
   value = module.k3s.postgres_ip
 }
 
-#output "redis_ip" {
-#  value = module.k3s.redis_ip
-#}
+output "redis_ip" {
+  value = module.k3s.redis_ip
+}
