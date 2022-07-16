@@ -3,7 +3,7 @@
 ##
 image:
   repository: nextcloud
-  flavor: fpm
+  flavor: apache
   # If unset, uses flavor + .Chart.AppVersion to create tag
   # tag:
   pullPolicy: IfNotPresent
@@ -16,7 +16,7 @@ podAnnotations: {}
 deploymentAnnotations: {}
 
 # Number of replicas to be deployed
-replicaCount: 3
+replicaCount: 1
 
 ## Allowing use of ingress controllers
 ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
@@ -120,7 +120,7 @@ nextcloud:
     # Apache configuration for rewrite urls
     apache-pretty-urls.config.php: false
     # Define APCu as local cache
-    apcu.config.php: false
+    apcu.config.php: true
     # Apps directory configs
     apps.config.php: false
     # Used for auto configure database
@@ -133,7 +133,6 @@ nextcloud:
     redis.config.php: |-
       <?php
       $CONFIG = array (
-        'memcache.local' => '\OC\Memcache\Redis',
         'memcache.distributed' => '\OC\Memcache\Redis',
         'memcache.locking' => '\OC\Memcache\Redis',
         'redis' => [
@@ -209,7 +208,7 @@ nextcloud:
 
 nginx:
   ## You need to set an fpm version of the image for nextcloud if you want to use nginx!
-  enabled: true
+  enabled: false
   image:
     repository: nginx
     tag: alpine
