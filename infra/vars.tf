@@ -42,7 +42,7 @@ variable "standard_worker_instance" {
 
 variable "control_plane_instance" {
   type = string
-  default = "cx21"
+  default = "cpx11"
 }
 
 variable "redis_instance" {

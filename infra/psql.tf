@@ -1,3 +1,7 @@
+data "hcloud_image" "postgres" {
+  with_selector = "type=db"
+}
+
 resource "hcloud_server" "postgres" {
   name               = "postgres"
   server_type        = var.postgres_instance

@@ -1,12 +1,14 @@
 module "k3s" {
-  source                = "../../infra"
-  ssh_pubkey            = var.ssh_pubkey
-  hcloud_token          = var.hcloud_token
-  control_plane_count   = var.control_plane_count
-  standard_worker_count = var.standard_worker_count
-  subnet_cidr           = "10.0.0.0/16"
-  services_cidr         = "10.15.1.0/24"
-  network_cidr          = "10.0.0.0/12"
+  source                 = "../../infra"
+  ssh_pubkey             = var.ssh_pubkey
+  hcloud_token           = var.hcloud_token
+  control_plane_count    = var.control_plane_count
+  standard_worker_count  = var.standard_worker_count
+  control_plane_instance = "cx21"
+  postgres_instance      = "cx21"
+  subnet_cidr            = "10.0.0.0/16"
+  services_cidr          = "10.15.1.0/24"
+  network_cidr           = "10.0.0.0/12"
 }
 
 resource "helm_release" "argocd" {

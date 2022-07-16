@@ -10,7 +10,10 @@
   tasks:
   - name: install python bindings for selinux
     community.general.zypper:
-      name: python3-selinux
+      name:
+        - python3-selinux
+        - open-iscsi
+        - nfs-client
       state: present
     register: package_added
 
