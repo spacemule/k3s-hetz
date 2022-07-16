@@ -14,6 +14,6 @@ output "postgres_ip" {
   value = hcloud_server.postgres.ipv4_address
 }
 
-output "redis_ip" {
-  value = hcloud_server.redis.ipv4_address
-}
+#output "redis_ip" {
+#  value = hcloud_server.redis.ipv4_address
+#}
