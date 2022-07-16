@@ -51,11 +51,11 @@ ingress:
       location ~ ^/(?:autotest|occ|issue|indie|db_|console) {
         deny all;
       }
-
-  tls:
-   - secretName: nextcloud-tls
-     hosts:
-       - cloud.spacemule.net
+#
+#  tls:
+#   - secretName: nextcloud-tls
+#     hosts:
+#       - cloud.spacemule.net
   labels: {}
   path: /
   pathType: Prefix
