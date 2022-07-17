@@ -3,7 +3,7 @@
 ##
 image:
   repository: nextcloud
-  flavor: apache
+  flavor: fpm
   # If unset, uses flavor + .Chart.AppVersion to create tag
   # tag:
   pullPolicy: IfNotPresent
@@ -16,7 +16,7 @@ podAnnotations: {}
 deploymentAnnotations: {}
 
 # Number of replicas to be deployed
-replicaCount: 3
+replicaCount: 1
 
 ## Allowing use of ingress controllers
 ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
@@ -105,6 +105,7 @@ nextcloud:
   # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
   phpConfigs:
     redis-session.ini: |-
+      extension=redis
       session.save_handler = redis
       session.save_path = "tcp://10.15.1.2:6379"
       redis.session.locking_enabled = 1
@@ -206,7 +207,7 @@ nextcloud:
 
 nginx:
   ## You need to set an fpm version of the image for nextcloud if you want to use nginx!
-  enabled: false
+  enabled: true
   image:
     repository: nginx
     tag: mainline
@@ -312,7 +313,7 @@ cronjob:
   # Nexcloud image is used as default but only curl is needed
   image:
      repository: nextcloud
-     tag: apache
+     tag: fpm
      pullPolicy: IfNotPresent
     # pullSecrets:
   #   - myRegistrKeySecretName
@@ -430,7 +431,7 @@ startupProbe:
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 ##
 hpa:
-  enabled: true
+  enabled: false
   cputhreshold: 40
   minPods: 3
   maxPods: 6
