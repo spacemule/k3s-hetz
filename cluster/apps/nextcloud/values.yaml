@@ -63,7 +63,7 @@ ingress:
 
 # Allow configuration of lifecycle hooks
 # ref: https://kubernetes.io/docs/tasks/configure-pod-container/attach-handler-lifecycle-event/
-lifecycle"
+lifecycle:
   postStartCommand: ["apt-get", "update", "&&", "apt-get", "install", "-y", "--no-install-recommends", "ffmpeg", "imagemagick"]
   # preStopCommand: []
 
