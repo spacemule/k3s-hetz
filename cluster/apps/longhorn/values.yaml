@@ -129,13 +129,13 @@ longhornManager:
   tolerations:
   ## If you want to set tolerations for Longhorn Manager DaemonSet, delete the `[]` in the line above
   ## and uncomment this example block
-    - key: "node-role.kubernetes.io/control-plane"
+    - key: "node-role.kubernetes.io"
       operator: "Equal"
-      value: "value"
+      value: "control-plane"
       effect: "NoSchedule"
-    - key: "node-role.kubernetes.io/master"
+    - key: "node-role.kubernetes.io"
       operator: "Equal"
-      value: "value"
+      value: "master"
       effect: "NoSchedule"
   nodeSelector: {}
   ## If you want to set node selector for Longhorn Manager DaemonSet, delete the `{}` in the line above
