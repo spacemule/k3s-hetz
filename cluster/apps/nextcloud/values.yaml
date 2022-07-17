@@ -105,6 +105,7 @@ nextcloud:
   # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
   phpConfigs:
     redis-session.ini: |-
+      [Session]
       session.save_handler = redis
       session.save_path = "tcp://10.15.1.2:6379"
       redis.session.locking_enabled = 1
