@@ -16,7 +16,7 @@ podAnnotations: {}
 deploymentAnnotations: {}
 
 # Number of replicas to be deployed
-replicaCount: 3
+replicaCount: 1
 
 ## Allowing use of ingress controllers
 ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
@@ -105,11 +105,11 @@ nextcloud:
   # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
   phpConfigs:
     redis-session.ini: |-
-      extension=redis
+      [Session]
       session.save_handler = redis
       session.save_path = "tcp://10.15.1.2:6379"
-      redis.session.locking_enabled = 1
-      redis.session.lock_retries = 4000
+#      redis.session.locking_enabled = 1
+#      redis.session.lock_retries = 4000
   # Default config files
   # IMPORTANT: Will be used only if you put extra configs, otherwise default will come from nextcloud itself
   # Default confgurations can be found here: https://github.com/nextcloud/docker/tree/master/16.0/apache/config
