@@ -449,12 +449,13 @@ controller:
     # See the following GitHub issue for more details about the purpose: https://github.com/kubernetes/kubernetes/issues/40244
     # Will be ignored for Kubernetes versions older than 1.20
     ##
-    appProtocol: true
+    appProtocol: false
 
     annotations:
       load-balancer.hetzner.cloud/name: "kubelb"
       load-balancer.hetzner.cloud/location: "hel1"
       load-balancer.hetzner.cloud/use-private-ip: "true"
+      load-balancer.hetzner.cloud/disable-private-ingress: "true"
       load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
       load-balancer.hetzner.cloud/hostname: "lb.spacemule.net"
     labels: {}
