@@ -77,7 +77,7 @@ spec:
                 secretKeyRef:
                   name: hcloud
                   key: token
-#            - name: "HCLOUD_LOAD_BALANCERS_LOCATION"
-#              value: hel1
-#            - name: "HCLOUD_LOAD_BALANCERS_USE_PRIVATE_IP"
-#              value: "true"
+            - name: "HCLOUD_LOAD_BALANCERS_LOCATION"
+              value: hel1
+            - name: "HCLOUD_LOAD_BALANCERS_USE_PRIVATE_IP"
+              value: "true"

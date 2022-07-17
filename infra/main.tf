@@ -159,6 +159,10 @@ resource "hcloud_server" "control-plane" {
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index].rendered
 #  firewall_ids       = [hcloud_firewall.k8s-control.id, hcloud_firewall.default.id]
+  labels = {
+    "job" : "k8s"
+    "type" : "master"
+  }
 
   public_net {
     ipv4_enabled = true
@@ -180,6 +184,10 @@ resource "hcloud_server" "standard-worker" {
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count].rendered
 #  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
+  labels = {
+    "job": "k8s"
+    "type": "worker"
+  }
 
   public_net {
     ipv4_enabled = true
@@ -201,6 +209,10 @@ resource "hcloud_server" "big-worker" {
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count + var.standard_worker_count].rendered
   #  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
+  labels = {
+    "job": "k8s"
+    "type": "worker"
+  }
 
   public_net {
     ipv4_enabled = true

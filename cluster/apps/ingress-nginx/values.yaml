@@ -451,7 +451,12 @@ controller:
     ##
     appProtocol: true
 
-    annotations: {}
+    annotations:
+      load-balancer.hetzner.cloud/name: "kubelb"
+      load-balancer.hetzner.cloud/location: "hel1"
+      load-balancer.hetzner.cloud/use-private-ip: "true"
+      load-balancer.hetzner.cloud/uses-proxyprotocol: "true"
+      load-balancer.hetzner.cloud/hostname: "lb.spacemule.net"
     labels: {}
     # clusterIP: ""
 
