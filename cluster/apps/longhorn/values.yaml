@@ -126,13 +126,17 @@ privateRegistry:
 
 longhornManager:
   priorityClass: ~
-  tolerations: []
+  tolerations:
   ## If you want to set tolerations for Longhorn Manager DaemonSet, delete the `[]` in the line above
   ## and uncomment this example block
-  # - key: "key"
-  #   operator: "Equal"
-  #   value: "value"
-  #   effect: "NoSchedule"
+   - key: "node-role.kubernetes.io/control-plane"
+     operator: "Equal"
+     value: "value"
+     effect: "NoSchedule"
+   - key: "node-role.kubernetes.io/master"
+       operator: "Equal"
+       value: "value"
+       effect: "NoSchedule"
   nodeSelector: {}
   ## If you want to set node selector for Longhorn Manager DaemonSet, delete the `{}` in the line above
   ## and uncomment this example block
