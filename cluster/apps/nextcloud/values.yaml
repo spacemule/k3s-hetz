@@ -430,8 +430,8 @@ startupProbe:
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 ##
 hpa:
-  enabled: false
-  cputhreshold: 20
+  enabled: true
+  cputhreshold: 40
   minPods: 2
   maxPods: 5
 
