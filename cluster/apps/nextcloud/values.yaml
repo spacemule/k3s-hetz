@@ -3,7 +3,7 @@
 ##
 image:
   repository: nextcloud
-  flavor: fpm
+  flavor: apache
   # If unset, uses flavor + .Chart.AppVersion to create tag
   # tag:
   pullPolicy: IfNotPresent
@@ -105,7 +105,6 @@ nextcloud:
   # Will be injected in /usr/local/etc/php/conf.d for apache image and in /usr/local/etc/php-fpm.d when nginx.enabled: true
   phpConfigs:
     redis-session.ini: |-
-      [Session]
       session.save_handler = redis
       session.save_path = "tcp://10.15.1.2:6379"
       redis.session.locking_enabled = 1
@@ -207,7 +206,7 @@ nextcloud:
 
 nginx:
   ## You need to set an fpm version of the image for nextcloud if you want to use nginx!
-  enabled: true
+  enabled: false
   image:
     repository: nginx
     tag: mainline
@@ -313,7 +312,7 @@ cronjob:
   # Nexcloud image is used as default but only curl is needed
   image:
      repository: nextcloud
-     tag: fpm
+     tag: apache
      pullPolicy: IfNotPresent
     # pullSecrets:
   #   - myRegistrKeySecretName
