@@ -307,7 +307,7 @@ redis:
 ## ref: https://docs.nextcloud.com/server/latest/admin_manual/configuration_server/background_jobs_configuration.html#webcron
 ##
 cronjob:
-  enabled: false
+  enabled: true
   # Nexcloud image is used as default but only curl is needed
   image:
      repository: nextcloud
@@ -429,7 +429,7 @@ startupProbe:
 ## ref: https://kubernetes.io/docs/tasks/run-application/horizontal-pod-autoscale/
 ##
 hpa:
-  enabled: false
+  enabled: true
   cputhreshold: 40
   minPods: 3
   maxPods: 6
