@@ -30,9 +30,6 @@ apps:
     path: charts/kured
     repoURL: https://github.com/weaveworks/kured.git
     namespace: kube-system
-    setParams:
-      - name: configuration.rebootSentinel
-        value: /var/run/reboot-needed
 
   - name: longhorn
     path: cluster/apps/longhorn
