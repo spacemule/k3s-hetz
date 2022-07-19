@@ -15,11 +15,6 @@ apps:
     namespace: nextcloud
     valueFiles: values.yaml
 
-  - name: kube-prometheus
-    path: cluster/apps/kube-prometheus
-    namespace: monitoring
-    valueFiles: values.yaml
-
   - name: loki-stack
     path: charts/loki-stack
     targetRevision: loki-stack-2.6.5
@@ -29,7 +24,9 @@ apps:
       - name: grafana.enabled
         value: true
       - name: prometheus.enabled
-        value: false
+        value: true
+      - name: prometheus.isDefault
+        value: true
 
   - name: kured
     path: charts/kured
