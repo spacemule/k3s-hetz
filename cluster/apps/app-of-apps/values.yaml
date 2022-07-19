@@ -22,9 +22,9 @@ apps:
     namespace: monitoring
     setParams:
       - name: grafana.enabled
-        value: false
-      - name: prometheus.enabled
         value: true
+      - name: prometheus.enabled
+        value: false
 
   - name: kured
     path: charts/kured
