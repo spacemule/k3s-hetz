@@ -1,11 +1,5 @@
 apps:
 
-  - name: k8s-metrics
-    path: charts/metrics-server
-    repoURL: https://github.com/kubernetes-sigs/metrics-server
-    targetRevision: metrics-server-helm-chart-3.8.2
-    namespace: kube-system
-
   - name: hetzner-ccm
     path: cluster/apps/hetzner-ccm
     targetRevision: main
