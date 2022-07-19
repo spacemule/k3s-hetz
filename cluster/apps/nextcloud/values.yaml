@@ -217,7 +217,13 @@ nginx:
     # custom: |-
     #     worker_processes  1;..
 
-  resources: {}
+  resources:
+    limits:
+      cpu: "200m"
+      memory: "256Mi"
+    requests:
+      cpu: "200m"
+      memory: "256Mi"
 
 internalDatabase:
   enabled: false
