@@ -22,7 +22,7 @@ apps:
     namespace: monitoring
     setParams:
       - name: grafana.enabled
-        value: true
+        value: false
       - name: prometheus.enabled
         value: true
 
