@@ -393,11 +393,11 @@ resources:
   # resources, such as Minikube. If you do want to specify resources, uncomment the following
   # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
   limits:
-    cpu: "500m"
-    memory: "768Mi"
+    cpu: 500m
+    memory: 768Mi
   requests:
-    cpu: "500m"
-    memory: "768Mi"
+    cpu: 500m
+    memory: 768Mi
 
 ## Liveness and readiness probe values
 ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
