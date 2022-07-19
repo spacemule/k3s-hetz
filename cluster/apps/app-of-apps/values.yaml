@@ -18,7 +18,7 @@ apps:
   - name: kube-prometheus
     path: cluster/apps/kube-prometheus
     namespace: monitoring
-    valueFiles values.yaml
+    valueFiles: values.yaml
 
   - name: loki-stack
     path: charts/loki-stack
