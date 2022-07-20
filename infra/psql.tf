@@ -11,7 +11,7 @@ resource "hcloud_server" "postgres" {
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
 #  user_data          = data.cloudinit_config.postgres-init.rendered
   user_data          = data.cloudinit_config.redis-init.rendered
-  firewall_ids       = [hcloud_firewall.default.id]
+  firewall_ids       = []
 
   public_net {
     ipv4_enabled = false

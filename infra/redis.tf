@@ -6,10 +6,11 @@ resource "hcloud_server" "redis" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.redis-init.rendered
-  firewall_ids       = [hcloud_firewall.default.id]
+#  firewall_ids       = [hcloud_firewall.default.id]
+  firewall_ids       = []
 
   public_net {
-    ipv4_enabled = true
+    ipv4_enabled = false
     ipv6_enabled = false
   }
 

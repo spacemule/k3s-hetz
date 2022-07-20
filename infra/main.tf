@@ -7,10 +7,6 @@ locals {
   ]
 }
 
-#data "hcloud_image" "k3-base" {
-#  with_selector = "app=k3s"
-#}
-
 data "hcloud_image" "microOS" {
   with_selector = "type=base"
 }
@@ -158,7 +154,7 @@ resource "hcloud_server" "control-plane" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index].rendered
-#  firewall_ids       = [hcloud_firewall.k8s-control.id, hcloud_firewall.default.id]
+  firewall_ids       = []
   labels = {
     "job" : "k8s"
     "type" : "master"
@@ -183,15 +179,15 @@ resource "hcloud_server" "standard-worker" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count].rendered
-#  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
+  firewall_ids       = []
   labels = {
     "job": "k8s"
     "type": "worker"
   }
 
   public_net {
-    ipv4_enabled = true
-    ipv6_enabled = false
+    ipv4_enabled = false
+    ipv6_enabled = true
   }
 
   depends_on = [
@@ -208,15 +204,15 @@ resource "hcloud_server" "big-worker" {
   location           = "hel1"
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count + var.standard_worker_count].rendered
-  #  firewall_ids       = [hcloud_firewall.k8s-wall-of-china.id, hcloud_firewall.default.id]
+  firewall_ids       = []
   labels = {
     "job": "k8s"
     "type": "worker"
   }
 
   public_net {
-    ipv4_enabled = true
-    ipv6_enabled = false
+    ipv4_enabled = false
+    ipv6_enabled = true
   }
 
   depends_on = [
