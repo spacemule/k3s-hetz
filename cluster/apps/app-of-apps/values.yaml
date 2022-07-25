@@ -32,6 +32,10 @@ apps:
     path: charts/kured
     repoURL: https://github.com/weaveworks/kured.git
     namespace: kube-system
+    targetRevision: 1.10.1
+    setParams:
+      - name: configuration.lockTtl
+        value: 300
 
   - name: longhorn
     path: cluster/apps/longhorn
