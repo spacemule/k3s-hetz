@@ -35,7 +35,7 @@ apps:
     targetRevision: 1.10.1
     setParams:
       - name: configuration.lockTtl
-        value: 300
+        value: 20m
 
   - name: longhorn
     path: cluster/apps/longhorn
