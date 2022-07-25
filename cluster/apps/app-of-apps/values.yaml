@@ -5,10 +5,10 @@ apps:
     targetRevision: main
     namespace: kube-system
 
-#  - name: hetzner-csi
-#    path: cluster/apps/hetzner-csi
-#    targetRevision: main
-#    namespace: kube-system
+  - name: hetzner-csi
+    path: cluster/apps/hetzner-csi
+    targetRevision: main
+    namespace: kube-system
 
   - name: nextcloud
     path: cluster/apps/nextcloud
