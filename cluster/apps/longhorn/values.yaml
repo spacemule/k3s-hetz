@@ -56,8 +56,8 @@ service:
 persistence:
   defaultClass: true
   defaultFsType: ext4
-  defaultClassReplicaCount: 3
-  defaultDataLocality: disabled # best-effort otherwise
+  defaultClassReplicaCount: 2
+  defaultDataLocality: best-effort # best-effort otherwise
   reclaimPolicy: Delete
   migratable: false
   recurringJobSelector:
@@ -78,8 +78,8 @@ csi:
   snapshotterReplicaCount: ~
 
 defaultSettings:
-  backupTarget: ~
-  backupTargetCredentialSecret: ~
+  backupTarget: s3://k3s-hetz@us-west-001/
+  backupTargetCredentialSecret: b2-auth
   allowRecurringJobWhileVolumeDetached: ~
   createDefaultDiskLabeledNodes: ~
   defaultDataPath: ~
