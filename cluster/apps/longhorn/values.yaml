@@ -78,7 +78,7 @@ csi:
   snapshotterReplicaCount: ~
 
 defaultSettings:
-  backupTarget: s3://k3s-hetz@us-west-001/
+  backupTarget: s3://k3s-hetz@us-west-000/
   backupTargetCredentialSecret: b2-auth
   allowRecurringJobWhileVolumeDetached: ~
   createDefaultDiskLabeledNodes: ~
