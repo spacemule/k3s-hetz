@@ -74,9 +74,9 @@ metadata:
   name: kured            # Must match `--ds-name`
   namespace: kube-system # Must match `--ds-namespace`
 spec:
-#  selector:
-#    matchLabels:
-#      name: kured
+  selector:
+    matchLabels:
+      name: kured
   updateStrategy:
    type: RollingUpdate
   template:
