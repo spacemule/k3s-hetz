@@ -28,14 +28,18 @@ apps:
       - name: prometheus.isDefault
         value: true
 
+#  - name: kured
+#    path: charts/kured
+#    repoURL: https://github.com/weaveworks/kured.git
+#    namespace: kube-system
+#    targetRevision: 1.10.1
+#    setParams:
+#      - name: configuration.lockTtl
+#        value: 20m
+
   - name: kured
-    path: charts/kured
-    repoURL: https://github.com/weaveworks/kured.git
+    path: cluster/apps/kured
     namespace: kube-system
-    targetRevision: 1.10.1
-    setParams:
-      - name: configuration.lockTtl
-        value: 20m
 
   - name: longhorn
     path: cluster/apps/longhorn
