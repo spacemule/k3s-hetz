@@ -74,9 +74,9 @@ metadata:
   name: kured            # Must match `--ds-name`
   namespace: kube-system # Must match `--ds-namespace`
 spec:
-  selector:
-    matchLabels:
-      name: kured
+#  selector:
+#    matchLabels:
+#      name: kured
   updateStrategy:
    type: RollingUpdate
   template:
@@ -114,8 +114,8 @@ spec:
 #            - --skip-wait-for-delete-timeout=0
 #            - --drain-timeout=0
 #            - --period=1h
-#            - --ds-namespace=kube-system
-#            - --ds-name=kured
+            - --ds-namespace=kube-system
+            - --ds-name=kured
 #            - --lock-annotation=weave.works/kured-node-lock
 #            - --lock-ttl=0
 #            - --prometheus-url=http://prometheus.monitoring.svc.cluster.local
