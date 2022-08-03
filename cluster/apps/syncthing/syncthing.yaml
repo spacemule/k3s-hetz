@@ -21,8 +21,8 @@ spec:
     name: syncthing
     securityContext:
       capabilities: {}
-      runAsGroup: 1005
-      runAsUser: 1005
+      runAsGroup: 1000
+      runAsUser: 1000
     stdin: true
     tty: true
     volumeMounts:
