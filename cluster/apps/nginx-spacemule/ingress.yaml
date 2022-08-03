@@ -3,6 +3,7 @@ kind: Ingress
 metadata:
   name: nginx-spacemule-ingress
 spec:
+  ingressClassName: nginx
   tls:
   - hosts:
     - spacemule.net
