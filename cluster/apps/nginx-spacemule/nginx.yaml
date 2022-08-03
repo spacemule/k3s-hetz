@@ -1,0 +1,26 @@
+---
+apiVersion: v1
+kind: Pod
+metadata:
+  namespace: nginx-static
+  creationTimestamp: "2022-08-03T19:24:46Z"
+  labels:
+    app: nginx-spacemule
+  name: nginx-spacemule
+spec:
+  containers:
+  - image: nginx:stable
+    name: nginx
+    securityContext:
+      capabilities: {}
+    stdin: true
+    tty: true
+    volumeMounts:
+      - name: nginx-spacemule-mount
+        mountPath: /usr/share/html
+    ports:
+      - containerPort: 80
+  volumes:
+  - name: nginx-spacemule-mount
+    persistentVolumeClaim:
+      claimName: nginx-spacemule-pvc
