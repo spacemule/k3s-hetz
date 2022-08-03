@@ -25,6 +25,7 @@ data:
         }
         location / {
                 try_files $uri $uri/index.html;
+                index index.html;
                 autoindex off;
           }
       }
