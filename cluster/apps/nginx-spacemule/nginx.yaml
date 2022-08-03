@@ -1,36 +1,44 @@
 ---
-apiVersion: v1
-kind: Pod
+apiVersion: apps/v1
+kind: Deployment
 metadata:
-  namespace: nginx-static
-  creationTimestamp: "2022-08-03T19:24:46Z"
+  namespace: syncthing
+  name: nginx-spacemule-deployment
   labels:
     app: nginx-spacemule
-  name: nginx-spacemule
 spec:
-  containers:
-  - image: nginx:stable
-    name: nginx
-    securityContext:
-      capabilities: {}
-    stdin: true
-    tty: true
-    volumeMounts:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: nginx-spacemule
+  template:
+    metadata:
+      labels:
+        app: nginx-spacemule
+    spec:
+      containers:
+      - image: nginx:stable
+        name: nginx
+        securityContext:
+          capabilities: {}
+        stdin: true
+        tty: true
+        volumeMounts:
+          - name: nginx-spacemule-mount
+            mountPath: /usr/share/html
+          - name: nginx-conf
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+            readOnly: true
+        ports:
+          - containerPort: 80
+      volumes:
       - name: nginx-spacemule-mount
-        mountPath: /usr/share/html
+        persistentVolumeClaim:
+          claimName: nginx-spacemule-pvc
       - name: nginx-conf
-        mountPath: /etc/nginx/nginx.conf
-        subPath: nginx.conf
-        readOnly: true
-    ports:
-      - containerPort: 80
-  volumes:
-  - name: nginx-spacemule-mount
-    persistentVolumeClaim:
-      claimName: nginx-spacemule-pvc
-  - name: nginx-conf
-    configMap:
-      name: nginx-conf
-      items:
-        - key: nginx.conf
-          path: nginx.conf
+        configMap:
+          name: nginx-conf
+          items:
+            - key: nginx.conf
+              path: nginx.conf
