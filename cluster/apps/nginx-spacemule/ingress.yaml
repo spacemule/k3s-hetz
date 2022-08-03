@@ -18,7 +18,7 @@ spec:
           service:
             name: nginx-spacemule-service
             port:
-              number: 80
+              number: 8081
   - host: www.spacemule.net
     http:
       paths:
@@ -28,4 +28,4 @@ spec:
             service:
               name: nginx-spacemule-service
               port:
-                number: 80
+                number: 8081
