@@ -11,8 +11,10 @@ data:
     }
     http {
       server {
-          listen       80;
+          listen       80 default_server;
+          server_name _;
           server_name  spacemule.net;
+          
           root /usr/share/html/spacemule;
     
         location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf)$ {
