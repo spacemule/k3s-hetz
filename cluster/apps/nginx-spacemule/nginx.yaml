@@ -32,6 +32,7 @@ spec:
             readOnly: true
         ports:
           - containerPort: 80
+            name: nginx-http
       volumes:
       - name: nginx-spacemule-mount
         persistentVolumeClaim:

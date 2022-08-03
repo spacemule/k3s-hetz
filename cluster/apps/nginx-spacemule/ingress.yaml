@@ -1,0 +1,31 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-spacemule-ingress
+spec:
+  tls:
+  - hosts:
+    - spacemule.net
+    - www.spacemule.net
+    secretName: spacemule-secret
+  rules:
+  - host: spacemule.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-spacemule-service
+            port:
+              number: 80
+  - host: www.spacemule.net
+    http:
+      paths:
+        - path: /
+          pathType: Prefix
+          backend:
+            service:
+              name: nginx-spacemule-service
+              port:
+                number: 80
