@@ -16,6 +16,8 @@ metadata:
     app: syncthing-pod
   name: syncthing-pod
 spec:
+  securityContext:
+    fsGroup: 1000
   containers:
   - image: docker.io/syncthing/syncthing:latest
     name: syncthing
@@ -23,7 +25,6 @@ spec:
       capabilities: {}
       runAsGroup: 1000
       runAsUser: 1000
-      fsGroup: 1000
     stdin: true
     tty: true
     volumeMounts:
