@@ -68,3 +68,7 @@ apps:
 
   - name: nginx-ingress
     path: cluster/apps/ingress-nginx
+
+  - name: syncthing
+    namespace: syncthing
+    path: cluster/apps/syncthing
