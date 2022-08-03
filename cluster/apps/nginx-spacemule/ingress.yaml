@@ -2,12 +2,15 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx-spacemule-ingress
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: nginx
   tls:
   - hosts:
     - spacemule.net
     - www.spacemule.net
+    secretName: spacemule-net-secret
   rules:
   - host: spacemule.net
     http:
