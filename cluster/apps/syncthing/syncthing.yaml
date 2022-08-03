@@ -8,36 +8,39 @@
 # has the right permissions to access the volumes added.
 ---
 apiVersion: v1
-kind: Pod
+kind: Deployment
 metadata:
   namespace: syncthing
   creationTimestamp: "2022-08-03T19:24:46Z"
-  labels:
-    app: syncthing-pod
-  name: syncthing-pod
+  name: syncthing-deployment
 spec:
-  securityContext:
-    fsGroup: 1000
-  containers:
-  - image: docker.io/syncthing/syncthing:latest
-    name: syncthing
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: syncthing
     securityContext:
-      capabilities: {}
-      runAsGroup: 1000
-      runAsUser: 1000
-    stdin: true
-    tty: true
-    volumeMounts:
-      - name: syncthing-mount
-        mountPath: /var/syncthing
-    ports:
-      - containerPort: 8384
-      - containerPort: 22000
-      - containerPort: 22000
-        protocol: UDP
-      - containerPort: 22017
-        protocol: UDP
-  volumes:
-  - name: syncthing-mount
-    persistentVolumeClaim:
-      claimName: syncthing-pvc
+      fsGroup: 1000
+    containers:
+    - image: docker.io/syncthing/syncthing:latest
+      name: syncthing
+      securityContext:
+        capabilities: {}
+        runAsGroup: 1000
+        runAsUser: 1000
+      stdin: true
+      tty: true
+      volumeMounts:
+        - name: syncthing-mount
+          mountPath: /var/syncthing
+      ports:
+        - containerPort: 8384
+        - containerPort: 22000
+        - containerPort: 22000
+          protocol: UDP
+        - containerPort: 22017
+          protocol: UDP
+    volumes:
+    - name: syncthing-mount
+      persistentVolumeClaim:
+        claimName: syncthing-pvc
