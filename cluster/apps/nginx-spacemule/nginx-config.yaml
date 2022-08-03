@@ -163,7 +163,7 @@ data:
             server_name _;
             server_name  spacemule.net;
             
-            root /usr/share/html/spacemule;
+            root /usr/share/nginx/html/spacemule;
       
           location ~* \.(js|css|png|jpg|jpeg|gif|svg|ico|woff|woff2|ttf)$ {
                   try_files $uri $uri/index.html;
