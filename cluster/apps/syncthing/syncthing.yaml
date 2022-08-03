@@ -7,11 +7,10 @@
 # enabled system, check the podman generate kube man page for steps to follow to ensure that your pod/container
 # has the right permissions to access the volumes added.
 ---
-apiVersion: v1
+apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: syncthing
-  creationTimestamp: "2022-08-03T19:24:46Z"
   name: syncthing-deployment
   labels:
     app: syncthing
