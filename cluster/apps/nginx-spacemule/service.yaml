@@ -4,7 +4,6 @@ metadata:
   name: nginx-spacemule-service
 spec:
   type: ClusterIP
-  port: 80
   selector:
     app: nginx-spacemule
   ports:
