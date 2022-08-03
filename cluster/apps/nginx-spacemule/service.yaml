@@ -4,7 +4,7 @@ metadata:
   name: nginx-spacemule-service
 spec:
   selector:
-    app.kubernetes.io/name: nginx-spacemule
+    app: nginx-spacemule
   ports:
     - name: nginx-spacemule-service
       protocol: TCP
