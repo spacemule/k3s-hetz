@@ -2,7 +2,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  namespace: syncthing
+  namespace: nginx-static
   name: nginx-spacemule-deployment
   labels:
     app: nginx-spacemule
