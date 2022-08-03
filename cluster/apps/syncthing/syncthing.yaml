@@ -23,6 +23,7 @@ spec:
       capabilities: {}
       runAsGroup: 1000
       runAsUser: 1000
+      fsGroup: 1000
     stdin: true
     tty: true
     volumeMounts:
