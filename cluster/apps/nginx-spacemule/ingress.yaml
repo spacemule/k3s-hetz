@@ -8,7 +8,6 @@ spec:
   - hosts:
     - spacemule.net
     - www.spacemule.net
-    secretName: spacemule-secret
   rules:
   - host: spacemule.net
     http:
