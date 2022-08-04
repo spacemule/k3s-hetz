@@ -26,7 +26,7 @@ spec:
         volumeMounts:
           - name: nginx-zahava-mount
             mountPath: /usr/share/nginx/html
-          - name: nginx-conf
+          - name: nginx-conf-zahava
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
             readOnly: true
@@ -37,9 +37,9 @@ spec:
       - name: nginx-zahava-mount
         persistentVolumeClaim:
           claimName: nginx-zahava-pvc
-      - name: nginx-conf
+      - name: nginx-conf-zahava
         configMap:
-          name: nginx-conf
+          name: nginx-conf-zahava
           items:
             - key: nginx.conf
               path: nginx.conf

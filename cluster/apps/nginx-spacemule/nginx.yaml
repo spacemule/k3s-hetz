@@ -26,7 +26,7 @@ spec:
         volumeMounts:
           - name: nginx-spacemule-mount
             mountPath: /usr/share/nginx/html
-          - name: nginx-conf
+          - name: nginx-conf-spacemule
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
             readOnly: true
@@ -37,9 +37,9 @@ spec:
       - name: nginx-spacemule-mount
         persistentVolumeClaim:
           claimName: nginx-spacemule-pvc
-      - name: nginx-conf
+      - name: nginx-conf-spacemule
         configMap:
-          name: nginx-conf
+          name: nginx-conf-spacemule
           items:
             - key: nginx.conf
               path: nginx.conf
