@@ -23,6 +23,8 @@ spec:
         - name: DISABLE_GOOGLE_CHROME
           value: "1"
         image: docker.io/thecodingmachine/gotenberg:6
+        ports:
+        - containerPort: 3000
         name: gotenberg
         resources:
           requests:
@@ -42,6 +44,8 @@ spec:
             memory: "256Mi"
             cpu: "500m"
         name: tika
+        ports:
+        - containerPort: 9998
         securityContext:
           capabilities: {}
       - args:
