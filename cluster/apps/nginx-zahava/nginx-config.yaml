@@ -160,8 +160,8 @@ data:
     
     server {
             listen       80 default_server;
-            server_name _;
-            server_name  zahava.net;
+            server_name  www.zahava-is-cool.com;
+            server_name  zahava-is-cool.com;
             
             root /usr/share/nginx/html/zahava;
       

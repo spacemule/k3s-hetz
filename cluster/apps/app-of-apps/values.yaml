@@ -76,3 +76,7 @@ apps:
   - name: nginx-spacemule
     path: cluster/apps/nginx-spacemule
     namespace: nginx-static
+
+  - name: nginx-zahava
+    path: cluster/apps/nginx-zahava
+    namespace: nginx-static
