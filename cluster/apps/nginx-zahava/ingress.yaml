@@ -12,7 +12,7 @@ spec:
     - www.zahava-is-cool.com
     secretName: zahava-secret
   rules:
-  - host: zahava.net
+  - host: zahava-is-cool.com
     http:
       paths:
       - path: /
@@ -22,7 +22,7 @@ spec:
             name: nginx-zahava-service
             port:
               number: 8081
-  - host: www.zahava.net
+  - host: www.zahava-is-cool.com
     http:
       paths:
         - path: /
