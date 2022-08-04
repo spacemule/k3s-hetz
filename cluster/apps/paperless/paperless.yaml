@@ -17,13 +17,6 @@ spec:
         app: paperless
     spec:
       containers:
-      resources:
-        requests:
-          memory: "512Mi"
-          cpu: "1000m"
-        limits:
-          memory: "512Mi"
-          cpu: "1000m"
       - args:
         - gotenberg
         env:
@@ -31,8 +24,13 @@ spec:
           value: "1"
         image: docker.io/thecodingmachine/gotenberg:6
         name: gotenberg
-        resources: {}
-        securityContext:
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "1000m"
+        limits:
+          memory: "512Mi"
+          cpu: "1000m"        securityContext:
           capabilities: {}
       - image: docker.io/apache/tika:latest
         resources:
@@ -43,7 +41,6 @@ spec:
             memory: "256Mi"
             cpu: "500m"
         name: tika
-        resources: {}
         securityContext:
           capabilities: {}
       - args:
@@ -96,7 +93,6 @@ spec:
           value: /data/static
         image: ghcr.io/paperless-ngx/paperless-ngx:latest
         name: paperless-ng
-        resources: {}
         securityContext:
           capabilities: {}
         volumeMounts:

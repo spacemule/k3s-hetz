@@ -21,18 +21,18 @@ resource "helm_release" "argocd" {
   cleanup_on_fail  = true
 
   set {
-    name = "externalRedis.host"
+    name  = "externalRedis.host"
     value = module.k3s.redis_ip
   }
 
   set {
-    name = "redis.enabled"
+    name  = "redis.enabled"
     value = "false"
   }
 
   set {
-    name: "controller.replicas"
-    value: 2
+    name  = "controller.replicas"
+    value = 2
   }
 }
 
