@@ -96,8 +96,8 @@ spec:
           value: /data/trash
         - name: PAPERLESS_MEDIA_ROOT
           value: /data/media
-        - name: PAPERLESS_STATICDIR
-          value: /data/static
+#        - name: PAPERLESS_STATICDIR
+#          value: /data/static
         - name: PAPERLESS_CONSUMPTION_DIR
           value: /consume
         image: ghcr.io/paperless-ngx/paperless-ngx:latest
