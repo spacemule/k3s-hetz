@@ -16,6 +16,8 @@ spec:
       labels:
         app: paperless
     spec:
+      securityContext:
+        fsGroup: 1000
       containers:
       - args:
         - gotenberg
