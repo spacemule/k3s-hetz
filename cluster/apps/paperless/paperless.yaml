@@ -65,6 +65,14 @@ spec:
               name: paperless-secret
               key: paperless-db-pass
               optional: false
+        - name: PAPERLESS_DATA_DIR
+          value: /data/data
+        - name: PAPERLESS_TRASH_DIR
+          value: /data/trash
+        - name: PAPERLESS_MEDIA_ROOT
+          value: /data/media
+        - name: PAPERLESS_STATICDIR
+          value: /data/static
         image: ghcr.io/paperless-ngx/paperless-ngx:latest
         name: paperless-ng
         resources: {}
@@ -72,7 +80,7 @@ spec:
           capabilities: {}
         volumeMounts:
         - name: paperless-mount
-          mountPath: /usr/src/paperless
+          mountPath: /data
       restartPolicy: Always
       volumes:
       - name: paperless-mount
