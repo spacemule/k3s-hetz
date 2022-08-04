@@ -94,8 +94,6 @@ spec:
               optional: false
         - name: PAPERLESS_TRASH_DIR
           value: /usr/src/paperless/trash
-        - name: PAPERLESS_CONSUMPTION_DIR
-          value: /consume
         image: ghcr.io/paperless-ngx/paperless-ngx:latest
         name: paperless-ng
         securityContext:
