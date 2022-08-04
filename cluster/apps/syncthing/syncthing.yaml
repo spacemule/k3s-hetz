@@ -29,6 +29,9 @@ spec:
       containers:
       - image: docker.io/syncthing/syncthing:latest
         name: syncthing
+        env:
+        - name: STGUIADDRESS
+          value: "0.0.0.0"
         securityContext:
           capabilities: {}
           runAsGroup: 1000
