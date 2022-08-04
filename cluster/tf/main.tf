@@ -40,6 +40,11 @@ resource "helm_release" "argocd" {
     value = 2
   }
 
+  set {
+    name  = "server.extraArgs[0]"
+    value = "--insecure"
+  }
+
 }
 
 locals {

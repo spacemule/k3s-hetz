@@ -63,7 +63,7 @@ spec:
             cpu: "1000m"
         env:
         - name: PAPERLESS_WEBSERVER_WORKERS
-          value: 4
+          value: "4"
         - name: PAPERLESS_CONSUMER_RECURSIVE
           value: "true"
         - name: PAPERLESS_REDIS
