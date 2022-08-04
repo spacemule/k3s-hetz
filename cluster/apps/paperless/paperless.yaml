@@ -60,10 +60,11 @@ spec:
               key: paperless-key
               optional: false
         - name: PAPERLESS_DB_PASS
-          secretKeyRef:
-            name: paperless-secret
-            key: paperless-db-pass
-            optional: false
+          valueFrom:
+            secretKeyRef:
+              name: paperless-secret
+              key: paperless-db-pass
+              optional: false
         image: ghcr.io/paperless-ngx/paperless-ngx:latest
         name: paperless-ng
         resources: {}
