@@ -24,13 +24,14 @@ spec:
           value: "1"
         image: docker.io/thecodingmachine/gotenberg:6
         name: gotenberg
-      resources:
-        requests:
-          memory: "512Mi"
-          cpu: "1000m"
-        limits:
-          memory: "512Mi"
-          cpu: "1000m"        securityContext:
+        resources:
+          requests:
+            memory: "512Mi"
+            cpu: "1000m"
+          limits:
+            memory: "512Mi"
+            cpu: "1000m"
+        securityContext:
           capabilities: {}
       - image: docker.io/apache/tika:latest
         resources:
