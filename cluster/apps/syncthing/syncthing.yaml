@@ -40,6 +40,7 @@ spec:
             mountPath: /var/syncthing
         ports:
           - containerPort: 8384
+            name: syncthing-gui
           - containerPort: 22000
           - containerPort: 22000
             protocol: UDP
