@@ -34,6 +34,11 @@ resource "helm_release" "argocd" {
     name  = "controller.replicas"
     value = 2
   }
+
+  set {
+    name  = "server.replicas"
+    value = 2
+  }
 }
 
 locals {
