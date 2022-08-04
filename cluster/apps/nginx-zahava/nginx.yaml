@@ -3,18 +3,18 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: nginx-static
-  name: nginx-spacemule-deployment
+  name: nginx-zahava-deployment
   labels:
-    app: nginx-spacemule
+    app: nginx-zahava
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: nginx-spacemule
+      app: nginx-zahava
   template:
     metadata:
       labels:
-        app: nginx-spacemule
+        app: nginx-zahava
     spec:
       containers:
       - image: nginx:stable
@@ -24,8 +24,8 @@ spec:
         stdin: true
         tty: true
         volumeMounts:
-          - name: nginx-spacemule-mount
-            mountPath: /usr/share/nginx/html
+          - name: nginx-zahava-mount
+            mountPath: /usr/share/html
           - name: nginx-conf
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
@@ -34,9 +34,9 @@ spec:
           - containerPort: 80
             name: nginx-http
       volumes:
-      - name: nginx-spacemule-mount
+      - name: nginx-zahava-mount
         persistentVolumeClaim:
-          claimName: nginx-spacemule-pvc
+          claimName: nginx-zahava-pvc
       - name: nginx-conf
         configMap:
           name: nginx-conf
