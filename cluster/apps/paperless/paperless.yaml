@@ -92,6 +92,8 @@ spec:
           value: /data/media
         - name: PAPERLESS_STATICDIR
           value: /data/static
+        - name: PAPERLESS_CONSUMPTION_DIR
+          value: /data/consume
         image: ghcr.io/paperless-ngx/paperless-ngx:latest
         name: paperless-ng
         securityContext:
