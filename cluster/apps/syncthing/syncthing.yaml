@@ -45,10 +45,13 @@ spec:
           - containerPort: 8384
             name: syncthing-gui
           - containerPort: 22000
+            name: syncthing-tcp
           - containerPort: 22000
             protocol: UDP
+            name: syncthing-udp
           - containerPort: 22017
             protocol: UDP
+            name: syncthing-data
       volumes:
       - name: syncthing-mount
         persistentVolumeClaim:
