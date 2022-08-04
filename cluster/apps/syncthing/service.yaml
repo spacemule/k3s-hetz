@@ -3,12 +3,11 @@ kind: Service
 metadata:
   name: syncthing-service
 spec:
-  type: ExternalName
-  externalName: sync.spacemule.net
+  type: ClusterIP
   selector:
     app: syncthing
   ports:
-    - name: syncthing-gui-service
+    - name: syncthing-service
       protocol: TCP
       port: 8080
       targetPort: syncthing-gui
