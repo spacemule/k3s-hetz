@@ -40,10 +40,6 @@ resource "helm_release" "argocd" {
     value = 2
   }
 
-  set {
-    name  = "server.containerPort"
-    value = 8081
-  }
 }
 
 locals {
