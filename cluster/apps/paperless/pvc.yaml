@@ -1,7 +1,8 @@
+---
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-pvc
+  name: paperless-data-pvc
   namespace: paperless
 spec:
   accessModes:
@@ -9,4 +10,17 @@ spec:
   storageClassName: longhorn
   resources:
     requests:
-      storage: 5Gi
+      storage: 500Mi
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: paperless-media-pvc
+  namespace: paperless
+spec:
+  accessModes:
+    - ReadWriteMany
+  storageClassName: longhorn
+  resources:
+    requests:
+      storage: 10Gi

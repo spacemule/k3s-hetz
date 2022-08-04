@@ -92,14 +92,8 @@ spec:
               name: paperless-secret
               key: paperless-db-pass
               optional: false
-        - name: PAPERLESS_DATA_DIR
-          value: /data/data
         - name: PAPERLESS_TRASH_DIR
-          value: /data/trash
-        - name: PAPERLESS_MEDIA_ROOT
-          value: /data/media
-#        - name: PAPERLESS_STATICDIR
-#          value: /data/static
+          value: /usr/src/paperless/trash
         - name: PAPERLESS_CONSUMPTION_DIR
           value: /consume
         image: ghcr.io/paperless-ngx/paperless-ngx:latest
@@ -107,14 +101,23 @@ spec:
         securityContext:
           capabilities: {}
         volumeMounts:
-        - name: paperless-mount
-          mountPath: /data
+        - name: paperless-data-mount
+          mountPath: /usr/src/paperless/data
+        - name: paperless-media-mount
+          mountPath: /usr/src/paperless/media
         - name: consumption
-          mountPath: /consume
+          mountPath: /usr/src/paperless/consume
+        - name: trash
+          mountPath: /usr/src/paperless/trash
       restartPolicy: Always
       volumes:
-      - name: paperless-mount
+      - name: paperless-data-mount
         persistentVolumeClaim:
-          claimName: paperless-pvc
+          claimName: paperless-data-pvc
+      - name: paperless-media-mount
+        persistentVolumeClaim:
+          claimName: paperless-media-pvc
       - name: consumption
+        emptyDir: {}
+      - name: trash
         emptyDir: {}
