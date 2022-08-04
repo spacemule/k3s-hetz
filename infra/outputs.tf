@@ -11,9 +11,9 @@ output "big_worker_ips" {
 }
 
 output "postgres_ip" {
-  value = hcloud_server.postgres.ipv4_address
+  value = hcloud_server_network.postgres-ip.ip
 }
 
 output "redis_ip" {
-  value = hcloud_server.redis.ipv4_address
+  value = hcloud_server_network.redis-ip.ip
 }

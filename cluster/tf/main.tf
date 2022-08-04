@@ -19,6 +19,16 @@ resource "helm_release" "argocd" {
   namespace        = "argocd"
   create_namespace = true
   cleanup_on_fail  = true
+
+  set {
+    name = "externalRedis.host"
+    value = module.k3s.redis_ip
+  }
+
+  set {
+    name = "redis.enabled"
+    value = "false"
+  }
 }
 
 locals {
