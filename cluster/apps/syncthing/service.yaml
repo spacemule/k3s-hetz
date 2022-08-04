@@ -9,5 +9,5 @@ spec:
   ports:
     - name: syncthing-service
       protocol: TCP
-      port: 8080
+      port: 8384
       targetPort: syncthing-gui
