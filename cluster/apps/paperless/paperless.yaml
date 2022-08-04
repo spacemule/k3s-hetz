@@ -46,6 +46,8 @@ spec:
           capabilities: {}
       - args:
         - /usr/local/bin/paperless_cmd.sh
+        ports:
+        - containerPort: 8000
         resources:
           requests:
             memory: "768Mi"
