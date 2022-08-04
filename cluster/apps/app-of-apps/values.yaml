@@ -84,3 +84,6 @@ apps:
   - name: paperless
     path: cluster/apps/paperless
     namespace: paperless
+
+  - name: ingress
+    path: cluster/apps/ingress
