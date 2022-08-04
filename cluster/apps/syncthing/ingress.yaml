@@ -20,4 +20,4 @@ spec:
           service:
             name: syncthing-service
             port:
-              number: 8384
+              number: 8081
