@@ -50,72 +50,72 @@ spec:
         - containerPort: 9998
         securityContext:
           capabilities: {}
-      - args:
-        - /usr/local/bin/paperless_cmd.sh
-        ports:
-        - containerPort: 8000
-        resources:
-          requests:
-            memory: "768Mi"
-            cpu: "1000m"
-          limits:
-            memory: "768Mi"
-            cpu: "1000m"
-        env:
-        - name: PAPERLESS_CONSUMER_RECURSIVE
-          value: "true"
-        - name: PAPERLESS_REDIS
-          value: redis://10.15.1.2:6379
-        - name: PAPERLESS_OCR_LANGUAGES
-          value: heb
-        - name: PAPERLESS_TIKA_ENABLED
-          value: "true"
-        - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
-          value: http://127.0.0.1:3000
-        - name: PAPERLESS_CONSUMER_DELETE_DUPLICATES
-          value: "true"
-        - name: PAPERLESS_TIKA_ENDPOINT
-          value: http://127.0.0.1:9998
-        - name: PAPERLESS_TIME_ZONE
-          value: Asia/Jerusalem
-        - name: PAPERLESS_DBHOST
-          value: 10.15.1.3
-        - name: PAPERLESS_SECRET_KEY
-          valueFrom:
-            secretKeyRef:
-              name: paperless-secret
-              key: paperless-key
-              optional: false
-        - name: PAPERLESS_DBPASS
-          valueFrom:
-            secretKeyRef:
-              name: paperless-secret
-              key: paperless-db-pass
-              optional: false
-        - name: PAPERLESS_TRASH_DIR
-          value: /usr/src/paperless/trash
-        image: ghcr.io/paperless-ngx/paperless-ngx:latest
-        name: paperless-ng
-        securityContext:
-          capabilities: {}
-        volumeMounts:
-        - name: paperless-data-mount
-          mountPath: /usr/src/paperless/data
-        - name: paperless-media-mount
-          mountPath: /usr/src/paperless/media
-        - name: consumption
-          mountPath: /usr/src/paperless/consume
-        - name: trash
-          mountPath: /usr/src/paperless/trash
-      restartPolicy: Always
-      volumes:
-      - name: paperless-data-mount
-        persistentVolumeClaim:
-          claimName: paperless-data-pvc
-      - name: paperless-media-mount
-        persistentVolumeClaim:
-          claimName: paperless-media-pvc
-      - name: consumption
-        emptyDir: {}
-      - name: trash
-        emptyDir: {}
+#      - args:
+#        - /usr/local/bin/paperless_cmd.sh
+#        ports:
+#        - containerPort: 8000
+#        resources:
+#          requests:
+#            memory: "768Mi"
+#            cpu: "1000m"
+#          limits:
+#            memory: "768Mi"
+#            cpu: "1000m"
+#        env:
+#        - name: PAPERLESS_CONSUMER_RECURSIVE
+#          value: "true"
+#        - name: PAPERLESS_REDIS
+#          value: redis://10.15.1.2:6379
+#        - name: PAPERLESS_OCR_LANGUAGES
+#          value: heb
+#        - name: PAPERLESS_TIKA_ENABLED
+#          value: "true"
+#        - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
+#          value: http://127.0.0.1:3000
+#        - name: PAPERLESS_CONSUMER_DELETE_DUPLICATES
+#          value: "true"
+#        - name: PAPERLESS_TIKA_ENDPOINT
+#          value: http://127.0.0.1:9998
+#        - name: PAPERLESS_TIME_ZONE
+#          value: Asia/Jerusalem
+#        - name: PAPERLESS_DBHOST
+#          value: 10.15.1.3
+#        - name: PAPERLESS_SECRET_KEY
+#          valueFrom:
+#            secretKeyRef:
+#              name: paperless-secret
+#              key: paperless-key
+#              optional: false
+#        - name: PAPERLESS_DBPASS
+#          valueFrom:
+#            secretKeyRef:
+#              name: paperless-secret
+#              key: paperless-db-pass
+#              optional: false
+#        - name: PAPERLESS_TRASH_DIR
+#          value: /usr/src/paperless/trash
+#        image: ghcr.io/paperless-ngx/paperless-ngx:latest
+#        name: paperless-ng
+#        securityContext:
+#          capabilities: {}
+#        volumeMounts:
+#        - name: paperless-data-mount
+#          mountPath: /usr/src/paperless/data
+#        - name: paperless-media-mount
+#          mountPath: /usr/src/paperless/media
+#        - name: consumption
+#          mountPath: /usr/src/paperless/consume
+#        - name: trash
+#          mountPath: /usr/src/paperless/trash
+#      restartPolicy: Always
+#      volumes:
+#      - name: paperless-data-mount
+#        persistentVolumeClaim:
+#          claimName: paperless-data-pvc
+#      - name: paperless-media-mount
+#        persistentVolumeClaim:
+#          claimName: paperless-media-pvc
+#      - name: consumption
+#        emptyDir: {}
+#      - name: trash
+#        emptyDir: {}
