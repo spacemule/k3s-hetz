@@ -17,6 +17,13 @@ spec:
         app: paperless
     spec:
       containers:
+      resources:
+        requests:
+          memory: "512Mi"
+          cpu: "1000m"
+        limits:
+          memory: "512Mi"
+          cpu: "1000m"
       - args:
         - gotenberg
         env:
@@ -28,12 +35,26 @@ spec:
         securityContext:
           capabilities: {}
       - image: docker.io/apache/tika:latest
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "500m"
+          limits:
+            memory: "256Mi"
+            cpu: "500m"
         name: tika
         resources: {}
         securityContext:
           capabilities: {}
       - args:
         - /usr/local/bin/paperless_cmd.sh
+        resources:
+          requests:
+            memory: "768Mi"
+            cpu: "1000m"
+          limits:
+            memory: "768Mi"
+            cpu: "1000m"
         env:
         - name: PAPERLESS_CONSUMER_RECURSIVE
           value: "true"
