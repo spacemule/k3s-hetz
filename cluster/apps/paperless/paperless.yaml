@@ -73,7 +73,7 @@ spec:
         volumeMounts:
         - name: paperless-mount
           mountPath: /usr/src/paperless
-      restartPolicy: OnFailure
+      restartPolicy: Always
       volumes:
       - name: paperless-mount
         persistentVolumeClaim:
