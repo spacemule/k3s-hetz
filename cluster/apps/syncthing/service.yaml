@@ -24,16 +24,16 @@ spec:
   ports:
     - name: syncthing-tcp-service
       protocol: TCP
-      port: 32000
-      targetPort: 22000
+      port: 22000
       targetPort: syncthing-tcp
+      nodePort: 22000
     - name: syncthing-udp-service
       protocol: UDP
-      port: 32001
-      targetPort: 22000
+      port: 22000
       targetPort: syncthing-udp
+      nodePort: 22000
     - name: syncthing-data-service
       protocol: UDP
-      port: 32017
-      targetPort: 22017
+      port: 22017
       targetPort: syncthing-data
+      nodePort: 22017
