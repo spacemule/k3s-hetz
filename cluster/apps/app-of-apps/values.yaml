@@ -80,3 +80,7 @@ apps:
   - name: nginx-zahava
     path: cluster/apps/nginx-zahava
     namespace: nginx-static
+
+  - name: paperless
+    path: cluster/apps/paperless
+    namespace: paperless
