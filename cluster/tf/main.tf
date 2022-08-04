@@ -29,6 +29,11 @@ resource "helm_release" "argocd" {
     name = "redis.enabled"
     value = "false"
   }
+
+  set {
+    name: "controller.replicas"
+    value: 2
+  }
 }
 
 locals {
