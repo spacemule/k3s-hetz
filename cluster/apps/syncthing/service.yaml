@@ -29,9 +29,9 @@ spec:
       nodePort: 32000
     - name: syncthing-udp-service
       protocol: UDP
-      port: 22000
+      port: 22001
       targetPort: syncthing-udp
-      nodePort: 32000
+      nodePort: 32001
     - name: syncthing-data-service
       protocol: UDP
       port: 22017
