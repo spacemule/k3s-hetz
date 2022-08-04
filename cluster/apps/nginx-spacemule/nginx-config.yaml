@@ -1,7 +1,7 @@
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: nginx-conf
+  name: nginx-conf-spacemule
 data:
   nginx.conf: |
     user nginx;
