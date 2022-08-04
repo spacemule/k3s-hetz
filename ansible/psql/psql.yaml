@@ -20,8 +20,21 @@
           3236636461316433650a353331336630333136326565356339353134396430343565646366656662
           66396134636330386261653332626461373066623230306536643630313838313731
         db: nextcloud
+      - name: paperless
+        pass: !vault |
+          $ANSIBLE_VAULT;1.1;AES256
+          32373131613139666533313361373739636663356164396538643962343264616636363838363039
+          6538663561373165393364316162326239663233303962320a633536353330373365383130656232
+          31383631366136386234666163363134333437316334616363393931383137633864313234366265
+          6634326531326164370a303636366434653863303033393664393631323837353639376262316132
+          31383435393839326234363033393466383737636134636235313363323538633536
+        db: paperless
+    local_users:
+      - db: paperless
+        user: paperless
     dbs:
       - nextcloud
+      - paperless
   collections:
     - community.general
   gather_facts: no
@@ -70,13 +83,21 @@
       create: no
     register: add_listen
 
+  - name: add local access
+    ansible.builtin.lineinfile:
+      path: /var/lib/pgsql/data/pg_hba.conf
+      line: local {{ item.db }} {{ item.user }} md5
+      create: no
+    register: add_local_access
+    loop: "{{ local_users }}"
+
   - name: restart db
     systemd:
       name: postgresql.service
       state: restarted
       enabled: yes
       daemon-reload: yes
-    when: add_access.changed or add_listen.changed
+    when: add_access.changed or add_listen.changed or add_local_access.changed
 
   - name: create superuser
     postgresql_user:
