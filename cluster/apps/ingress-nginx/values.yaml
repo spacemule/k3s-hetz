@@ -470,7 +470,7 @@ controller:
     externalIPs: []
 
     # -- Used by cloud providers to connect the resulting `LoadBalancer` to a pre-existing static IP according to https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer
-    loadBalancerIP: "95.217.171.21"
+    loadBalancerIP: ""
     loadBalancerSourceRanges: []
 
     enableHttp: true
