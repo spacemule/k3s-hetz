@@ -2,7 +2,9 @@
   hosts: postgres
   vars:
     private_ip: 10.15.1.3
-    kube_net: 10.0.0.0/16
+    allowed_cidrs:
+      - 10.0.0.0/16
+      - 192.168.10.0/24
     db_admin_pass: !vault |
       $ANSIBLE_VAULT;1.1;AES256
       62363963313138353430306464363162343235626137366232353761303330336533323833616635
@@ -71,9 +73,10 @@
   - name: add access to k8s cluster
     ansible.builtin.lineinfile:
       path: /var/lib/pgsql/data/pg_hba.conf
-      line: host all all {{ kube_net }} scram-sha-256
+      line: host all all {{ item }} scram-sha-256
       create: no
     register: add_access
+    loop: "{{ allowed_cidrs }}"
 
   - name: listen on interfaces
     ansible.builtin.lineinfile:

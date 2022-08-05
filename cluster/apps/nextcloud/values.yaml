@@ -6,7 +6,7 @@ image:
   flavor: fpm
   # If unset, uses flavor + .Chart.AppVersion to create tag
   # tag:
-  pullPolicy: IfNotPresent
+  pullPolicy: Always
   # pullSecrets:
   #   - myRegistrKeySecretName
 
@@ -209,7 +209,7 @@ nginx:
   image:
     repository: nginx
     tag: mainline
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   config:
     # This generates the default nginx config as per the nextcloud documentation
@@ -318,7 +318,7 @@ cronjob:
   image:
      repository: nextcloud
      tag: fpm
-     pullPolicy: IfNotPresent
+     pullPolicy: Always
     # pullSecrets:
   #   - myRegistrKeySecretName
   # Every 5 minutes
@@ -464,7 +464,7 @@ metrics:
   image:
     repository: xperimental/nextcloud-exporter
     tag: 0.5.1
-    pullPolicy: IfNotPresent
+    pullPolicy: Always
 
   ## Metrics exporter resource requests and limits
   ## ref: http://kubernetes.io/docs/user-guide/compute-resources/
