@@ -78,7 +78,7 @@ controller:
   watchIngressWithoutClass: false
 
   # -- Process IngressClass per name (additionally as per spec.controller).
-  ingressClassByName: true
+  ingressClassByName: false
 
   # -- This configuration defines if Ingress Controller should allow users to set
   # their own *-snippet annotations, otherwise this is forbidden / dropped
@@ -113,7 +113,7 @@ controller:
     # -- Is this ingressClass enabled or not
     enabled: true
     # -- Is this the default ingressClass for the cluster
-    default: true
+    default: false
     # -- Controller-value of the controller that is processing this ingressClass
     controllerValue: "k8s.io/ingress-nginx"
 
@@ -444,7 +444,7 @@ controller:
     configMapKey: ""
 
   service:
-    enabled: false
+    enabled: true
 
     # -- If enabled is adding an appProtocol option for Kubernetes service. An appProtocol field replacing annotations that were
     # using for setting a backend protocol. Here is an example for AWS: service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http
@@ -470,7 +470,7 @@ controller:
     externalIPs: []
 
     # -- Used by cloud providers to connect the resulting `LoadBalancer` to a pre-existing static IP according to https://kubernetes.io/docs/concepts/services-networking/service/#loadbalancer
-    loadBalancerIP: "95.217.171.21"
+    loadBalancerIP: ""
     loadBalancerSourceRanges: []
 
     enableHttp: true
