@@ -22,7 +22,7 @@ spec:
           service:
             name: nginx-spacemule-service
             port:
-              number: 8081
+              number: 8082
   - host: www.spacemule.net
     http:
       paths:
@@ -32,4 +32,4 @@ spec:
             service:
               name: nginx-spacemule-service
               port:
-                number: 8081
+                number: 8082

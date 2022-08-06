@@ -9,5 +9,5 @@ spec:
   ports:
     - name: nginx-spacemule-service
       protocol: TCP
-      port: 8081
+      port: 8082
       targetPort: nginx-http
