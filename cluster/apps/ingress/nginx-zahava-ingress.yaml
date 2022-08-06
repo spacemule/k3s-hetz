@@ -2,6 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: nginx-zahava-ingress
+  namespace: nginx-static
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:

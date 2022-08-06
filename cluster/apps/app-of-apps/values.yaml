@@ -87,3 +87,6 @@ apps:
 
   - name: ingress
     path: cluster/apps/ingress
+
+  - name: pvc
+    path: cluster/apps/pvc
