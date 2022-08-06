@@ -4,7 +4,6 @@ metadata:
   name: nextcloud-nextcloud
   namespace: nextcloud
   uid: d7506a10-5bd6-4383-a3d5-ad809e0f761e
-  resourceVersion: '4200'
   creationTimestamp: '2022-07-16T18:32:50Z'
   annotations:
     pv.kubernetes.io/bind-completed: 'yes'
