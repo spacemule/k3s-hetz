@@ -3,71 +3,10 @@ kind: PersistentVolumeClaim
 metadata:
   name: nextcloud-nextcloud
   namespace: nextcloud
-  uid: d7506a10-5bd6-4383-a3d5-ad809e0f761e
-  creationTimestamp: '2022-07-16T18:32:50Z'
-  annotations:
-    pv.kubernetes.io/bind-completed: 'yes'
-    pv.kubernetes.io/bound-by-controller: 'yes'
-    volume.beta.kubernetes.io/storage-provisioner: driver.longhorn.io
-    volume.kubernetes.io/storage-provisioner: driver.longhorn.io
-  finalizers:
-    - kubernetes.io/pvc-protection
-  managedFields:
-    - manager: kubectl-create
-      operation: Update
-      apiVersion: v1
-      time: '2022-07-16T18:32:50Z'
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:spec:
-          f:accessModes: {}
-          f:resources:
-            f:requests:
-              .: {}
-              f:storage: {}
-          f:storageClassName: {}
-          f:volumeMode: {}
-    - manager: k3s
-      operation: Update
-      apiVersion: v1
-      time: '2022-07-16T18:32:54Z'
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:metadata:
-          f:annotations:
-            .: {}
-            f:pv.kubernetes.io/bind-completed: {}
-            f:pv.kubernetes.io/bound-by-controller: {}
-            f:volume.beta.kubernetes.io/storage-provisioner: {}
-            f:volume.kubernetes.io/storage-provisioner: {}
-        f:spec:
-          f:volumeName: {}
-    - manager: k3s
-      operation: Update
-      apiVersion: v1
-      time: '2022-07-16T18:32:54Z'
-      fieldsType: FieldsV1
-      fieldsV1:
-        f:status:
-          f:accessModes: {}
-          f:capacity:
-            .: {}
-            f:storage: {}
-          f:phase: {}
-      subresource: status
-  selfLink: /api/v1/namespaces/nextcloud/persistentvolumeclaims/nextcloud-nextcloud
-status:
-  phase: Bound
-  accessModes:
-    - ReadWriteMany
-  capacity:
-    storage: 15Gi
 spec:
   accessModes:
     - ReadWriteMany
   resources:
     requests:
       storage: 15Gi
-  volumeName: pvc-d7506a10-5bd6-4383-a3d5-ad809e0f761e
   storageClassName: longhorn
-  volumeMode: Filesystem
