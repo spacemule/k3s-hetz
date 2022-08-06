@@ -65,10 +65,10 @@ apps:
 #
 #  - name: cert-manager
 #    path: cluster/apps/cert-manager
-#
-#  - name: nginx-ingress
-#    path: cluster/apps/ingress-nginx
-#    namespace: ingress-nginx
+
+  - name: nginx-ingress
+    path: cluster/apps/ingress-nginx
+    namespace: ingress-nginx
 
 #  - name: syncthing
 #    namespace: syncthing
