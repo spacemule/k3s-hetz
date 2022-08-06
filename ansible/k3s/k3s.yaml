@@ -1,10 +1,11 @@
+###TODO: add cloud-provider=external and private ip --node-ip={{ip}} to each worker
 - name: Setup up k3s cluster
   hosts: master:workers
   vars:
     control_ip: 10.0.0.2
     cluster_cidr: 10.16.0.0/16
     all_opts: sh -
-    server_opts: INSTALL_K3S_EXEC="--cluster-cidr={{ cluster_cidr }} --disable local-storage --disable traefik --disable-cloud-controller --disable-network-policy --flannel-backend=wireguard"
+    server_opts: INSTALL_K3S_EXEC="--cluster-cidr={{ cluster_cidr }} --disable local-storage --disable traefik --disable-cloud-controller --disable-network-policy --node-ip={{ control_ip }}"
     worker_opts: K3S_URL="https://{{ control_ip }}:6443"
   gather_facts: no
   tasks:
