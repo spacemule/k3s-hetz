@@ -13,3 +13,7 @@ output "postgres_ip" {
 output "redis_ip" {
   value = module.k3s.redis_ip
 }
+
+output "lb_ip" {
+  value = module.k3s.lb_ip
+}
