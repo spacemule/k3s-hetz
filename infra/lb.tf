@@ -1,6 +1,6 @@
 resource "hcloud_load_balancer" "k3s_lb" {
   load_balancer_type = "lb11"
-  name               = "kube-net"
+  name               = "kubelb"
   location           = "hel1"
 }
 
