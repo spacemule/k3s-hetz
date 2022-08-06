@@ -78,7 +78,7 @@ controller:
   watchIngressWithoutClass: false
 
   # -- Process IngressClass per name (additionally as per spec.controller).
-  ingressClassByName: true
+  ingressClassByName: false
 
   # -- This configuration defines if Ingress Controller should allow users to set
   # their own *-snippet annotations, otherwise this is forbidden / dropped
@@ -452,7 +452,7 @@ controller:
     # See the following GitHub issue for more details about the purpose: https://github.com/kubernetes/kubernetes/issues/40244
     # Will be ignored for Kubernetes versions older than 1.20
     ##
-    appProtocol: false
+    appProtocol: true
 
     annotations:
       load-balancer.hetzner.cloud/name: "kubelb"
