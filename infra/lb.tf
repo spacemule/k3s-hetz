@@ -15,4 +15,5 @@ resource "hcloud_load_balancer_target" "k3s_targets" {
   load_balancer_id = hcloud_load_balancer.k3s_lb.id
   type             = "label_selector"
   label_selector   = "job=k8s"
+  use_private_ip   = true
 }
