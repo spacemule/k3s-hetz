@@ -56,9 +56,9 @@ apps:
       - name: fullnameOverride
         value: sealed-secrets-controller
 
-#  - name: secrets
-#    path: cluster/apps/secrets
-#    targetRevision: main
+  - name: secrets
+    path: cluster/apps/secrets
+    targetRevision: main
 
 #  - name: cert-manager-init
 #    path: cluster/apps/cert-manager-init
