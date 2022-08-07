@@ -19,10 +19,6 @@ apps:
     path: cluster/apps/loki-stack
     namespace: monitoring
 
-  - name: kube-prometheus
-    path: cluster/apps/kube-prometheus
-    namespace: monitoring
-
   - name: kured
     path: cluster/apps/kured
     namespace: kube-system
