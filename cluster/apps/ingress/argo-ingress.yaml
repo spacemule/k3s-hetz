@@ -5,6 +5,7 @@ metadata:
   namespace: argocd
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.15.1.3/32,65.108.91.184/32
 spec:
   ingressClassName: nginx
   tls:
