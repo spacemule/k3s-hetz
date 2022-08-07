@@ -20,8 +20,8 @@ grafana:
     tag: 8.3.5
 
 prometheus:
-  enabled: true
-  isDefault: true
+  enabled: false
+  isDefault: false
   server:
     global:
       scrape_interval: 30s
