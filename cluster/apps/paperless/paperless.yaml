@@ -63,6 +63,8 @@ spec:
             memory: "768Mi"
             cpu: "1000m"
         env:
+        - name: PAPERLESS_URL
+          value: "docs.spacemule.net"
         - name: PAPERLESS_WEBSERVER_WORKERS
           value: "4"
         - name: PAPERLESS_CONSUMER_RECURSIVE
