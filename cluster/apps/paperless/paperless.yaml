@@ -20,37 +20,6 @@ spec:
         fsGroup: 1000
       containers:
       - args:
-        - gotenberg
-        env:
-        - name: DISABLE_GOOGLE_CHROME
-          value: "1"
-        image: docker.io/thecodingmachine/gotenberg:6
-        ports:
-        - containerPort: 3000
-        name: gotenberg
-        resources:
-          requests:
-            memory: "512Mi"
-            cpu: "1000m"
-          limits:
-            memory: "512Mi"
-            cpu: "1000m"
-        securityContext:
-          capabilities: {}
-      - image: docker.io/apache/tika:latest
-        resources:
-          requests:
-            memory: "256Mi"
-            cpu: "500m"
-          limits:
-            memory: "256Mi"
-            cpu: "500m"
-        name: tika
-        ports:
-        - containerPort: 9998
-        securityContext:
-          capabilities: {}
-      - args:
         - /usr/local/bin/paperless_cmd.sh
         ports:
         - containerPort: 8000
@@ -76,11 +45,11 @@ spec:
         - name: PAPERLESS_TIKA_ENABLED
           value: "true"
         - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
-          value: http://127.0.0.1:3000
+          value: http://gotenberg-service:3000
         - name: PAPERLESS_CONSUMER_DELETE_DUPLICATES
           value: "true"
         - name: PAPERLESS_TIKA_ENDPOINT
-          value: http://127.0.0.1:9998
+          value: http://tika-service:9998
         - name: PAPERLESS_TIME_ZONE
           value: Asia/Jerusalem
         - name: PAPERLESS_DBHOST
@@ -124,3 +93,74 @@ spec:
         emptyDir: {}
       - name: trash
         emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: paperless
+  labels:
+    app: tika
+  name: tika
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tika
+  template:
+    metadata:
+      labels:
+        app: tika
+    spec:
+      containers:
+        - image: docker.io/apache/tika:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          name: tika
+          ports:
+            - containerPort: 9998
+              name: tika
+          securityContext:
+            capabilities: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: paperless
+  labels:
+    app: gotenberg
+  name: gotenberg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gotenberg
+  template:
+    metadata:
+      labels:
+        app: gotenberg
+    spec:
+      containers:
+        - args:
+            - gotenberg
+          env:
+            - name: DISABLE_GOOGLE_CHROME
+              value: "1"
+          image: docker.io/thecodingmachine/gotenberg:6
+          ports:
+            - containerPort: 3000
+              name: gotenberg
+          name: gotenberg
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "1000m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          securityContext:
+            capabilities: {}

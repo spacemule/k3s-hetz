@@ -11,3 +11,31 @@ spec:
       protocol: TCP
       port: 8081
       targetPort: http
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: tika-service
+spec:
+  type: ClusterIP
+  selector:
+    app: tika
+  ports:
+    - name: tika-service
+      protocol: TCP
+      port: 9998
+      targetPort: tika
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: gotenberg-service
+spec:
+  type: ClusterIP
+  selector:
+    app: gotenberg
+  ports:
+    - name: gotenberg-service
+      protocol: TCP
+      port: 3000
+      targetPort: gotenberg
