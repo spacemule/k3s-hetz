@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: longhorn-ingress
+  namespace: longhorn-system
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.15.1.3/32
+spec:
+  ingressClassName: nginx
+  tls:
+  - hosts:
+    - storage.spacemule.net
+    secretName: longhorn-tls-secret
+  rules:
+  - host: storage.spacemule.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: longhorn-frontend
+            port:
+              name: http
