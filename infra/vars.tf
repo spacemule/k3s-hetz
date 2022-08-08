@@ -29,6 +29,12 @@ variable "big_worker_count" {
   description = "Number of big worker nodes"
 }
 
+variable "memory_worker_count" {
+  type = number
+  default = 1
+  description = "Number of memory worker nodes"
+}
+
 variable "network_cidr" {
   type = string
 }
@@ -49,6 +55,11 @@ variable "standard_worker_instance" {
 variable "big_worker_instance" {
   type = string
   default = "cpx31"
+}
+
+variable "memory_worker_instance" {
+  type = string
+  default = "cx31"
 }
 
 variable "control_plane_instance" {
