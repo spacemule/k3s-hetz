@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  namespace: jellyfin
+  name: jellyfin
+  annotations:
+    kubernetes.io/ingress.class: "traefik"
+spec:
+  rules:
+#    - host: jelly.spacemule.net
+    - http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: jellyfin
+                port:
+                  number: 8086

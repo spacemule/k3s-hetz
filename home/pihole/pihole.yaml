@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: pihole
+  name: pihole-deployment
+  labels:
+    app: pihole
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          # upstream DNS used by pihole.
+          - 9.9.9.9
+          - 1.1.1.1
+          - 9.9.9.10
+      containers:
+      - image: pihole/pihole:latest
+        name: pihole
+        securityContext:
+          capabilities: {}
+        env:
+        - name: TZ
+          value: "Asia/Jerusalem"
+        volumeMounts:
+          - name: pihole-etc-mount
+            mountPath: "/etc/pihole"
+          - name: pihole-dnsmasq-mount
+            mountPath: "/etc/dnsmasq.d"
+      volumes:
+      - name: pihole-etc-mount
+        hostPath:
+          path: /var/mnt/pihole/etc
+      - name: pihole-dnsmasq-mount
+        hostPath:
+          path: /var/mnt/pihole/dnsmasq
