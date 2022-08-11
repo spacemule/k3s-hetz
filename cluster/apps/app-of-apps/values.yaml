@@ -73,3 +73,6 @@ apps:
 
   - name: pvc
     path: cluster/apps/pvc
+
+  - name: external-services
+    path: cluster/apps/external-services
