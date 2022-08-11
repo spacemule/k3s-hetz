@@ -3,7 +3,7 @@ apiVersion: v1
 metadata:
  name: jellyfin
  namespace: external-services
-Spec:
+spec:
  type: ClusterIP
  ports:
  - port: 80
