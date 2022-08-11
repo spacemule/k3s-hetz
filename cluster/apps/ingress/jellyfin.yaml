@@ -9,10 +9,6 @@ metadata:
           allow all;
           default_type "text/plain";
       }
-      location / {
-          deny all;
-          return 403;
-        }
 spec:
   ingressClassName: nginx
   rules:
