@@ -3,12 +3,6 @@ kind: Ingress
 metadata:
   name: jelly-ingress
   namespace: external-services
-  annotations:
-    nginx.ingress.kubernetes.io/server-snippet: |
-      location /.well-known {
-          allow all;
-          default_type "text/plain";
-      }
 spec:
   ingressClassName: nginx
   rules:
