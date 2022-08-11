@@ -9,24 +9,26 @@
     worker_opts: K3S_URL="https://{{ control_ip }}:6443"
   gather_facts: no
   tasks:
-  - name: install python bindings for selinux
-    community.general.zypper:
-      name:
-        - python3-selinux
-        - open-iscsi
-        - nfs-client
-        - wireguard-tools
-      state: present
-    register: package_added
-
-  - name: reboot after install
-    ansible.builtin.reboot:
-    when: package_added.changed
+#  - name: install python bindings for selinux
+#    community.general.zypper:
+#      name:
+#        - python3-selinux
+#        - open-iscsi
+#        - nfs-client
+#        - wireguard-tools
+#      state: present
+#    register: package_added
+#
+#  - name: reboot after install
+#    ansible.builtin.reboot:
+#    when: package_added.changed
 
   - name: add local route
     ansible.builtin.lineinfile:
       path: /etc/sysconfig/network/ifroute-eth1
-      line: 192.168.10.10/32 10.0.0.1 - eth1
+      line: |
+        192.168.10.10/32 10.0.0.1 - eth1
+        10.42.0.1/32 10.0.0.1 - eth1
       create: yes
     register: add_route
 

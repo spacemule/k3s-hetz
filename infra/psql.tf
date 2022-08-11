@@ -35,6 +35,12 @@ resource "hcloud_network_route" "wireguard" {
   network_id  = hcloud_network.kube-net.id
 }
 
+resource "hcloud_network_route" "dns" {
+  destination = "10.42.0.1/32"
+  gateway     = "10.15.1.3"
+  network_id  = hcloud_network.kube-net.id
+}
+
 data "cloudinit_config" "postgres-init" {
   gzip          = true
   base64_encode = true
