@@ -5,6 +5,10 @@ metadata:
   namespace: external-services
   annotations:
     nginx.ingress.kubernetes.io/server-snippet: |
+      location /.well-known {
+          allow all;
+          default_type "text/plain";
+      }
       location / {
           deny all;
           return 403;
