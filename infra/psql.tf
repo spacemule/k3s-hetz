@@ -29,6 +29,12 @@ resource "hcloud_server_network" "postgres-ip" {
   ip         = cidrhost(var.services_cidr, 3 )
 }
 
+resource "hcloud_network_route" "wireguard" {
+  destination = "192.168.10.10/32"
+  gateway     = "10.15.1.3"
+  network_id  = hcloud_network.kube-net.id
+}
+
 data "cloudinit_config" "postgres-init" {
   gzip          = true
   base64_encode = true
