@@ -5,6 +5,8 @@ metadata:
  namespace: external-services
 spec:
  type: ClusterIP
+ selector:
+   name: jellyfin-forward
  ports:
  - port: 80
    targetPort: 80
@@ -14,7 +16,7 @@ spec:
 kind: Endpoints
 apiVersion: v1
 metadata:
- name: jellyfin-service
+ name: jellyfin-forward
  namespace: external-services
 subsets:
  - addresses:
