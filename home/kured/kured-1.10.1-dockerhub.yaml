@@ -136,8 +136,8 @@ spec:
 #            - --blocking-pod-selector=...
 #            - --reboot-days=sun,mon,tue,wed,thu,fri,sat
 #            - --reboot-delay=90s
-#            - --start-time=0:00
-#            - --end-time=23:59:59
+            - --start-time=4:30
+            - --end-time=5:14:59
 #            - --time-zone=UTC
 #            - --annotate-nodes=false
 #            - --lock-release-delay=30m
