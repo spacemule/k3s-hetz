@@ -3,6 +3,12 @@ kind: Ingress
 metadata:
   name: jelly-ingress
   namespace: external-services
+  annotations:
+    nginx.ingress.kubernetes.io/server-snippet: |
+      location / {
+          deny all;
+          return 403;
+        }
 spec:
   ingressClassName: nginx
   rules:

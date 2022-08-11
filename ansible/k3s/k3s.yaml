@@ -23,6 +23,25 @@
     ansible.builtin.reboot:
     when: package_added.changed
 
+  - name: add local route
+    ansible.builtin.lineinfile:
+      path: /etc/sysconfig/network/ifroute-eth1
+      line: 192.168.10.10/32 10.0.0.1 - eth1
+      create: yes
+    register: add_route
+
+  - name: reload wicked
+    ansible.builtin.shell: wicked ifreload all
+    when: add_route.changed
+
+  - name: reload wicked
+    systemd:
+      name: wickedd.service
+      state: restarted
+      enabled: yes
+      daemon-reload: yes
+    when: add_route.changed
+
   - name: Enable IPv4 forwarding
     sysctl:
       name: net.ipv4.ip_forward
