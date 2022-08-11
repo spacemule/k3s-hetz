@@ -19,10 +19,16 @@ spec:
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
+        supplementalGroups:
+          - 487
+          - 484
         fsGroup: 1000
       containers:
       - image: docker.io/jellyfin/jellyfin:latest
         name: jellyfin
+        resources:
+          limits:
+            gpu.intel.com/i915: 1
         securityContext:
           capabilities: {}
         volumeMounts:
