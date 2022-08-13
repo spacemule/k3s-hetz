@@ -20,7 +20,9 @@ spec:
         - image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/opensuse/wireguard:latest
           name: wireguard
           securityContext:
-            capabilities: {}
+            capabilities:
+              add:
+                - NET_ADMIN
             runAsGroup: 2000
             runAsUser: 2000
           volumeMounts:
