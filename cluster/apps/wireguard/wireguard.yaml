@@ -26,7 +26,6 @@ spec:
           volumeMounts:
             - name: wg-conf-mount
               mountPath: /etc/wireguard/
-              name: wg0.conf
               readOnly: true
           ports:
             - containerPort: 51820
