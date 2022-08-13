@@ -37,8 +37,6 @@ apps:
         value: monitoring
       - name: fullnameOverride
         value: sealed-secrets-controller
-      - name: keyrenewalperiod
-        value: 0
 
   - name: secrets
     path: cluster/apps/secrets
@@ -78,3 +76,7 @@ apps:
 
   - name: external-services
     path: cluster/apps/external-services
+
+  - name: wireguard
+    path: cluster/apps/wireguard
+    namespace: wireguard
