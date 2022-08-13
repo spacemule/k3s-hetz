@@ -5,7 +5,7 @@ metadata:
   namespace: paperless
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/whitelist-source-range: 10.15.1.3/32,65.108.91.184/32
+    nginx.ingress.kubernetes.io/whitelist-source-range: 65.108.254.233/32,65.108.157.113/32,65.21.147.177/32,95.217.156.196/32,135.181.33.2/32
 spec:
   ingressClassName: nginx
   tls:
