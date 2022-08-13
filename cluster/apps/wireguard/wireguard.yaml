@@ -24,8 +24,6 @@ spec:
             capabilities:
               add:
                 - NET_ADMIN
-            runAsGroup: 2000
-            runAsUser: 2000
           volumeMounts:
             - name: wg-conf-mount
               mountPath: /etc/wireguard/
