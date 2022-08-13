@@ -23,18 +23,15 @@ spec:
       containers:
       - image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/transmission
         name: transmission
+        env:
+        - name: TZ
+          value: "Asia/Jerusalem"
         command:
           - /usr/bin/transmission-daemon
         args:
           - --foreground
-          - --encryption-preferred
-          - --global-seedratio
-          - "0.1"
-          - --incomplete-dir
-          - /incomplete
-          - --no-auth
-          - --download-dir
-          - /torrents
+          - --config-dir
+          - /conf
         securityContext:
           capabilities: {}
         volumeMounts:
@@ -42,6 +39,11 @@ spec:
             mountPath: /torrents
           - name: transmission-incomplete-mount
             mountPath: /incomplete
+          - name: config-vol
+            mountPath: /conf/settings.json
+            subPath: settings.json
+          - name: state-mount
+            mountPath: /conf
         ports:
           - containerPort: 9091
             name: transmission
@@ -52,3 +54,9 @@ spec:
       - name: transmission-incomplete-mount
         hostPath:
           path: /var/mnt/incomplete
+      - name: config-vol
+        configMap:
+          name: transmission-config
+      - name: state-mount
+        hostPath:
+          path: /var/mnt/transmission-conf
