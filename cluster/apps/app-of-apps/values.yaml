@@ -37,6 +37,8 @@ apps:
         value: monitoring
       - name: fullnameOverride
         value: sealed-secrets-controller
+      - name: keyrenewalperiod
+        value: 0
 
   - name: secrets
     path: cluster/apps/secrets
