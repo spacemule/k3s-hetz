@@ -1,0 +1,27 @@
+kind: Service
+apiVersion: v1
+metadata:
+ name: transmission-service
+ namespace: external-services
+spec:
+ ports:
+ - port: 80
+   targetPort: 80
+   name: http
+ - port: 443
+   targetPort: 443
+   name: https
+---
+kind: Endpoints
+apiVersion: v1
+metadata:
+ name: transmission-service
+ namespace: external-services
+subsets:
+ - addresses:
+     - ip: 192.168.10.10
+   ports:
+     - port: 80
+       name: http
+     - port: 443
+       name: https

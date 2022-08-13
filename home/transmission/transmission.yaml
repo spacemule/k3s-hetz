@@ -1,0 +1,54 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: jellyfin
+  name: transmission-deployment
+  labels:
+    app: transmission
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: transmission
+  template:
+    metadata:
+      labels:
+        app: transmission
+    spec:
+      securityContext:
+        runAsUser: 1000
+        runAsGroup: 1000
+        fsGroup: 1000
+      containers:
+      - image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/transmission
+        name: transmission
+        command:
+          - /usr/bin/transmission-daemon
+        args:
+          - --foreground
+          - --encryption-preferred
+          - --global-seedratio
+          - "0.1"
+          - --incomplete-dir
+          - /incomplete
+          - --no-auth
+          - --download-dir
+          - /torrents
+        securityContext:
+          capabilities: {}
+        volumeMounts:
+          - name: transmission-torrents-mount
+            mountPath: /torrents
+          - name: transmission-incomplete-mount
+            mountPath: /incomplete
+        ports:
+          - containerPort: 9091
+            name: transmission
+      volumes:
+      - name: transmission-torrents-mount
+        hostPath:
+          path: /var/mnt/torrents
+      - name: transmission-incomplete-mount
+        hostPath:
+          path: /var/mnt/incomplete
