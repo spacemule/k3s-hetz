@@ -18,6 +18,7 @@ spec:
     spec:
       containers:
         - image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/opensuse/wireguard:latest
+          imagePullPolicy: Always
           name: wireguard
           securityContext:
             capabilities:
