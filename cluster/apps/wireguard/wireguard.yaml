@@ -32,7 +32,27 @@ spec:
             - containerPort: 51820
               name: wireguard
               protocol: UDP
+        - image: nginx:stable
+          name: nginx
+          labels:
+            app: nginx
+          securityContext:
+            capabilities: {}
+          volumeMounts:
+            - name: nginx-conf-proxy
+              mountPath: /etc/nginx/nginx.conf
+              subPath: nginx.conf
+              readOnly: true
+          ports:
+            - containerPort: 80
+              name: nginx-http
       volumes:
         - name: wg-conf-mount
           secret:
             secretName: wg-conf-secret
+        - name: nginx-conf-proxy
+          configMap:
+            name: nginx-conf-proxy
+            items:
+              - key: nginx.conf
+                path: nginx.conf
