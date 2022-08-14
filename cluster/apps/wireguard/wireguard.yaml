@@ -34,8 +34,6 @@ spec:
               protocol: UDP
         - image: nginx:stable
           name: nginx
-          labels:
-            app: nginx
           securityContext:
             capabilities: {}
           volumeMounts:

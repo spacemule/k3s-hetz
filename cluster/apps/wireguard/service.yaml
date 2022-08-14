@@ -24,7 +24,7 @@ metadata:
 spec:
   type: ClusterIP
   selector:
-    app: nginx
+    app: wireguard
   ports:
     - name: nginx-proxy-service
       protocol: TCP
