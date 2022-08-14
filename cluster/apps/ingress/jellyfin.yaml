@@ -16,3 +16,13 @@ spec:
             name: nginx-proxy-service
             port:
               number: 80
+  - host: jelly-test.spacemule.net
+    http:
+      paths:
+        - path: /.well-known
+          pathType: Prefix
+          backend:
+            service:
+              name: nginx-proxy-service
+              port:
+                number: 80
