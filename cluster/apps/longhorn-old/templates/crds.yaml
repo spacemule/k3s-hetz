@@ -1055,7 +1055,6 @@ metadata:
     longhorn-manager: ""
   name: engineimages.longhorn.io
 spec:
-  preserveUnknownFields: false
   conversion:
     strategy: Webhook
     webhook:
@@ -1087,7 +1086,7 @@ spec:
       jsonPath: .spec.image
       name: Image
       type: string
-    - description: Number of resources using the engine image
+    - description: Number of volumes are using the engine image
       jsonPath: .status.refCount
       name: RefCount
       type: integer
@@ -1129,7 +1128,7 @@ spec:
       jsonPath: .spec.image
       name: Image
       type: string
-    - description: Number of resources using the engine image
+    - description: Number of volumes are using the engine image
       jsonPath: .status.refCount
       name: RefCount
       type: integer
@@ -1726,7 +1725,6 @@ metadata:
     longhorn-manager: ""
   name: nodes.longhorn.io
 spec:
-  preserveUnknownFields: false
   conversion:
     strategy: Webhook
     webhook:
@@ -2716,7 +2714,6 @@ metadata:
     longhorn-manager: ""
   name: volumes.longhorn.io
 spec:
-  preserveUnknownFields: false
   conversion:
     strategy: Webhook
     webhook:
