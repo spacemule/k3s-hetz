@@ -75,7 +75,7 @@ persistence:
   defaultClassReplicaCount: 2
   defaultDataLocality: best-effort # best-effort otherwise
   reclaimPolicy: Delete
-  migratable: true
+  migratable: false
   recurringJobSelector:
     enable: false
     jobList: []
