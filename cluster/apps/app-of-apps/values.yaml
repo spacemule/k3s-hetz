@@ -74,8 +74,8 @@ apps:
   - name: pvc
     path: cluster/apps/pvc
 
-  - name: external-services
-    path: cluster/apps/external-services
+#  - name: external-services
+#    path: cluster/apps/external-services
 
   - name: wireguard
     path: cluster/apps/wireguard

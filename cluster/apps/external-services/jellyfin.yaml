@@ -2,7 +2,7 @@ kind: Service
 apiVersion: v1
 metadata:
  name: jellyfin-service
- namespace: external-services
+ namespace: wireguard
 spec:
  ports:
  - port: 80

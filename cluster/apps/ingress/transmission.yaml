@@ -2,17 +2,17 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: transmission-ingress
-  namespace: external-services
+  namespace: wireguard
 spec:
   ingressClassName: nginx
   rules:
   - host: transmission.spacemule.net
     http:
       paths:
-      - path: /.well-known
-        pathType: Prefix
-        backend:
-          service:
-            name: transmission-service
-            port:
-              number: 80
+        - path: /.well-known
+          pathType: Prefix
+          backend:
+            service:
+              name: nginx-proxy-service
+              port:
+                number: 80

@@ -2,7 +2,7 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: jelly-ingress
-  namespace: external-services
+  namespace: wireguard
 spec:
   ingressClassName: nginx
   rules:
@@ -13,6 +13,6 @@ spec:
         pathType: Prefix
         backend:
           service:
-            name: jellyfin-service
+            name: nginx-proxy-service
             port:
               number: 80
