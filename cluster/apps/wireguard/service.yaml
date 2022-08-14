@@ -26,7 +26,7 @@ spec:
   selector:
     app: wireguard
   ports:
-    - name: nginx-proxy-service
+    - name: nginx-proxy
       protocol: TCP
       port: 8081
       targetPort: nginx-http

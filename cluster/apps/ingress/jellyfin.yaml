@@ -15,7 +15,7 @@ spec:
           service:
             name: nginx-proxy-service
             port:
-              number: 80
+              number: 8081
   - host: jelly-test.spacemule.net
     http:
       paths:
@@ -25,4 +25,4 @@ spec:
             service:
               name: nginx-proxy-service
               port:
-                number: 80
+                number: 8081
