@@ -23,7 +23,7 @@ spec:
                 add: ["NET_ADMIN", "SYS_ADMIN"]
           restartPolicy: OnFailure
           nodeSelector:
-            node-role.kubernetes.io/master: true
+            node-role.kubernetes.io/master: "true"
           tolerations:
             - key: "node-role.kubernetes.io/control-plane"
               operator: "Exists"
