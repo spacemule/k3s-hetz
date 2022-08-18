@@ -80,3 +80,7 @@ apps:
   - name: wireguard
     path: cluster/apps/wireguard
     namespace: wireguard
+
+  - name: cronjobs
+    path: cluster/apps/cronjobs
+    namespace: kube-system
