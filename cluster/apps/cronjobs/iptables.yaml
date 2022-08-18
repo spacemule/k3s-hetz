@@ -11,11 +11,10 @@ spec:
           hostNetwork: true
           containers:
           - name: iptables
-            image: opensuse/tumbleweed
+            image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/opensuse/iptables
             imagePullPolicy: Always
             command: ["/bin/sh", "-c", "--",
-            "zypper in -y iptables; \
-            iptables -A FORWARD -i eth1 -j ACCEPT; \
+            "iptables -A FORWARD -i eth1 -j ACCEPT; \
             iptables -A FORWARD -o eth1  -j ACCEPT; \
             iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; \
             iptables -t nat -A POSTROUTING -o eth1 -j MASQUERADE"]
