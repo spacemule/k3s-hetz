@@ -1,14 +1,26 @@
 # Stolen from https://raw.githubusercontent.com/kube-hetzner/terraform-hcloud-kube-hetzner/master/modules/host/templates/userdata.yaml.tpl
 
+##Variables defined in this file:
+# k3s_token
+# default_route_ip
+# hostname
+# control_ip
+# node_ip
+# sshAuthorizedKeys
+
 #cloud-config
+
+# Enable networking
+bootcmd:
+  - echo -e "BOOTPROTO='dhcp'\nSTARTMODE='auto'" > /etc/sysconfig/network/ifcfg-eth0
+  - echo "default     ${default_route_ip}     -       eth0" > /etc/sysconfig/network/ifroute-eth0
 
 write_files:
 
-# Configure the private network interface
+# Enable IP forwarding
 - content: |
-    BOOTPROTO='dhcp'
-    STARTMODE='auto'
-  path: /etc/sysconfig/network/ifcfg-eth1
+    net.ipv4.ip_forward = 1
+  path: /etc/sysctl.d/10-networking.conf
 
 # Disable ssh password authentication
 - content: |
@@ -28,17 +40,6 @@ write_files:
 - content: |
     REBOOT_METHOD=kured
   path: /etc/transactional-update.conf
-
-# Create Rancher repo config
-- content: |
-    [rancher-k3s-common-stable]
-    name=Rancher K3s Common (stable)
-    baseurl=https://rpm.rancher.io/k3s/stable/common/microos/noarch
-    enabled=1
-    gpgcheck=1
-    repo_gpgcheck=0
-    gpgkey=https://rpm.rancher.io/public.key
-  path: /etc/zypp/repos.d/rancher-k3s-common.repo
 
 # Add ssh authorized keys
 ssh_authorized_keys:
@@ -73,3 +74,19 @@ runcmd:
 
 # Disables unneeded services
 - [systemctl, disable, '--now', 'rebootmgr.service']
+
+# Installs k3s
+- curl -sfL https://get.k3s.io > /tmp/k3s.sh
+- INSTALL_K3S_EXEC="--node-ip=${node_ip} --kubelet-arg=cloud-provider=external" K3S_TOKEN=${k3s_token} K3S_URL="https://${control_ip}:6443 sh /tmp/k3s.sh
+
+# Install packages
+- transactional-update --non-interactive --continue dup
+- transactional-update --non-interactive --continue pkg install python3-selinux open-iscsi wireguard-tools nfs-client
+
+# Persist sysctl config
+- sysctl -p
+
+# Reboot
+power_state:
+    mode: reboot
+    condition: True

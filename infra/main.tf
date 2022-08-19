@@ -20,15 +20,21 @@ resource "hcloud_network" "kube-net" {
 resource "hcloud_network_subnet" "services-sub" {
   ip_range     = var.services_cidr
   network_id   = hcloud_network.kube-net.id
-  network_zone = "eu-central"
+  network_zone = var.zone
   type         = "cloud"
 }
 
 resource "hcloud_network_subnet" "k8s-sub" {
   ip_range     = var.subnet_cidr
   network_id   = hcloud_network.kube-net.id
-  network_zone = "eu-central"
+  network_zone = var.zone
   type         = "cloud"
+}
+
+resource "hcloud_network_route" "gateway" {
+  destination = "0.0.0.0/0"
+  gateway     = hcloud_server_network.control-plane-ips[0].ip
+  network_id  = hcloud_network.kube-net.id
 }
 
 resource hcloud_firewall "default" {
@@ -68,9 +74,9 @@ resource hcloud_firewall "default" {
   }
 
   rule {
-    direction = "out"
-    protocol = "tcp"
-    port     = "any"
+    direction       = "out"
+    protocol        = "tcp"
+    port            = "any"
     destination_ips = [
       "0.0.0.0/0",
       "::/0"
@@ -78,9 +84,9 @@ resource hcloud_firewall "default" {
   }
 
   rule {
-    direction = "out"
-    protocol = "udp"
-    port     = "any"
+    direction       = "out"
+    protocol        = "udp"
+    port            = "any"
     destination_ips = [
       "0.0.0.0/0",
       "::/0"
@@ -88,8 +94,8 @@ resource hcloud_firewall "default" {
   }
 
   rule {
-    direction = "out"
-    protocol = "icmp"
+    direction       = "out"
+    protocol        = "icmp"
     destination_ips = [
       "0.0.0.0/0",
       "::/0"
@@ -104,6 +110,26 @@ resource "hcloud_firewall" "k8s-control" {
     direction  = "in"
     protocol   = "tcp"
     port       = "6443"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+  #Allow all node ports if exposed
+  rule {
+    direction  = "in"
+    protocol   = "tcp"
+    port       = "30000-32767"
+    source_ips = [
+      "0.0.0.0/0",
+      "::/0"
+    ]
+  }
+
+  rule {
+    direction  = "in"
+    protocol   = "udp"
+    port       = "30000-32767"
     source_ips = [
       "0.0.0.0/0",
       "::/0"
@@ -145,16 +171,33 @@ resource "hcloud_placement_group" "k8s-places" {
   type = "spread"
 }
 
+resource "random_id" "ip-name" {
+  keepers = {
+    datacenter = var.datacenter
+  }
+  byte_length = 4
+}
+resource "hcloud_primary_ip" "control_plane" {
+  name          = "control_plane_${random_id.ip-name.hex}"
+  type          = "ipv4"
+  assignee_type = "server"
+  auto_delete   = false
+  datacenter    = random_id.ip-name.keepers.datacenter
+
+}
+
 resource "hcloud_server" "control-plane" {
-  count              = var.control_plane_count
-  name               = "k3s-node-${count.index}"
-  server_type        = var.control_plane_instance
+  count              = length(var.control_planes)
+  name               = "k3s-master-${count.index}"
+  server_type        = var.control_planes[count.index]
   placement_group_id = hcloud_placement_group.k8s-places.id
   image              = data.hcloud_image.microOS.id
-  location           = "hel1"
+  location           = var.region
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
-  user_data          = data.cloudinit_config.k3s-init[count.index].rendered
-  firewall_ids       = []
+  user_data          = data.cloudinit_config.k3s-control-plane-init[count.index].rendered
+  firewall_ids       = [
+    hcloud_firewall.default.id, hcloud_firewall.k8s-control.id, hcloud_firewall.k8s-wall-of-china.id
+  ]
   labels = {
     "job" : "k8s"
     "type" : "master"
@@ -162,86 +205,43 @@ resource "hcloud_server" "control-plane" {
 
   public_net {
     ipv4_enabled = true
+    ipv4         = hcloud_primary_ip.control_plane.id
+    ipv6_enabled = true
+  }
+
+  depends_on = [
+    hcloud_network_subnet.k8s-sub
+  ]
+}
+
+resource "hcloud_server" "worker" {
+  count              = length(var.workers)
+  name               = "k3s-worker-${count.index}"
+  server_type        = var.workers[count.index]
+  placement_group_id = hcloud_placement_group.k8s-places.id
+  image              = data.hcloud_image.microOS.id
+  location           = var.region
+  ssh_keys           = [hcloud_ssh_key.k8s-key.id]
+  user_data          = data.cloudinit_config.k3s-worker-init[count.index].rendered
+  firewall_ids       = [hcloud_firewall.default.id, hcloud_firewall.k8s-wall-of-china.id]
+  labels             = {
+    "job" : "k8s"
+    "type" : "worker"
+  }
+
+  public_net {
+    ipv4_enabled = false
     ipv6_enabled = false
   }
 
-  depends_on = [
-    hcloud_network_subnet.k8s-sub
-  ]
-}
-
-resource "hcloud_server" "standard-worker" {
-  count              = var.standard_worker_count
-  name               = "k3s-node-${count.index + var.control_plane_count}"
-  server_type        = var.standard_worker_instance
-  placement_group_id = hcloud_placement_group.k8s-places.id
-  image              = data.hcloud_image.microOS.id
-  location           = "hel1"
-  ssh_keys           = [hcloud_ssh_key.k8s-key.id]
-  user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count].rendered
-  firewall_ids       = []
-  labels = {
-    "job": "k8s"
-    "type": "worker"
-  }
-
-  public_net {
-    ipv4_enabled = false
-    ipv6_enabled = true
+  network {
+    network_id = hcloud_network.kube-net.id
+    ip         = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 2 )
   }
 
   depends_on = [
-    hcloud_network_subnet.k8s-sub
-  ]
-}
-
-resource "hcloud_server" "big-worker" {
-  count              = var.big_worker_count
-  name               = "k3s-node-${count.index + var.control_plane_count + var.standard_worker_count}"
-  server_type        = var.big_worker_instance
-  placement_group_id = hcloud_placement_group.k8s-places.id
-  image              = data.hcloud_image.microOS.id
-  location           = "hel1"
-  ssh_keys           = [hcloud_ssh_key.k8s-key.id]
-  user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count + var.standard_worker_count].rendered
-  firewall_ids       = []
-  labels = {
-    "job": "k8s"
-    "type": "worker"
-  }
-
-  public_net {
-    ipv4_enabled = false
-    ipv6_enabled = true
-  }
-
-  depends_on = [
-    hcloud_network_subnet.k8s-sub
-  ]
-}
-
-resource "hcloud_server" "memory-worker" {
-  count              = var.memory_worker_count
-  name               = "k3s-node-${count.index + var.control_plane_count + var.standard_worker_count + var.big_worker_count}"
-  server_type        = var.memory_worker_instance
-  placement_group_id = hcloud_placement_group.k8s-places.id
-  image              = data.hcloud_image.microOS.id
-  location           = "hel1"
-  ssh_keys           = [hcloud_ssh_key.k8s-key.id]
-  user_data          = data.cloudinit_config.k3s-init[count.index + var.control_plane_count + var.standard_worker_count + var.big_worker_count].rendered
-  firewall_ids       = []
-  labels = {
-    "job": "k8s"
-    "type": "worker"
-  }
-
-  public_net {
-    ipv4_enabled = false
-    ipv6_enabled = true
-  }
-
-  depends_on = [
-    hcloud_network_subnet.k8s-sub
+    hcloud_network_subnet.k8s-sub,
+    hcloud_server.control-plane
   ]
 }
 
@@ -252,29 +252,15 @@ resource "hcloud_server_network" "control-plane-ips" {
   ip         = cidrhost(var.subnet_cidr, count.index + 2 )
 }
 
-resource "hcloud_server_network" "standard-worker-ips" {
-  count      = length(hcloud_server.standard-worker)
-  server_id  = hcloud_server.standard-worker[count.index].id
+resource "hcloud_server_network" "worker-ips" {
+  count      = length(hcloud_server.worker)
+  server_id  = hcloud_server.worker[count.index].id
   network_id = hcloud_network.kube-net.id
-  ip         = cidrhost(var.subnet_cidr, var.control_plane_count + count.index + 2 )
+  ip         = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 2 )
 }
 
-resource "hcloud_server_network" "big-worker-ips" {
-  count      = length(hcloud_server.big-worker)
-  server_id  = hcloud_server.big-worker[count.index].id
-  network_id = hcloud_network.kube-net.id
-  ip         = cidrhost(var.subnet_cidr, var.control_plane_count + var.standard_worker_count + count.index + 2 )
-}
-
-resource "hcloud_server_network" "memory-worker-ips" {
-  count      = length(hcloud_server.memory-worker)
-  server_id  = hcloud_server.memory-worker[count.index].id
-  network_id = hcloud_network.kube-net.id
-  ip         = cidrhost(var.subnet_cidr, var.control_plane_count + var.standard_worker_count + var.big_worker_count + count.index + 2 )
-}
-
-data "cloudinit_config" "k3s-init" {
-  count         = var.standard_worker_count + var.control_plane_count + var.big_worker_count + var.memory_worker_count
+data "cloudinit_config" "k3s-control-plane-init" {
+  count         = length(var.control_planes)
   gzip          = true
   base64_encode = true
 
@@ -282,10 +268,37 @@ data "cloudinit_config" "k3s-init" {
     filename     = "init.cfg"
     content_type = "text/cloud-config"
     content      = templatefile(
-      "${path.module}/templates/microos-k3s.yaml.tpl",
+      "${path.module}/templates/microos-k3s-master.yaml.tpl",
       {
-        hostname          = "k3s-node-${count.index}"
+        hostname          = "k3s-master-${count.index}"
         sshAuthorizedKeys = [var.ssh_pubkey]
+        k3s_token         = var.k3s_token
+        control_ip        = cidrhost(var.subnet_cidr, count.index + 2 )
+        cluster_cidr      = var.cluster_cidr
+        public_ip         = hcloud_primary_ip.control_plane.ip_address
+      }
+    )
+  }
+}
+
+data "cloudinit_config" "k3s-worker-init" {
+  count         = length(var.workers)
+  gzip          = true
+  base64_encode = true
+
+  part {
+    filename     = "init.cfg"
+    content_type = "text/cloud-config"
+    content      = templatefile(
+      "${path.module}/templates/microos-k3s-worker.yaml.tpl",
+      {
+        hostname          = "k3s-worker-${count.index}"
+        sshAuthorizedKeys = [var.ssh_pubkey]
+        k3s_token         = var.k3s_token
+        default_route_ip  = cidrhost(var.network_cidr, 1)
+        control_ip        = hcloud_server_network.control-plane-ips[0].ip
+        node_ip           = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 2 )
+
       }
     )
   }

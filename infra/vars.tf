@@ -1,38 +1,39 @@
 variable "hcloud_token" {
-  default = ""
-  type = string
+  type        = string
   description = "Project-specific API Key"
-  sensitive = true
+  sensitive   = true
+}
+
+variable "region" {
+  default = "hel1"
+  type    = string
+}
+
+variable "zone" {
+  default = "eu-central"
+  type    = string
+}
+
+variable "datacenter" {
+  default = "hel1-dc2"
+  type    = string
 }
 
 variable "ssh_pubkey" {
-  default = ""
-  type = string
+  type        = string
   description = "SSH public key for access to servers"
 }
 
-variable "control_plane_count" {
-  type = number
-  default = 1
-  description = "Number of control planes"
+variable "control_planes" {
+  type        = list(any)
+  description = "List of instances by type"
+  # Ex: ["cx11", "cx31]
 }
 
-variable "standard_worker_count" {
-  type = number
-  default = 2
-  description = "Number of standard worker nodes"
-}
-
-variable "big_worker_count" {
-  type = number
-  default = 1
-  description = "Number of big worker nodes"
-}
-
-variable "memory_worker_count" {
-  type = number
-  default = 1
-  description = "Number of memory worker nodes"
+variable "workers" {
+  type        = list(any)
+  description = "List of instances by type"
+  # Ex: ["cx11", "cx31]
 }
 
 variable "network_cidr" {
@@ -47,32 +48,36 @@ variable "services_cidr" {
   type = string
 }
 
-variable "standard_worker_instance" {
-  type = string
-  default = "cpx21"
-}
-
-variable "big_worker_instance" {
-  type = string
-  default = "cpx31"
-}
-
-variable "memory_worker_instance" {
-  type = string
-  default = "cx31"
-}
-
-variable "control_plane_instance" {
-  type = string
-  default = "cpx11"
-}
-
 variable "redis_instance" {
-  type = string
+  type    = string
   default = "cpx11"
 }
 
 variable "postgres_instance" {
-  type = string
+  type    = string
   default = "cpx11"
+}
+
+variable "postgres_enabled" {
+  default = false
+  type    = bool
+}
+
+variable "redis_enabled" {
+  default = false
+  type    = bool
+}
+
+variable "psql_redis_separate" {
+  default = false
+  type    = bool
+}
+
+variable "k3s_token" {
+  type = string
+}
+
+variable "cluster_cidr" {
+  type    = string
+  default = "10.16.0.0/16"
 }
