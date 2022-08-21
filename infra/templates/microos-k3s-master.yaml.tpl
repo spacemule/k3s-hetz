@@ -1,4 +1,5 @@
-# Stolen from https://raw.githubusercontent.com/kube-hetzner/terraform-hcloud-kube-hetzner/master/modules/host/templates/userdata.yaml.tpl
+#cloud-config
+# Based on https://raw.githubusercontent.com/kube-hetzner/terraform-hcloud-kube-hetzner/master/modules/host/templates/userdata.yaml.tpl
 
 ##Variables defined in this file:
 # k3s_token
@@ -8,16 +9,15 @@
 # sshAuthorizedKeys
 # public_ip
 
-#cloud-config
-
-# Enable private networking
-bootcmd:
-  - echo -e "BOOTPROTO='dhcp'\nSTARTMODE='auto'" > /etc/sysconfig/network/ifcfg-eth1
-
 write_files:
 
-# Enable routing on boot
+# Configure the private network interface
+- content: |
+    BOOTPROTO='dhcp'
+    STARTMODE='auto'
+  path: /etc/sysconfig/network/ifcfg-eth1
 
+# Enable routing on boot
 - content: |
     [Unit]
     Description=Start routing on boot
@@ -142,7 +142,7 @@ runcmd:
 
 # Installs k3s
 - curl -sfL https://get.k3s.io > /tmp/k3s.sh
-- INSTALL_K3S_EXEC="--tls-san ${public_ip} --cluster-cidr=${cluster_cidr} --kubelet-arg=cloud-provider=external --kubelet-arg=register-with-taints=node-role.kubernetes.io/control-plane:NoSchedule --kubelet-arg=register-with-taints=node-role.kubernetes.io/master:NoSchedule  --disable local-storage --disable servicelb --disable traefik --disable-cloud-controller --disable-network-policy --node-ip=${control_ip} --flannel-backend=wireguard --token=${k3s_token}" sh /tmp/k3s.sh
+- INSTALL_K3S_EXEC="--flannel-iface=eth1 --tls-san ${public_ip} --cluster-cidr=${cluster_cidr} --kubelet-arg=cloud-provider=external --kubelet-arg=register-with-taints=node-role.kubernetes.io/control-plane:NoSchedule --kubelet-arg=register-with-taints=node-role.kubernetes.io/master:NoSchedule  --disable local-storage --disable servicelb --disable traefik --disable-cloud-controller --disable-network-policy --node-ip=${control_ip} --flannel-backend=wireguard --token=${k3s_token}" sh /tmp/k3s.sh
 
 # Install packages
 - transactional-update --non-interactive --continue dup

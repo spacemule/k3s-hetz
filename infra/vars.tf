@@ -74,10 +74,16 @@ variable "psql_redis_separate" {
 }
 
 variable "k3s_token" {
-  type = string
+  type    = string
+  default = ""
 }
 
 variable "cluster_cidr" {
   type    = string
   default = "10.16.0.0/16"
+}
+
+variable "setup_complete" {
+  type    = bool
+  default = true
 }

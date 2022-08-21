@@ -6,6 +6,7 @@ module "k3s" {
   subnet_cidr    = "10.0.0.0/16"
   workers        = ["cpx11"]
   hcloud_token   = var.hcloud_token
-  k3s_token      = var.k3s_token
   ssh_pubkey     = var.ssh_pubkey
+  setup_complete = true
 }
+
