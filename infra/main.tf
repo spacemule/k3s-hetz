@@ -181,7 +181,7 @@ resource "hcloud_primary_ip" "control_plane" {
   name          = "control_plane_${random_id.ip-name.hex}"
   type          = "ipv4"
   assignee_type = "server"
-  auto_delete   = false
+  auto_delete   = true
   datacenter    = random_id.ip-name.keepers.datacenter
 
 }
@@ -297,6 +297,9 @@ data "cloudinit_config" "k3s-control-plane-init" {
         control_ip        = cidrhost(var.subnet_cidr, count.index + 2 )
         cluster_cidr      = var.cluster_cidr
         public_ip         = hcloud_primary_ip.control_plane.ip_address
+        region            = var.region
+        private_network   = hcloud_network.kube-net.name
+        hcloud_key        = var.hcloud_token
       }
     )
   }
