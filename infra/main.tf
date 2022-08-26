@@ -183,7 +183,6 @@ resource "hcloud_primary_ip" "control_plane" {
   assignee_type = "server"
   auto_delete   = true
   datacenter    = random_id.ip-name.keepers.datacenter
-
 }
 
 resource "hcloud_server" "control-plane" {
