@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"PersistentVolumeClaim","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"app","app.kubernetes.io/instance":"nextcloud","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"nextcloud","argocd.argoproj.io/instance":"nextcloud","helm.sh/chart":"nextcloud-3.0.2"},"name":"nextcloud-nextcloud","namespace":"nextcloud"},"spec":{"accessModes":["ReadWriteMany"],"resources":{"requests":{"storage":"15Gi"}},"storageClassName":"longhorn"}}
+    pv.kubernetes.io/bind-completed: "yes"
+    pv.kubernetes.io/bound-by-controller: "yes"
+    volume.beta.kubernetes.io/storage-provisioner: driver.longhorn.io
+    volume.kubernetes.io/storage-provisioner: driver.longhorn.io
+  creationTimestamp: "2022-08-07T00:46:44Z"
+  finalizers:
+  - kubernetes.io/pvc-protection
+  labels:
+    app.kubernetes.io/component: app
+    app.kubernetes.io/instance: nextcloud
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: nextcloud
+    argocd.argoproj.io/instance: nextcloud
+    helm.sh/chart: nextcloud-3.0.2
+  name: nextcloud-nextcloud
+  namespace: nextcloud
+  resourceVersion: "4382025"
+  uid: 20fadab8-637c-4103-b5bc-4a84dabc9edc
+spec:
+  accessModes:
+  - ReadWriteMany
+  resources:
+    requests:
+      storage: 15Gi
+  storageClassName: longhorn
+  volumeMode: Filesystem
+  volumeName: pvc-20fadab8-637c-4103-b5bc-4a84dabc9edc
+status:
+  accessModes:
+  - ReadWriteMany
+  capacity:
+    storage: 15Gi
+  phase: Bound
