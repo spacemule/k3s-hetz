@@ -168,6 +168,8 @@ spec:
           - name: NVIDIA_MIG_MONITOR_DEVICES
             value: all
         {{- end }}
+          - name: DP_DISABLE_HEALTHCHECKS
+            value: xids
         securityContext:
           {{- include "nvidia-device-plugin.securityContext" . | nindent 10 }}
         volumeMounts:
