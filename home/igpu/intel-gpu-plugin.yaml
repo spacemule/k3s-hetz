@@ -61,3 +61,4 @@ spec:
             type: DirectoryOrCreate
       nodeSelector:
         kubernetes.io/arch: amd64
+        gpu: intel

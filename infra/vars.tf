@@ -31,7 +31,7 @@ variable "big_worker_count" {
 
 variable "memory_worker_count" {
   type = number
-  default = 1
+  default = 0
   description = "Number of memory worker nodes"
 }
 
