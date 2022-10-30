@@ -10,10 +10,10 @@ apps:
 #    targetRevision: main
 #    namespace: kube-system
 
-#  - name: nextcloud
-#    path: cluster/apps/nextcloud
-#    namespace: nextcloud
-#    valueFiles: values.yaml
+  - name: nextcloud
+    path: cluster/apps/nextcloud
+    namespace: nextcloud
+    valueFiles: values.yaml
 
 #  - name: loki-stack
 #    path: cluster/apps/loki-stack
