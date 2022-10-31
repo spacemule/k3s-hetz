@@ -22,7 +22,7 @@ replicaCount: 3
 ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
 ##
 ingress:
-  enabled: false
+  enabled: true
   className: nginx
   annotations:
     nginx.ingress.kubernetes.io/proxy-body-size: 4G
@@ -377,7 +377,7 @@ persistence:
   ## A manually managed Persistent Volume and Claim
   ## Requires persistence.enabled: true
   ## If defined, PVC must be created manually before volume will be bound
-  # existingClaim: "nextcloud-nextcloud"
+  existingClaim: "nextcloud-nextcloud"
 
   accessMode: ReadWriteMany
   size: 15Gi
