@@ -16,7 +16,7 @@ podAnnotations: {}
 deploymentAnnotations: {}
 
 # Number of replicas to be deployed
-replicaCount: 3
+replicaCount: 1
 
 ## Allowing use of ingress controllers
 ## ref: https://kubernetes.io/docs/concepts/services-networking/ingress/
@@ -377,7 +377,7 @@ persistence:
   ## A manually managed Persistent Volume and Claim
   ## Requires persistence.enabled: true
   ## If defined, PVC must be created manually before volume will be bound
-  existingClaim: "nextcloud-nextcloud"
+  l;existingClaim: "nextcloud-nextcloud"
 
   accessMode: ReadWriteMany
   size: 15Gi
