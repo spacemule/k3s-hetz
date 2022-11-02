@@ -31,6 +31,8 @@ spec:
         env:
         - name: TZ
           value: "Asia/Jerusalem"
+        - name: VIRTUAL_HOST
+          value: "dns.spacemule.net"
         volumeMounts:
           - name: pihole-etc-mount
             mountPath: "/etc/pihole"
