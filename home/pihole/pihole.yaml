@@ -7,7 +7,7 @@ metadata:
   labels:
     app: pihole
 spec:
-  replicas: 1
+  replicas: 2
   strategy:
     type: Recreate
   selector:
@@ -28,22 +28,73 @@ spec:
       containers:
       - image: pihole/pihole:latest
         name: pihole
+        ports:
+        - containerPort: 80
+          name: pihole-admin
+          protocol: TCP
+        - containerPort: 53
+          name: dns-tcp
+          protocol: TCP
+        - containerPort: 53
+          name: dns-udp
+          protocol: UDP
         securityContext:
           capabilities: {}
         env:
         - name: TZ
-          value: "Asia/Jerusalem"
+          valueFrom:
+            configMapKeyRef:
+              name: pihole-config
+              key: TZ
         - name: VIRTUAL_HOST
-          value: "dns.spacemule.net"
+          valueFrom:
+            configMapKeyRef:
+              name: pihole-config
+              key: VIRTUAL_HOST
         volumeMounts:
-          - name: pihole-etc-mount
-            mountPath: "/etc/pihole"
-          - name: pihole-dnsmasq-mount
-            mountPath: "/etc/dnsmasq.d"
+          - name: pihole-ftl
+            mountPath: "/etc/pihole/pihole-FTL.conf"
+            subPath: pihole-FTL.conf
+          - name: pihole-setupvars
+            mountPath: "/etc/pihole/setupVars.conf"
+            subPath: setupVars.conf
+          - name: pihole-custom
+            mountPath: "/etc/pihole/custom.list"
+            subPath: custom.list
+          - name: pihole-adlists
+            mountPath: "/etc/pihole/adlists.list"
+            subPath: adlists.list
+          - name: pihole-dnsmasq
+            mountPath: "/etc/dnsmasq.d/01-k8s.conf"
+            subPath: 01-k8s.conf
       volumes:
-      - name: pihole-etc-mount
-        persistentVolumeClaim:
-          claimName: pihole-etc
-      - name: pihole-dnsmasq-mount
-        persistentVolumeClaim:
-          claimName: pihole-dnsmasq
+      - name: pihole-ftl
+        configMap:
+          name: pihole-ftl
+          items:
+            - key: pihole-FTL.conf
+              path: pihole-FTL.conf
+      - name: pihole-setupvars
+        configMap:
+          name: pihole-setupvars
+          items:
+            - key: setupVars.conf
+              path: setupVars.conf
+      - name: pihole-custom
+        configMap:
+          name: pihole-custom
+          items:
+            - key: custom.list
+              path: custom.list
+      - name: pihole-adlists
+        configMap:
+          name: pihole-adlists
+          items:
+            - key: adlists.list
+              path: adlists.list
+      - name: pihole-dnsmasq
+        configMap:
+          name: pihole-dnsmasq
+          items:
+            - key: 01-k8s.conf
+              path: 01-k8s.conf

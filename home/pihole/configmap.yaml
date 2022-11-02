@@ -1,0 +1,92 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-config
+  namespace: pihole
+  labels:
+    app: pihole
+data:
+  TZ: "Asia/Jerusalem"
+  VIRTUAL_HOST: "dns.spacemule.net"
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-adlists
+  namespace: pihole
+  labels:
+    app: pihole
+data:
+  adlists.list: |
+    https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-custom
+  namespace: pihole
+  labels:
+    app: pihole
+data:
+  custom.list: |
+    10.42.0.1 dns.spacemule.net
+    192.168.10.10 jelly.spacemule.net
+    192.168.10.10 transmission.spacemule.net
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-setupvars
+  namespace: pihole
+  labels:
+    app: pihole
+data:
+  setupVars.conf: |
+    PIHOLE_INTERFACE=eth0
+    WEBPASSWORD=b2cf15996189322b00b314fc7ede20da4e86f0db853b29381a9f805950682dbf
+    QUERY_LOGGING=false
+    BLOCKING_ENABLED=true
+    DNSMASQ_LISTENING=single
+    PIHOLE_DNS_1=8.8.8.8
+    PIHOLE_DNS_2=8.8.4.4
+    PIHOLE_DNS_3=9.9.9.10
+    PIHOLE_DNS_4=149.112.112.10
+    PIHOLE_DNS_5=1.1.1.1
+    PIHOLE_DNS_6=1.0.0.1
+    DNS_FQDN_REQUIRED=false
+    DNS_BOGUS_PRIV=false
+    DNSSEC=false
+    REV_SERVER=false
+    INSTALL_WEB_SERVER=true
+    INSTALL_WEB_INTERFACE=true
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-ftl
+  namespace: pihole
+  labels:
+    app: pihole
+data:
+  pihole-FTL.conf: |
+    #; Pi-hole FTL config file
+    #; Comments should start with #; to avoid issues with PHP and bash reading this file
+    RATE_LIMIT=1000/60
+    LOCAL_IPV4=0.0.0.0
+---
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-dnsmasq
+  namespace: pihole
+  labels:
+    app: pihole
+data:
+  01-k8s.conf: |
+    server=8.8.8.8
+    server=8.8.4.4
+    server=9.9.9.10
+    server=149.112.112.10
+    server=1.1.1.1
+    server=1.0.0.1
+    interface=eth0
