@@ -3,8 +3,14 @@ kind: Ingress
 metadata:
   name: pihole
   namespace: pihole
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
 spec:
   ingressClassName: nginx
+  tls:
+    - hosts:
+        - dns.spacemule.net
+      secretName: pihole-tls-secret
   rules:
     - host: dns.spacemule.net
       http:
