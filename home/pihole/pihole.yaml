@@ -18,6 +18,16 @@ spec:
       labels:
         app: pihole
     spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - pihole
+              topologyKey: kubernetes.io/hostname
       dnsPolicy: "None"
       dnsConfig:
         nameservers:
