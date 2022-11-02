@@ -23,8 +23,6 @@ spec:
           - 9.9.9.9
           - 1.1.1.1
           - 9.9.9.10
-      nodeSelector:
-        node-role.kubernetes.io/master: "true"
       containers:
       - image: pihole/pihole:latest
         name: pihole
@@ -40,8 +38,8 @@ spec:
             mountPath: "/etc/dnsmasq.d"
       volumes:
       - name: pihole-etc-mount
-        hostPath:
-          path: /var/mnt/pihole/etc
+        persistentVolumeClaim:
+          claimName: pihole-etc
       - name: pihole-dnsmasq-mount
-        hostPath:
-          path: /var/mnt/pihole/dnsmasq
+        persistentVolumeClaim:
+          claimName: pihole-dnsmasq
