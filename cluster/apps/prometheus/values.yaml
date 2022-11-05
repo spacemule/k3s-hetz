@@ -558,11 +558,13 @@ nodeExporter:
   ## Node tolerations for node-exporter scheduling to nodes with taints
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
   ##
-  tolerations: []
-    # - key: "key"
-    #   operator: "Equal|Exists"
-    #   value: "value"
-    #   effect: "NoSchedule|PreferNoSchedule|NoExecute(1.6 only)"
+  tolerations:
+   - key: "node-role.kubernetes.io/control-plane"
+     operator: "Exists"
+     effect: "NoSchedule"
+   - key: "node-role.kubernetes.io/master"
+     operator: "Exists"
+     effect: "NoSchedule"
 
   ## Node labels for node-exporter pod assignment
   ## Ref: https://kubernetes.io/docs/user-guide/node-selection/

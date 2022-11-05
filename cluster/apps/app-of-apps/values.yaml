@@ -84,3 +84,7 @@ apps:
   - name: cronjobs
     path: cluster/apps/cronjobs
     namespace: kube-system
+
+  - name: prometheus
+    path: cluster/apps/prometheus
+    namespace: monitoring
