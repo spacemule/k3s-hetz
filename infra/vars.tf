@@ -82,8 +82,3 @@ variable "cluster_cidr" {
   type    = string
   default = "10.16.0.0/16"
 }
-
-variable "setup_complete" {
-  type    = bool
-  default = true
-}

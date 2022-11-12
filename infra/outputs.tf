@@ -14,6 +14,6 @@ output "db_ip" {
 #  value = hcloud_server_network.redis-ip.ip
 #}
 #
-output "lb_ip" {
-  value = hcloud_load_balancer.k3s_lb.ipv4
-}
+#output "lb_ip" {
+#  value = hcloud_load_balancer.k3s_lb.ipv4
+#}

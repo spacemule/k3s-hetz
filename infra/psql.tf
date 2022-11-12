@@ -15,7 +15,7 @@ resource "hcloud_server" "postgres" {
   firewall_ids       = [hcloud_firewall.default.id]
 
   public_net {
-    ipv4_enabled = var.setup_complete == false ? true : false
+    ipv4_enabled = false
     ipv6_enabled = false
   }
 

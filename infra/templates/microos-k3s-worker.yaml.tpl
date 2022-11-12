@@ -9,16 +9,16 @@
 # node_ip
 # sshAuthorizedKeys
 
-bootcmd:
-  - if [ $(ls -A /sys/class/net/ |grep eth |wc -l) -lt "2" ]; then ip route add default via ${default_route_ip} dev eth0; sed -i "s/eth1/eth0/g" /etc/systemd/system/k3s-agent.service; fi
+#bootcmd:
+#  - ip route add default via ${default_route_ip} dev eth0
 
 write_files:
-
+#
 # Configure the private network interface
-- content: |
-    BOOTPROTO='dhcp'
-    STARTMODE='auto'
-  path: /etc/sysconfig/network/ifcfg-eth1
+#- content: |
+#    BOOTPROTO='dhcp'
+#    STARTMODE='auto'
+#  path: /etc/sysconfig/network/ifcfg-eth1
 
 # Enable IP forwarding
 - content: |
@@ -80,7 +80,7 @@ runcmd:
 
 # Install K3S
 - curl -sfL https://get.k3s.io > /tmp/k3s.sh
-- INSTALL_K3S_EXEC="--flannel-iface=eth1 --node-ip=${node_ip} --kubelet-arg=cloud-provider=external" K3S_TOKEN="${k3s_token}" K3S_URL="https://${control_ip}:6443" sh /tmp/k3s.sh
+- INSTALL_K3S_EXEC="--flannel-iface=eth0 --node-ip=${node_ip} --kubelet-arg=cloud-provider=external" K3S_TOKEN="${k3s_token}" K3S_URL="https://${control_ip}:6443" sh /tmp/k3s.sh
 
 # Install packages
 - transactional-update --non-interactive --continue dup

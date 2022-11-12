@@ -7,10 +7,6 @@ locals {
   ]
 }
 
-data "hcloud_image" "microOS" {
-  with_selector = "type=base"
-}
-
 resource "hcloud_network" "kube-net" {
   ip_range = var.network_cidr
   # 10.0.0.0 - 10.15.255.255
@@ -181,7 +177,7 @@ resource "hcloud_primary_ip" "control_plane" {
   name          = "control_plane_${random_id.ip-name.hex}"
   type          = "ipv4"
   assignee_type = "server"
-  auto_delete   = true
+  auto_delete   = false
   datacenter    = random_id.ip-name.keepers.datacenter
 }
 
@@ -190,7 +186,7 @@ resource "hcloud_server" "control-plane" {
   name               = "k3s-master-${count.index}"
   server_type        = var.control_planes[count.index]
   placement_group_id = hcloud_placement_group.k8s-places.id
-  image              = data.hcloud_image.microOS.id
+  image              = "rocky-9"
   location           = var.region
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-control-plane-init[count.index].rendered
@@ -210,7 +206,7 @@ resource "hcloud_server" "control-plane" {
 
   network {
     network_id = hcloud_network.kube-net.id
-    ip         = cidrhost(var.subnet_cidr, count.index + 2 )
+    ip         = cidrhost(var.subnet_cidr, count.index + 1 )
   }
 
   depends_on = [
@@ -219,8 +215,8 @@ resource "hcloud_server" "control-plane" {
 }
 
 resource "time_sleep" "server_start" {
-  depends_on = [hcloud_server.control-plane]
-  create_duration = "120s"
+  depends_on      = [hcloud_server.control-plane]
+  create_duration = "300s"
 }
 
 resource "hcloud_server" "worker" {
@@ -228,27 +224,23 @@ resource "hcloud_server" "worker" {
   name               = "k3s-worker-${count.index}"
   server_type        = var.workers[count.index]
   placement_group_id = hcloud_placement_group.k8s-places.id
-  image              = data.hcloud_image.microOS.id
+  image              = "rocky-9"
   location           = var.region
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-worker-init[count.index].rendered
-  connection {
-
-  }
-  firewall_ids       = [hcloud_firewall.default.id, hcloud_firewall.k8s-wall-of-china.id]
-  labels             = {
+  labels = {
     "job" : "k8s"
     "type" : "worker"
   }
 
   public_net {
-    ipv4_enabled = var.setup_complete == false ? true : false
+    ipv4_enabled = false
     ipv6_enabled = false
   }
 
   network {
     network_id = hcloud_network.kube-net.id
-    ip         = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 2 )
+    ip         = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 1 )
   }
 
   lifecycle {
@@ -264,18 +256,18 @@ resource "hcloud_server_network" "control-plane-ips" {
   count      = length(hcloud_server.control-plane)
   server_id  = hcloud_server.control-plane[count.index].id
   network_id = hcloud_network.kube-net.id
-  ip         = cidrhost(var.subnet_cidr, count.index + 2 )
+  ip         = cidrhost(var.subnet_cidr, count.index + 1 )
 }
 
 resource "hcloud_server_network" "worker-ips" {
   count      = length(hcloud_server.worker)
   server_id  = hcloud_server.worker[count.index].id
   network_id = hcloud_network.kube-net.id
-  ip         = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 2 )
+  ip         = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 1 )
 }
 
 resource "random_password" "k3s_token" {
-  length = 48
+  length  = 48
   special = false
 }
 
@@ -288,12 +280,12 @@ data "cloudinit_config" "k3s-control-plane-init" {
     filename     = "init.cfg"
     content_type = "text/cloud-config"
     content      = templatefile(
-      "${path.module}/templates/microos-k3s-master.yaml.tpl",
+      "${path.module}/templates/rocky-k3s-master.yaml.tpl",
       {
         hostname          = "k3s-master-${count.index}"
         sshAuthorizedKeys = [var.ssh_pubkey]
         k3s_token         = var.k3s_token == "" ? random_password.k3s_token.result : var.k3s_token
-        control_ip        = cidrhost(var.subnet_cidr, count.index + 2 )
+        control_ip        = cidrhost(var.subnet_cidr, count.index + 1 )
         cluster_cidr      = var.cluster_cidr
         public_ip         = hcloud_primary_ip.control_plane.ip_address
         region            = var.region
@@ -313,14 +305,14 @@ data "cloudinit_config" "k3s-worker-init" {
     filename     = "init.cfg"
     content_type = "text/cloud-config"
     content      = templatefile(
-      "${path.module}/templates/microos-k3s-worker.yaml.tpl",
+      "${path.module}/templates/rocky-k3s-worker.yaml.tpl",
       {
         hostname          = "k3s-worker-${count.index}"
         sshAuthorizedKeys = [var.ssh_pubkey]
         k3s_token         = var.k3s_token == "" ? random_password.k3s_token.result : var.k3s_token
         default_route_ip  = cidrhost(var.network_cidr, 1)
         control_ip        = hcloud_server_network.control-plane-ips[0].ip
-        node_ip           = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 2 )
+        node_ip           = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 1 )
 
       }
     )
