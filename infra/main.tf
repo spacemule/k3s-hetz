@@ -212,6 +212,12 @@ resource "hcloud_server" "control-plane" {
   depends_on = [
     hcloud_network_subnet.k8s-sub
   ]
+
+  lifecycle {
+    ignore_changes = [
+      user_data
+    ]
+  }
 }
 
 resource "time_sleep" "server_start" {

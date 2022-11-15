@@ -13,6 +13,14 @@ global:
         value: "linux"
         effect: "NoSchedule"
         operator: "Equal"
+      - key: "node-role.kubernetes.io/control-plane"
+        value: "true"
+        effect: "NoSchedule"
+        operator: "Equal"
+      - key: "node-role.kubernetes.io/master"
+        value: "true"
+        effect: "NoSchedule"
+        operator: "Equal"
       # Select Linux nodes
       nodeSelector:
         kubernetes.io/os: "linux"
