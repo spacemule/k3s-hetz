@@ -34,6 +34,7 @@ variable "workers" {
   type        = list(any)
   description = "List of instances by type"
   # Ex: ["cx11", "cx31]
+}
 
 variable "network_cidr" {
   type = string
