@@ -98,6 +98,10 @@ spec:
                  # If you find yourself here wondering why there is no
                  # :latest tag on Docker Hub,see the FAQ in the README
           imagePullPolicy: IfNotPresent
+          resources:
+            requests:
+              cpu: 10m
+              memory: 20Mi
           securityContext:
             privileged: true # Give permission to nsenter /proc/1/ns/mnt
           env:

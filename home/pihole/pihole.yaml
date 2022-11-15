@@ -61,6 +61,20 @@ spec:
             configMapKeyRef:
               name: pihole-config
               key: VIRTUAL_HOST
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "250m"
+        livenessProbe:
+          tcpSocket:
+            port: 53
+          initialDelaySeconds: 25
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 53
+          initialDelaySeconds: 25
+          periodSeconds: 5
         volumeMounts:
           - name: pihole-ftl
             mountPath: "/etc/pihole/pihole-FTL.conf"

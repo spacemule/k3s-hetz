@@ -7,6 +7,8 @@ metadata:
   labels:
     app: jellyfin
 spec:
+  strategy:
+    type: Recreate
   replicas: 1
   selector:
     matchLabels:
@@ -31,6 +33,9 @@ spec:
         resources:
           limits:
             gpu.intel.com/i915: 1
+          requests:
+            memory: "1576Mi"
+            cpu: "1000m"
         securityContext:
           capabilities: {}
         volumeMounts:
@@ -47,6 +52,18 @@ spec:
         ports:
           - containerPort: 8096
             name: jellyfin-http
+        livenessProbe:
+          httpGet:
+            path: /web/index.html
+            port: jellyfin-http
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /web/index.html
+            port: jellyfin-http
+          initialDelaySeconds: 60
+          timeoutSeconds: 5
       volumes:
       - name: jellyfin-config-mount
         hostPath:
