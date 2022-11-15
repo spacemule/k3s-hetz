@@ -1,21 +1,27 @@
 data "hcloud_image" "postgres" {
-  with_selector = "type=db"
+  count         = var.postgres_enabled == true ? 1 : 0
+  with_selector = "service=db"
 }
 
 resource "hcloud_server" "postgres" {
+  count              = var.postgres_enabled == true ? 1 : 0
   name               = "postgres"
   server_type        = var.postgres_instance
   placement_group_id = hcloud_placement_group.k8s-places.id
-  image              = data.hcloud_image.postgres.id
-  location           = "hel1"
+  image              = data.hcloud_image.postgres[0].id
+  location           = var.region
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
-#  user_data          = data.cloudinit_config.postgres-init.rendered
-  user_data          = data.cloudinit_config.redis-init.rendered
-  firewall_ids       = []
+  user_data          = data.cloudinit_config.postgres-init[count.index].rendered
+  firewall_ids       = [hcloud_firewall.default.id]
 
   public_net {
-    ipv4_enabled = true
+    ipv4_enabled = false
     ipv6_enabled = false
+  }
+
+  network {
+    network_id = hcloud_network.kube-net.id
+    ip         = cidrhost(var.services_cidr, 3 )
   }
 
   depends_on = [
@@ -24,24 +30,14 @@ resource "hcloud_server" "postgres" {
 }
 
 resource "hcloud_server_network" "postgres-ip" {
-  server_id  = hcloud_server.postgres.id
+  count      = var.postgres_enabled == true ? 1 : 0
+  server_id  = hcloud_server.postgres[0].id
   network_id = hcloud_network.kube-net.id
   ip         = cidrhost(var.services_cidr, 3 )
 }
 
-resource "hcloud_network_route" "wireguard" {
-  destination = "192.168.10.10/32"
-  gateway     = "10.15.1.3"
-  network_id  = hcloud_network.kube-net.id
-}
-
-resource "hcloud_network_route" "dns" {
-  destination = "10.42.0.1/32"
-  gateway     = "10.15.1.3"
-  network_id  = hcloud_network.kube-net.id
-}
-
 data "cloudinit_config" "postgres-init" {
+  count         = var.postgres_enabled == true ? 1 : 0
   gzip          = true
   base64_encode = true
 
@@ -49,10 +45,12 @@ data "cloudinit_config" "postgres-init" {
     filename     = "init.cfg"
     content_type = "text/cloud-config"
     content      = templatefile(
-      "${path.module}/templates/microos.yaml.tpl",
+      "${path.module}/templates/microos-db.yaml.tpl",
       {
-        hostname          = "postgres"
+        hostname          = "db"
         sshAuthorizedKeys = [var.ssh_pubkey]
+        default_route_ip  = cidrhost(var.network_cidr, 1)
+        private_ip        = cidrhost(var.services_cidr, 3 )
       }
     )
   }

@@ -9,3 +9,5 @@ test-container.yaml
 *.lock.hcl
 *.tfstate
 *.tfstate.backup
+**/.terraform
+**/.terraform/*
