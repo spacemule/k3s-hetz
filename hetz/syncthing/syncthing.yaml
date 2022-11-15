@@ -1,0 +1,58 @@
+# Save the output of this file and use kubectl create -f to import
+# it into Kubernetes.
+#
+# Created with podman-4.1.1
+
+# NOTE: If you generated this yaml from an unprivileged and rootless podman container on an SELinux
+# enabled system, check the podman generate kube man page for steps to follow to ensure that your pod/container
+# has the right permissions to access the volumes added.
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: syncthing
+  name: syncthing-deployment
+  labels:
+    app: syncthing
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: syncthing
+  template:
+    metadata:
+      labels:
+        app: syncthing
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - image: docker.io/syncthing/syncthing:latest
+        name: syncthing
+        env:
+        - name: STGUIADDRESS
+          value: "0.0.0.0:8384"
+        securityContext:
+          capabilities: {}
+          runAsGroup: 1000
+          runAsUser: 1000
+        stdin: true
+        tty: true
+        volumeMounts:
+          - name: syncthing-mount
+            mountPath: /var/syncthing
+        ports:
+          - containerPort: 8384
+            name: syncthing-gui
+          - containerPort: 22000
+            name: syncthing-tcp
+          - containerPort: 22000
+            protocol: UDP
+            name: syncthing-udp
+          - containerPort: 22017
+            protocol: UDP
+            name: syncthing-data
+      volumes:
+      - name: syncthing-mount
+        persistentVolumeClaim:
+          claimName: syncthing-pvc

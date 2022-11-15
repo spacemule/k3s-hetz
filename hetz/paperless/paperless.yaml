@@ -1,0 +1,166 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: paperless
+  labels:
+    app: paperless
+  name: paperless
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: paperless
+  template:
+    metadata:
+      labels:
+        app: paperless
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+      - args:
+        - /usr/local/bin/paperless_cmd.sh
+        ports:
+        - containerPort: 8000
+          name: http
+        resources:
+          requests:
+            memory: "768Mi"
+            cpu: "1000m"
+          limits:
+            memory: "768Mi"
+            cpu: "1000m"
+        env:
+        - name: PAPERLESS_URL
+          value: "https://docs.spacemule.net"
+        - name: PAPERLESS_WEBSERVER_WORKERS
+          value: "4"
+        - name: PAPERLESS_CONSUMER_RECURSIVE
+          value: "true"
+        - name: PAPERLESS_REDIS
+          value: redis://10.15.1.2:6379
+        - name: PAPERLESS_OCR_LANGUAGES
+          value: heb
+        - name: PAPERLESS_TIKA_ENABLED
+          value: "true"
+        - name: PAPERLESS_TIKA_GOTENBERG_ENDPOINT
+          value: http://gotenberg-service:3000
+        - name: PAPERLESS_CONSUMER_DELETE_DUPLICATES
+          value: "true"
+        - name: PAPERLESS_TIKA_ENDPOINT
+          value: http://tika-service:9998
+        - name: PAPERLESS_TIME_ZONE
+          value: Asia/Jerusalem
+        - name: PAPERLESS_DBHOST
+          value: 10.15.1.3
+        - name: PAPERLESS_SECRET_KEY
+          valueFrom:
+            secretKeyRef:
+              name: paperless-secret
+              key: paperless-key
+              optional: false
+        - name: PAPERLESS_DBPASS
+          valueFrom:
+            secretKeyRef:
+              name: paperless-secret
+              key: paperless-db-pass
+              optional: false
+        - name: PAPERLESS_TRASH_DIR
+          value: /usr/src/paperless/trash
+        image: ghcr.io/paperless-ngx/paperless-ngx:latest
+        name: paperless-ng
+        securityContext:
+          capabilities: {}
+        volumeMounts:
+        - name: paperless-data-mount
+          mountPath: /usr/src/paperless/data
+        - name: paperless-media-mount
+          mountPath: /usr/src/paperless/media
+        - name: consumption
+          mountPath: /usr/src/paperless/consume
+        - name: trash
+          mountPath: /usr/src/paperless/trash
+      restartPolicy: Always
+      volumes:
+      - name: paperless-data-mount
+        persistentVolumeClaim:
+          claimName: paperless-data-pvc
+      - name: paperless-media-mount
+        persistentVolumeClaim:
+          claimName: paperless-media-pvc
+      - name: consumption
+        emptyDir: {}
+      - name: trash
+        emptyDir: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: paperless
+  labels:
+    app: tika
+  name: tika
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: tika
+  template:
+    metadata:
+      labels:
+        app: tika
+    spec:
+      containers:
+        - image: docker.io/apache/tika:latest
+          resources:
+            requests:
+              memory: "256Mi"
+              cpu: "500m"
+            limits:
+              memory: "256Mi"
+              cpu: "500m"
+          name: tika
+          ports:
+            - containerPort: 9998
+              name: tika
+          securityContext:
+            capabilities: {}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: paperless
+  labels:
+    app: gotenberg
+  name: gotenberg
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: gotenberg
+  template:
+    metadata:
+      labels:
+        app: gotenberg
+    spec:
+      containers:
+        - args:
+            - gotenberg
+          env:
+            - name: DISABLE_GOOGLE_CHROME
+              value: "1"
+          image: docker.io/thecodingmachine/gotenberg:6
+          ports:
+            - containerPort: 3000
+              name: gotenberg
+          name: gotenberg
+          resources:
+            requests:
+              memory: "512Mi"
+              cpu: "1000m"
+            limits:
+              memory: "512Mi"
+              cpu: "1000m"
+          securityContext:
+            capabilities: {}

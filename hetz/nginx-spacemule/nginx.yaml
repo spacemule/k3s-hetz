@@ -1,0 +1,45 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: nginx-static
+  name: nginx-spacemule-deployment
+  labels:
+    app: nginx-spacemule
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-spacemule
+  template:
+    metadata:
+      labels:
+        app: nginx-spacemule
+    spec:
+      containers:
+      - image: nginx:stable
+        name: nginx
+        securityContext:
+          capabilities: {}
+        stdin: true
+        tty: true
+        volumeMounts:
+          - name: nginx-spacemule-mount
+            mountPath: /usr/share/nginx/html
+          - name: nginx-conf-spacemule
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+            readOnly: true
+        ports:
+          - containerPort: 80
+            name: nginx-http
+      volumes:
+      - name: nginx-spacemule-mount
+        persistentVolumeClaim:
+          claimName: nginx-spacemule-pvc
+      - name: nginx-conf-spacemule
+        configMap:
+          name: nginx-conf-spacemule
+          items:
+            - key: nginx.conf
+              path: nginx.conf
