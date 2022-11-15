@@ -5,3 +5,5 @@ vault.key
 /ansible/k3s/kubeconfig.yml/
 inventory.yml
 kubeconfig.yml
+test-container.yaml
+*.lock.hcl
