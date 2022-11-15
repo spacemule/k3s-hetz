@@ -48,13 +48,13 @@ hostname: ${hostname}
 preserve_hostname: true
 
 runcmd:
+# Remove hetzner networking helpers---more harm than good
+- dnf remove -y hc-utils
 # Add a connection on private iface
-- nmcli connection add type ethernet con-name private ifname enp7s0 ip4 ${node_ip}/32 gw4 ${default_route_ip} autoconnect yes
+- nmcli connection add type ethernet con-name private ifname enp7s0 autoconnect yes
 - nmcli connection modify private ipv4.dns 9.9.9.9
 - nmcli connection up private
-
-# We set Cloudflare DNS servers, followed by Google as a backup
-#- [sed, '-i', 's/NETCONFIG_DNS_STATIC_SERVERS=""/NETCONFIG_DNS_STATIC_SERVERS="1.1.1.1 1.0.0.1 8.8.8.8"/g', /etc/sysconfig/network/config]
+- nmcli device set enp7s0 managed yes
 
 # Bounds the amount of logs that can survive on the system
 - [sed, '-i', 's/#SystemMaxUse=/SystemMaxUse=3G/g', /etc/systemd/journald.conf]
