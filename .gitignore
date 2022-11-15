@@ -7,3 +7,5 @@ inventory.yml
 kubeconfig.yml
 test-container.yaml
 *.lock.hcl
+*.tfstate
+*.tfstate.backup
