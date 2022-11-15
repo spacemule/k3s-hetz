@@ -166,6 +166,8 @@ write_files:
                             value: "${hcloud_key}"
                           - name: HCLOUD_NETWORK
                             value: "${private_network}"
+                          - name: HCLOUD_LOAD_BALANCERS_ENABLED
+                            value: "false"
                 priorityClassName: system-cluster-critical
   path: /root/manifests/ccm.yaml
 
