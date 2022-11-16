@@ -3,6 +3,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: syncthing-gui-service
+  namespace: syncthing
 spec:
   type: ClusterIP
   selector:
@@ -17,23 +18,21 @@ apiVersion: v1
 kind: Service
 metadata:
   name: syncthing-service
+  namespace: syncthing
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
     app: syncthing
   ports:
-    - name: syncthing-tcp-service
+    - name: syncthing-tcp-svc
       protocol: TCP
       port: 22000
       targetPort: syncthing-tcp
-      nodePort: 32000
     - name: syncthing-udp-service
       protocol: UDP
       port: 22001
       targetPort: syncthing-udp
-      nodePort: 32001
-    - name: syncthing-data-service
+    - name: syncthing-data-svc
       protocol: UDP
       port: 22017
       targetPort: syncthing-data
-      nodePort: 32017
