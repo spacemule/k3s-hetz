@@ -16,6 +16,13 @@ spec:
       labels:
         app: nginx-zahava
     spec:
+      initContainers:
+        - name: init-site
+          image: bitnami/git:2.38.1
+          command: ["/bin/sh", "-c", "git clone https://github.com/spacemule/hugo-sites.git /hugo-sites"]
+          volumeMounts:
+            - name: nginx-zahava-mount
+              mountPath: /hugo-sites
       containers:
       - image: nginx:stable
         name: nginx
@@ -26,6 +33,7 @@ spec:
         volumeMounts:
           - name: nginx-zahava-mount
             mountPath: /usr/share/nginx/html
+            subPath: zahava
           - name: nginx-conf-zahava
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
@@ -35,8 +43,8 @@ spec:
             name: nginx-http
       volumes:
       - name: nginx-zahava-mount
-        persistentVolumeClaim:
-          claimName: nginx-zahava-pvc
+        emptyDir:
+          sizeLimit: 250Mi
       - name: nginx-conf-zahava
         configMap:
           name: nginx-conf-zahava

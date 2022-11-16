@@ -16,16 +16,22 @@ spec:
       labels:
         app: nginx-spacemule
     spec:
+      initContainers:
+      - name: init-site
+        image: bitnami/git:2.38.1
+        command: ["/bin/sh", "-c", "git clone https://github.com/spacemule/hugo-sites.git /hugo-sites"]
+        volumeMounts:
+          - name: nginx-spacemule-mount
+            mountPath: /hugo-sites
       containers:
       - image: nginx:stable
         name: nginx
         securityContext:
           capabilities: {}
-        stdin: true
-        tty: true
         volumeMounts:
           - name: nginx-spacemule-mount
             mountPath: /usr/share/nginx/html
+            subPath: spacemule/public
           - name: nginx-conf-spacemule
             mountPath: /etc/nginx/nginx.conf
             subPath: nginx.conf
@@ -35,8 +41,8 @@ spec:
             name: nginx-http
       volumes:
       - name: nginx-spacemule-mount
-        persistentVolumeClaim:
-          claimName: nginx-spacemule-pvc
+        emptyDir:
+          sizeLimit: 250Mi
       - name: nginx-conf-spacemule
         configMap:
           name: nginx-conf-spacemule
