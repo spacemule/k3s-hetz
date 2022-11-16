@@ -29,6 +29,22 @@ spec:
       containers:
       - image: docker.io/syncthing/syncthing:latest
         name: syncthing
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 8384
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 8384
+          initialDelaySeconds: 30
+          timeoutSeconds: 5
+        resources:
+          requests:
+            cpu: 500m
+            memory: 756Mi
         env:
         - name: STGUIADDRESS
           value: "0.0.0.0:8384"
