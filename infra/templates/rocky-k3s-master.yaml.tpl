@@ -49,6 +49,33 @@ write_files:
     WantedBy=default.target
   path: /etc/systemd/system/manifests.service
 
+- content: |
+    [Unit]
+    Description=Delete job manifests on boot
+
+    [Timer]
+    OnBootSec=30
+    Persistent=true
+
+    [Install]
+    WantedBy=timers.target
+  path: /etc/systemd/system/delete-jobs.timer
+
+- content: |
+    [Unit]
+    Description=Delete job manifests
+    After=k3s.service
+    After=manifests.service
+
+    [Service]
+    Type=simple
+    Environment="KUBECONFIG=/etc/rancher/k3s/k3s.yaml"
+    ExecStart=kubectl delete -f /root/manifests/routing.yaml
+
+    [Install]
+    WantedBy=default.target
+  path: /etc/systemd/system/delete-jobs.service
+
 # Enable routing
 
 - content: |
@@ -208,7 +235,7 @@ runcmd:
 
 # Installs k3s
 - curl -sfL https://get.k3s.io > /tmp/k3s.sh
-- INSTALL_K3S_EXEC="--flannel-iface=enp7s0 --tls-san ${public_ip} --cluster-cidr=${cluster_cidr} --kubelet-arg=cloud-provider=external --node-taint=node-role.kubernetes.io/control-plane:NoSchedule --node-taint=node-role.kubernetes.io/master:NoSchedule  --disable local-storage --disable traefik --disable-cloud-controller --disable-network-policy --node-external-ip=${public_ip} --node-ip=${control_ip} --flannel-backend=wireguard-native --token=${k3s_token}" sh /tmp/k3s.sh
+- INSTALL_K3S_EXEC="--flannel-iface=enp7s0 --tls-san ${public_ip} --cluster-cidr=${cluster_cidr} --kubelet-arg=cloud-provider=external --node-taint=node-role.kubernetes.io/control-plane:NoSchedule --node-taint=node-role.kubernetes.io/master:NoSchedule  --disable local-storage --disable traefik --disable-cloud-controller --disable-network-policy --node-external-ip=${public_ip} --node-ip=${control_ip} --token=${k3s_token}" sh /tmp/k3s.sh
 
 # Install packages
 - dnf update -y
@@ -216,7 +243,7 @@ runcmd:
 
 # Enables routing and automatic updates
 - systemctl daemon-reload
-- systemctl enable manifests.timer
+- systemctl enable manifests.timer delete-jobs.timer
 - systemctl enable --now dnf-automatic.timer
 - systemctl disable --now firewalld nm-cloud-setup.service nm-cloud-setup.timer
 

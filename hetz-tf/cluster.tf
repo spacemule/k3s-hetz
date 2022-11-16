@@ -9,3 +9,22 @@ module "k3s" {
   ssh_pubkey       = var.ssh_pubkey
   postgres_enabled = false
 }
+
+resource "hcloud_firewall" "allow_wireguard" {
+  name = "allow_wireguard"
+  rule {
+    direction  = "in"
+    protocol   = "udp"
+    port       = "51820"
+    source_ips = [
+      "0.0.0.0/0",
+    ]
+  }
+}
+
+resource "hcloud_firewall_attachment" "allow_wireguard" {
+  firewall_id = hcloud_firewall.allow_wireguard.id
+  server_ids = [
+    module.k3s.hcloud_master_id
+  ]
+}

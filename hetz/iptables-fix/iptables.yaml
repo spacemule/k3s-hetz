@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: iptables
+spec:
+  template:
+    spec:
+      hostNetwork: true
+      containers:
+      - name: iptables
+        image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/opensuse/iptables
+        imagePullPolicy: Always
+        command: ["/bin/sh", "-c", "--",
+          "iptables -A FORWARD -i enp7s0 -j ACCEPT; \
+          iptables -A FORWARD -o enp7s0  -j ACCEPT; \
+          iptables -t nat -A POSTROUTING -o eth0 -j MASQUERADE; \
+          iptables -t nat -A POSTROUTING -o enp7s0 -j MASQUERADE"]
+        securityContext:
+          capabilities:
+            add: ["NET_ADMIN", "SYS_ADMIN"]
+      restartPolicy: OnFailure
+      nodeSelector:
+        node-role.kubernetes.io/master: "true"
+      tolerations:
+        - key: "node-role.kubernetes.io/control-plane"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node-role.kubernetes.io/master"
+          operator: "Exists"
+          effect: "NoSchedule"
+        - key: "node.cloudprovider.kubernetes.io/uninitialized"
+          operator: "Exists"
+          effect: "NoSchedule"
