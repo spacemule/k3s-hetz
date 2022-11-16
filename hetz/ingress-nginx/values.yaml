@@ -924,14 +924,14 @@ imagePullSecrets: []
 # -- TCP service key-value pairs
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
 ##
-tcp: {}
+tcp:
+  22000: "syncthing/syncthing-service:22000"
 #  8080: "default/example-tcp-svc:9000"
 
 # -- UDP service key-value pairs
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
 ##
 udp:
-  22000: "syncthing/syncthing-service:22000"
   22001: "syncthing/syncthing-service:22001"
   22017: "syncthing/syncthing-service:22017"
   51820: "wireguard/wireguard:51820"
