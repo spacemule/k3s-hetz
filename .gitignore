@@ -11,3 +11,8 @@ test-container.yaml
 *.tfstate.backup
 **/.terraform
 **/.terraform/*
+secret*.yaml
+unsealed
+**/unsealed
+*.key
+*.pem
