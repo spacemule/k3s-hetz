@@ -30,17 +30,13 @@ spec:
       - image: docker.io/syncthing/syncthing:latest
         name: syncthing
         livenessProbe:
-          httpGet:
-            path: /
-            port: 8384
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
+          tcpSocket:
+            port: 22000
+          initialDelaySeconds: 15
         readinessProbe:
-          httpGet:
-            path: /
-            port: 8384
-          initialDelaySeconds: 30
-          timeoutSeconds: 5
+          tcpSocket:
+            port: 22000
+          initialDelaySeconds: 15
         resources:
           requests:
             cpu: 500m
