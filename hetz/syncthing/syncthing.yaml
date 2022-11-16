@@ -8,7 +8,7 @@
 # has the right permissions to access the volumes added.
 ---
 apiVersion: apps/v1
-kind: Deployment
+kind: StatefulSet
 metadata:
   namespace: syncthing
   name: syncthing-deployment
