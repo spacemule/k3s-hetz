@@ -32,11 +32,11 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 22000
-          initialDelaySeconds: 15
+          initialDelaySeconds: 30
         readinessProbe:
           tcpSocket:
             port: 22000
-          initialDelaySeconds: 15
+          initialDelaySeconds: 30
         resources:
           requests:
             cpu: 500m
