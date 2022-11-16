@@ -6,7 +6,7 @@ metadata:
 spec:
   accessModes:
     - ReadWriteOnce
-  storageClassName: longhorn
+  storageClassName: hcloud-volumes
   resources:
     requests:
-      storage: 22Gi
+      storage: 30Gi

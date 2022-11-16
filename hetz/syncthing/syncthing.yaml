@@ -33,11 +33,8 @@ spec:
         - name: STGUIADDRESS
           value: "0.0.0.0:8384"
         securityContext:
-          capabilities: {}
           runAsGroup: 1000
           runAsUser: 1000
-        stdin: true
-        tty: true
         volumeMounts:
           - name: syncthing-mount
             mountPath: /var/syncthing

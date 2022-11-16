@@ -97,6 +97,11 @@ resource hcloud_firewall "default" {
       "::/0"
     ]
   }
+
+  apply_to {
+    label_selector = "type=master"
+  }
+
 }
 
 resource "hcloud_firewall" "k8s-control" {
@@ -131,6 +136,11 @@ resource "hcloud_firewall" "k8s-control" {
       "::/0"
     ]
   }
+
+  apply_to {
+    label_selector = "type=master"
+  }
+
 }
 
 resource "hcloud_firewall" "k8s-wall-of-china" {
@@ -155,6 +165,11 @@ resource "hcloud_firewall" "k8s-wall-of-china" {
       "::/0"
     ]
   }
+
+  apply_to {
+    label_selector = "type=master"
+  }
+
 }
 
 resource "hcloud_ssh_key" "k8s-key" {
@@ -190,9 +205,7 @@ resource "hcloud_server" "control-plane" {
   location           = var.region
   ssh_keys           = [hcloud_ssh_key.k8s-key.id]
   user_data          = data.cloudinit_config.k3s-control-plane-init[count.index].rendered
-  firewall_ids       = [
-    hcloud_firewall.default.id, hcloud_firewall.k8s-control.id, hcloud_firewall.k8s-wall-of-china.id
-  ]
+
   labels = {
     "job" : "k8s"
     "type" : "master"
