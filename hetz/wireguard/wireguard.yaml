@@ -32,6 +32,10 @@ spec:
             - containerPort: 51820
               name: wireguard
               protocol: UDP
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
         - image: nginx:stable
           name: nginx
           securityContext:
@@ -44,6 +48,10 @@ spec:
           ports:
             - containerPort: 80
               name: nginx-http
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
       volumes:
         - name: wg-conf-mount
           secret:
