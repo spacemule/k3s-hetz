@@ -16,6 +16,18 @@ spec:
       labels:
         app: nginx-zahava
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - nginx-zahava
+              topologyKey: kubernetes.io/hostname
       initContainers:
         - name: init-site
           image: bitnami/git:2.38.1
@@ -28,8 +40,22 @@ spec:
         name: nginx
         securityContext:
           capabilities: {}
-        stdin: true
-        tty: true
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 200m
+            memory: 128Mi
         volumeMounts:
           - name: nginx-zahava-mount
             mountPath: /usr/share/nginx/html
