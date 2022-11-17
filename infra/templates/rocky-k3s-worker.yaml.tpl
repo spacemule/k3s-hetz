@@ -3,6 +3,7 @@
 
 ##Variables defined in this file:
 # k3s_token
+# k3s_version
 # default_route_ip
 # hostname
 # control_ip
@@ -62,7 +63,7 @@ runcmd:
 
 # Install K3S
 - curl -sfL https://get.k3s.io > /tmp/k3s.sh
-- INSTALL_K3S_EXEC="--flannel-iface=enp7s0 --node-ip=${node_ip} --kubelet-arg=cloud-provider=external" K3S_TOKEN="${k3s_token}" K3S_URL="https://${control_ip}:6443" sh /tmp/k3s.sh
+- INSTALL_K3S_VERSION="${k3s_version}" INSTALL_K3S_EXEC="--flannel-iface=enp7s0 --node-ip=${node_ip} --kubelet-arg=cloud-provider=external" K3S_TOKEN="${k3s_token}" K3S_URL="https://${control_ip}:6443" sh /tmp/k3s.sh
 
 # Install packages
 - dnf update -y

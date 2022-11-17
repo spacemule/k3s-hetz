@@ -11,4 +11,3 @@ variable "ssh_pubkey" {
   default = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKlBDIjDIpkWjZNlvTn199HBv6NBgyx0zSASrV77hfCh noah@spacemule"
 
 }
-

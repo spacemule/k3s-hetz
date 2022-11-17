@@ -3,6 +3,7 @@
 
 ##Variables defined in this file:
 # k3s_token
+# k3s_version
 # hostname
 # control_ip
 # cluster_cidr
@@ -235,7 +236,7 @@ runcmd:
 
 # Installs k3s
 - curl -sfL https://get.k3s.io > /tmp/k3s.sh
-- INSTALL_K3S_EXEC="--flannel-iface=enp7s0 --tls-san ${public_ip} --cluster-cidr=${cluster_cidr} --kubelet-arg=cloud-provider=external --node-taint=node-role.kubernetes.io/control-plane:NoSchedule --node-taint=node-role.kubernetes.io/master:NoSchedule  --disable local-storage --disable traefik --disable-cloud-controller --disable-network-policy --node-external-ip=${public_ip} --node-ip=${control_ip} --token=${k3s_token}" sh /tmp/k3s.sh
+- INSTALL_K3S_VERSION="${k3s_version}" INSTALL_K3S_EXEC="--flannel-iface=enp7s0 --tls-san ${public_ip} --cluster-cidr=${cluster_cidr} --kubelet-arg=cloud-provider=external --node-taint=node-role.kubernetes.io/control-plane:NoSchedule --node-taint=node-role.kubernetes.io/master:NoSchedule  --disable local-storage --disable traefik --disable-cloud-controller --disable-network-policy --node-external-ip=${public_ip} --node-ip=${control_ip} --token=${k3s_token}" sh /tmp/k3s.sh
 
 # Install packages
 - dnf update -y

@@ -304,6 +304,7 @@ data "cloudinit_config" "k3s-control-plane-init" {
         hostname          = "k3s-master-${count.index}"
         sshAuthorizedKeys = [var.ssh_pubkey]
         k3s_token         = var.k3s_token == "" ? random_password.k3s_token.result : var.k3s_token
+        k3_version        = var.k3_version
         control_ip        = cidrhost(var.subnet_cidr, count.index + 1 )
         cluster_cidr      = var.cluster_cidr
         public_ip         = hcloud_primary_ip.control_plane.ip_address
@@ -329,6 +330,7 @@ data "cloudinit_config" "k3s-worker-init" {
         hostname          = "k3s-worker-${count.index}"
         sshAuthorizedKeys = [var.ssh_pubkey]
         k3s_token         = var.k3s_token == "" ? random_password.k3s_token.result : var.k3s_token
+        k3_version        = var.k3_version
         default_route_ip  = cidrhost(var.network_cidr, 1)
         control_ip        = hcloud_server_network.control-plane-ips[0].ip
         node_ip           = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 1 )

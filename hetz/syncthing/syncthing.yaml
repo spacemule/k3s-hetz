@@ -27,7 +27,7 @@ spec:
       securityContext:
         fsGroup: 1000
       containers:
-      - image: docker.io/syncthing/syncthing:latest
+      - image: docker.io/syncthing/syncthing:1.22.1
         name: syncthing
         livenessProbe:
           tcpSocket:
