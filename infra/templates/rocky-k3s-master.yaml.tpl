@@ -239,6 +239,8 @@ runcmd:
 - INSTALL_K3S_VERSION="${k3s_version}" INSTALL_K3S_EXEC="--flannel-iface=enp7s0 --tls-san ${public_ip} --cluster-cidr=${cluster_cidr} --kubelet-arg=cloud-provider=external --node-taint=node-role.kubernetes.io/control-plane:NoSchedule --node-taint=node-role.kubernetes.io/master:NoSchedule  --disable local-storage --disable traefik --disable-cloud-controller --disable-network-policy --node-external-ip=${public_ip} --node-ip=${control_ip} --token=${k3s_token}" sh /tmp/k3s.sh
 
 # Install packages
+- dnf install python3-dnf-plugin-versionlock -y
+- dnf versionlock cloud-init
 - dnf update -y
 - dnf install -y iscsi-initiator-utils wireguard-tools nfs-utils dnf-automatic
 

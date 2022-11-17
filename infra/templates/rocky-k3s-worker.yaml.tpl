@@ -66,6 +66,8 @@ runcmd:
 - INSTALL_K3S_VERSION="${k3s_version}" INSTALL_K3S_EXEC="--flannel-iface=enp7s0 --node-ip=${node_ip} --kubelet-arg=cloud-provider=external" K3S_TOKEN="${k3s_token}" K3S_URL="https://${control_ip}:6443" sh /tmp/k3s.sh
 
 # Install packages
+- dnf install python3-dnf-plugin-versionlock -y
+- dnf versionlock cloud-init
 - dnf update -y
 - dnf install -y iscsi-initiator-utils wireguard-tools nfs-utils dnf-automatic
 - systemctl daemon-reload

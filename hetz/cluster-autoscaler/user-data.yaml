@@ -1,0 +1,10 @@
+#cloud-config
+
+runcmd:
+- dnf remove -y hc-utils
+## Add a connection on private iface
+- nmcli connection add type ethernet con-name private ifname enp7s0 autoconnect yes
+- nmcli connection modify private ipv4.dns 9.9.9.9
+- nmcli connection up private
+- nmcli device set enp7s0 managed yes
+- systemctl enable --now k3s-agent.service

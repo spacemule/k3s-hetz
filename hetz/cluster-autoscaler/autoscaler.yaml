@@ -178,19 +178,16 @@ spec:
           - name: HCLOUD_PUBLIC_IPV6
             value: "false"
           - name: HCLOUD_IMAGE
-            value: "rocky-9"
+            value: "89535748"
           - name: HCLOUD_TOKEN
             valueFrom:
               secretKeyRef:
                 name: hcloud-csi
                 key: token
           - name: HCLOUD_CLOUD_INIT
-            valueFrom:
-              secretKeyRef:
-                name: autoscale-userdata
-                key: userdata_b64.yaml
-#          - name: HCLOUD_SSH_KEY
-#            value: <optional SSH Key Name or ID>
+            value: "I2Nsb3VkLWNvbmZpZwoKcnVuY21kOgotIGRuZiByZW1vdmUgLXkgaGMtdXRpbHMKIyMgQWRkIGEgY29ubmVjdGlvbiBvbiBwcml2YXRlIGlmYWNlCi0gbm1jbGkgY29ubmVjdGlvbiBhZGQgdHlwZSBldGhlcm5ldCBjb24tbmFtZSBwcml2YXRlIGlmbmFtZSBlbnA3czAgYXV0b2Nvbm5lY3QgeWVzCi0gbm1jbGkgY29ubmVjdGlvbiBtb2RpZnkgcHJpdmF0ZSBpcHY0LmRucyA5LjkuOS45Ci0gbm1jbGkgY29ubmVjdGlvbiB1cCBwcml2YXRlCi0gbm1jbGkgZGV2aWNlIHNldCBlbnA3czAgbWFuYWdlZCB5ZXM="
+          - name: HCLOUD_SSH_KEY
+            value: "8913345"
           - name: HCLOUD_NETWORK
             value: "2211515"
           imagePullPolicy: "Always"
