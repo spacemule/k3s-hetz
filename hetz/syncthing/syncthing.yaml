@@ -58,7 +58,7 @@ spec:
           - containerPort: 22000
             protocol: UDP
             name: syncthing-udp
-          - containerPort: 22017
+          - containerPort: 21017
             protocol: UDP
             name: syncthing-data
       volumes:

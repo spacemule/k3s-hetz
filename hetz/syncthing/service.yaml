@@ -34,5 +34,5 @@ spec:
       targetPort: syncthing-udp
     - name: syncthing-data-svc
       protocol: UDP
-      port: 22017
+      port: 21017
       targetPort: syncthing-data

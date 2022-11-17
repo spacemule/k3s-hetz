@@ -932,8 +932,8 @@ tcp:
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
 ##
 udp:
+  21017: "syncthing/syncthing-service:22017"
   22001: "syncthing/syncthing-service:22001"
-  22017: "syncthing/syncthing-service:22017"
   51820: "wireguard/wireguard:51820"
 #  53: "kube-system/kube-dns:53"
 
