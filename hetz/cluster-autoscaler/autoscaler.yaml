@@ -170,7 +170,7 @@ spec:
             - ./cluster-autoscaler
             - --cloud-provider=hetzner
             - --stderrthreshold=info
-            - --nodes=0:5:CPX11:HEL1:pool0
+            - --nodes=1:5:CPX11:HEL1:pool0
             - --nodes=0:5:CPX21:HEL1:pool1
           env:
           - name: HCLOUD_PUBLIC_IPV4
@@ -178,14 +178,14 @@ spec:
           - name: HCLOUD_PUBLIC_IPV6
             value: "false"
           - name: HCLOUD_IMAGE
-            value: "89535748"
+            value: "89535779"
           - name: HCLOUD_TOKEN
             valueFrom:
               secretKeyRef:
                 name: hcloud-csi
                 key: token
           - name: HCLOUD_CLOUD_INIT
-            value: "I2Nsb3VkLWNvbmZpZwoKcnVuY21kOgotIGRuZiByZW1vdmUgLXkgaGMtdXRpbHMKIyMgQWRkIGEgY29ubmVjdGlvbiBvbiBwcml2YXRlIGlmYWNlCi0gbm1jbGkgY29ubmVjdGlvbiBhZGQgdHlwZSBldGhlcm5ldCBjb24tbmFtZSBwcml2YXRlIGlmbmFtZSBlbnA3czAgYXV0b2Nvbm5lY3QgeWVzCi0gbm1jbGkgY29ubmVjdGlvbiBtb2RpZnkgcHJpdmF0ZSBpcHY0LmRucyA5LjkuOS45Ci0gbm1jbGkgY29ubmVjdGlvbiB1cCBwcml2YXRlCi0gbm1jbGkgZGV2aWNlIHNldCBlbnA3czAgbWFuYWdlZCB5ZXM="
+            value: "I2Nsb3VkLWNvbmZpZwoKcnVuY21kOgotIGRuZiByZW1vdmUgLXkgaGMtdXRpbHMKIyMgQWRkIGEgY29ubmVjdGlvbiBvbiBwcml2YXRlIGlmYWNlCi0gbm1jbGkgY29ubmVjdGlvbiBhZGQgdHlwZSBldGhlcm5ldCBjb24tbmFtZSBwcml2YXRlIGlmbmFtZSBlbnA3czAgYXV0b2Nvbm5lY3QgeWVzCi0gbm1jbGkgY29ubmVjdGlvbiBtb2RpZnkgcHJpdmF0ZSBpcHY0LmRucyA5LjkuOS45Ci0gbm1jbGkgY29ubmVjdGlvbiB1cCBwcml2YXRlCi0gbm1jbGkgZGV2aWNlIHNldCBlbnA3czAgbWFuYWdlZCB5ZXMKLSBzeXN0ZW1jdGwgZW5hYmxlIC0tbm93IGszcy1hZ2VudC5zZXJ2aWNl"
           - name: HCLOUD_SSH_KEY
             value: "8913345"
           - name: HCLOUD_NETWORK
