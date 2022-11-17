@@ -1,0 +1,64 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+  name: recipes
+  namespace: tandoor
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: tandoor.spacemule.net
+    http:
+      paths:
+      - backend:
+          service:
+            name: recipes
+            port:
+              number: 8080
+        path: /
+        pathType: Prefix
+      - backend:
+          service:
+            name: recipes
+            port:
+              number: 80
+        path: /media
+        pathType: Prefix
+      - backend:
+          service:
+            name: recipes
+            port:
+              number: 80
+        path: /static
+        pathType: Prefix
+  - host: tandoor.zahava-is-cool.com
+    http:
+      paths:
+        - backend:
+            service:
+              name: recipes
+              port:
+                number: 8080
+          path: /
+          pathType: Prefix
+        - backend:
+            service:
+              name: recipes
+              port:
+                number: 80
+          path: /media
+          pathType: Prefix
+        - backend:
+            service:
+              name: recipes
+              port:
+                number: 80
+          path: /static
+          pathType: Prefix
+
+  tls:
+  - hosts:
+    - tandoor.spacemule.net
+    - tandoor.zahava-is-cool.com
+    secretName: recipes-tls
