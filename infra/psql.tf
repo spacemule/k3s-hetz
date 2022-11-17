@@ -25,7 +25,7 @@ resource "hcloud_server" "postgres" {
   }
 
   depends_on = [
-    hcloud_network_subnet.k8s-sub
+    hcloud_network.kube-net,
   ]
 }
 

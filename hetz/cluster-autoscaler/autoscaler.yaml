@@ -157,7 +157,7 @@ spec:
                   - key: node-role.kubernetes.io/master
                     operator: Exists
       containers:
-        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:1.20.0  # or your custom image
+        - image: k8s.gcr.io/autoscaling/cluster-autoscaler:v1.25.0  # or your custom image
           name: cluster-autoscaler
           resources:
             limits:
@@ -170,28 +170,27 @@ spec:
             - ./cluster-autoscaler
             - --cloud-provider=hetzner
             - --stderrthreshold=info
+            - --nodes=0:5:CPX11:HEL1:pool0
             - --nodes=0:5:CPX21:HEL1:pool1
-          envFrom:
-          - configMapRef:
-              name: cluster-autoscaler
           env:
+          - name: HCLOUD_PUBLIC_IPV4
+            value: "false"
+          - name: HCLOUD_PUBLIC_IPV6
+            value: "false"
+          - name: HCLOUD_IMAGE
+            value: "rocky-9"
           - name: HCLOUD_TOKEN
             valueFrom:
-                secretKeyRef:
-                  name: hcloud-csi
-                  key: token
-#          - name: HCLOUD_CLOUD_INIT
-#            value: <your-cloud-init-data-base64-encoded>
+              secretKeyRef:
+                name: hcloud-csi
+                key: token
+          - name: HCLOUD_CLOUD_INIT
+            valueFrom:
+              secretKeyRef:
+                name: autoscale-userdata
+                key: userdata_b64.yaml
 #          - name: HCLOUD_SSH_KEY
 #            value: <optional SSH Key Name or ID>
-#          - name: HCLOUD_NETWORK
-#            value: <optional Network Name or ID>
-          volumeMounts:
-            - name: ssl-certs
-              mountPath: /etc/ssl/certs/ca-certificates.crt
-              readOnly: true
+          - name: HCLOUD_NETWORK
+            value: "2211515"
           imagePullPolicy: "Always"
-      volumes:
-        - name: ssl-certs
-          hostPath:
-            path: "/etc/ssl/certs/ca-certificates.crt"

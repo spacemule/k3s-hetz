@@ -13,19 +13,26 @@ resource "hcloud_network" "kube-net" {
   name     = "kube-net"
 }
 
-resource "hcloud_network_subnet" "services-sub" {
-  ip_range     = var.services_cidr
+resource "hcloud_network_subnet" "all-sub" {
+  ip_range     = var.network_cidr
   network_id   = hcloud_network.kube-net.id
   network_zone = var.zone
   type         = "cloud"
 }
 
-resource "hcloud_network_subnet" "k8s-sub" {
-  ip_range     = var.subnet_cidr
-  network_id   = hcloud_network.kube-net.id
-  network_zone = var.zone
-  type         = "cloud"
-}
+#resource "hcloud_network_subnet" "services-sub" {
+#  ip_range     = var.services_cidr
+#  network_id   = hcloud_network.kube-net.id
+#  network_zone = var.zone
+#  type         = "cloud"
+#}
+#
+#resource "hcloud_network_subnet" "k8s-sub" {
+#  ip_range     = var.subnet_cidr
+#  network_id   = hcloud_network.kube-net.id
+#  network_zone = var.zone
+#  type         = "cloud"
+#}
 
 resource "hcloud_network_route" "gateway" {
   destination = "0.0.0.0/0"
@@ -223,7 +230,7 @@ resource "hcloud_server" "control-plane" {
   }
 
   depends_on = [
-    hcloud_network_subnet.k8s-sub
+    hcloud_network.kube-net,
   ]
 
   lifecycle {
@@ -266,7 +273,7 @@ resource "hcloud_server" "worker" {
     ignore_changes = [user_data]
   }
   depends_on = [
-    hcloud_network_subnet.k8s-sub,
+    hcloud_network.kube-net,
     time_sleep.server_start,
   ]
 }
@@ -304,7 +311,7 @@ data "cloudinit_config" "k3s-control-plane-init" {
         hostname          = "k3s-master-${count.index}"
         sshAuthorizedKeys = [var.ssh_pubkey]
         k3s_token         = var.k3s_token == "" ? random_password.k3s_token.result : var.k3s_token
-        k3_version        = var.k3_version
+        k3s_version        = var.k3s_version
         control_ip        = cidrhost(var.subnet_cidr, count.index + 1 )
         cluster_cidr      = var.cluster_cidr
         public_ip         = hcloud_primary_ip.control_plane.ip_address
@@ -330,7 +337,7 @@ data "cloudinit_config" "k3s-worker-init" {
         hostname          = "k3s-worker-${count.index}"
         sshAuthorizedKeys = [var.ssh_pubkey]
         k3s_token         = var.k3s_token == "" ? random_password.k3s_token.result : var.k3s_token
-        k3_version        = var.k3_version
+        k3s_version        = var.k3s_version
         default_route_ip  = cidrhost(var.network_cidr, 1)
         control_ip        = hcloud_server_network.control-plane-ips[0].ip
         node_ip           = cidrhost(var.subnet_cidr, length(var.control_planes) + count.index + 1 )

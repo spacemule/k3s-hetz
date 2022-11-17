@@ -83,7 +83,7 @@ variable "cluster_cidr" {
   default = "10.16.0.0/16"
 }
 
-variable "k3s-version" {
+variable "k3s_version" {
   type = string
   default = "v1.25.3+k3s1"
 }
