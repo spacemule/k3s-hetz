@@ -28,7 +28,7 @@ spec:
       protocol: TCP
       port: 22000
       targetPort: syncthing-tcp
-    - name: syncthing-udp-service
+    - name: syncthing-udp-svc
       protocol: UDP
       port: 22001
       targetPort: syncthing-udp
