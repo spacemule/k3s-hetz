@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: nginx-zahava-pdb
+  namespace: nginx-static
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: nginx-zahava
