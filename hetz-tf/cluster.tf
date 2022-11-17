@@ -10,8 +10,9 @@ module "k3s" {
   postgres_enabled = false
 }
 
-resource "hcloud_firewall" "allow_wireguard" {
-  name = "allow_wireguard"
+resource "hcloud_firewall" "cluster_apps" {
+  name = "cluster_apps"
+  # Wireguard
   rule {
     direction  = "in"
     protocol   = "udp"
@@ -20,6 +21,33 @@ resource "hcloud_firewall" "allow_wireguard" {
       "0.0.0.0/0",
     ]
   }
+
+  # Syncthing
+  rule {
+    direction  = "in"
+    protocol   = "tcp"
+    port       = "22000"
+    source_ips = [
+      "0.0.0.0/0",
+    ]
+  }
+  rule {
+    direction  = "in"
+    protocol   = "udp"
+    port       = "22001"
+    source_ips = [
+      "0.0.0.0/0",
+    ]
+  }
+  rule {
+    direction  = "in"
+    protocol   = "udp"
+    port       = "22017"
+    source_ips = [
+      "0.0.0.0/0",
+    ]
+  }
+
   apply_to {
     label_selector = "type=master"
   }
