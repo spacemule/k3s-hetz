@@ -2,6 +2,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: paperless-service
+  namespace: paperless
 spec:
   type: ClusterIP
   selector:
@@ -16,6 +17,7 @@ apiVersion: v1
 kind: Service
 metadata:
   name: tika-service
+  namespace: paperless
 spec:
   type: ClusterIP
   selector:
@@ -29,6 +31,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
+  namespace: paperless
   name: gotenberg-service
 spec:
   type: ClusterIP

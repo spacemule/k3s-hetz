@@ -66,7 +66,7 @@ controller:
   # -- Optionally change this to ClusterFirstWithHostNet in case you have 'hostNetwork: true'.
   # By default, while using host network, name resolution uses the host's DNS. If you wish nginx-controller
   # to keep resolving names inside the k8s network, use ClusterFirstWithHostNet.
-  dnsPolicy: ClusterFirst
+  dnsPolicy: ClusterFirstWithHostNet
 
   # -- Bare-metal considerations via the host network https://kubernetes.github.io/ingress-nginx/deploy/baremetal/#via-the-host-network
   # Ingress status was blank because there is no Service exposing the NGINX Ingress controller in a configuration using the host network, the default --publish-service flag used in standard cloud setups does not apply
@@ -89,13 +89,13 @@ controller:
   # -- Required for use with CNI based kubernetes installations (such as ones set up by kubeadm),
   # since CNI and hostport don't mix yet. Can be deprecated once https://github.com/kubernetes/kubernetes/issues/23920
   # is merged
-  hostNetwork: false
+  hostNetwork: true
 
   ## Use host ports 80 and 443
   ## Disabled by default
   hostPort:
     # -- Enable 'hostPort' or not
-    enabled: false
+    enabled: true
     ports:
       # -- 'hostPort' http port
       http: 80
@@ -223,7 +223,13 @@ controller:
   # -- Node tolerations for server scheduling to nodes with taints
   ## Ref: https://kubernetes.io/docs/concepts/configuration/assign-pod-node/
   ##
-  tolerations: []
+  tolerations:
+  - key: "node-role.kubernetes.io/master"
+    operator: "Exists"
+    effect: "NoSchedule"
+  - key: "node-role.kubernetes.io/control-plane"
+    operator: "Exists"
+    effect: "NoSchedule"
   #  - key: "key"
   #    operator: "Equal|Exists"
   #    value: "value"
@@ -294,6 +300,7 @@ controller:
   ##
   nodeSelector:
     kubernetes.io/os: linux
+    node-role.kubernetes.io/master: "true"
 
   ## Liveness and readiness probe values
   ## Ref: https://kubernetes.io/docs/concepts/workloads/pods/pod-lifecycle/#container-probes
@@ -340,15 +347,15 @@ controller:
   # -- Address to bind the health check endpoint.
   # It is better to set this option to the internal node address
   # if the ingress nginx controller is running in the `hostNetwork: true` mode.
-  healthCheckHost: ""
+  healthCheckHost: "10.1.0.1"
 
   # -- Annotations to be added to controller pods
   ##
   podAnnotations: {}
 
-  replicaCount: 3
+  replicaCount: 1
 
-  minAvailable: 2
+  minAvailable: 0
 
   ## Define requests resources to avoid probe issues due to CPU utilization in busy nodes
   ## ref: https://github.com/kubernetes/ingress-nginx/issues/4735#issuecomment-551204903
@@ -444,7 +451,7 @@ controller:
     configMapKey: ""
 
   service:
-    enabled: true
+    enabled: false
 
     # -- If enabled is adding an appProtocol option for Kubernetes service. An appProtocol field replacing annotations that were
     # using for setting a backend protocol. Here is an example for AWS: service.beta.kubernetes.io/aws-load-balancer-backend-protocol: http

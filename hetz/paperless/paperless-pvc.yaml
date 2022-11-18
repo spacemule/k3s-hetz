@@ -1,26 +1,13 @@
----
+
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: paperless-data-pvc
+  name: paperless-pvc
   namespace: paperless
 spec:
   accessModes:
-    - ReadWriteMany
-  storageClassName: longhorn
-  resources:
-    requests:
-      storage: 500Mi
----
-apiVersion: v1
-kind: PersistentVolumeClaim
-metadata:
-  name: paperless-media-pvc
-  namespace: paperless
-spec:
-  accessModes:
-    - ReadWriteMany
-  storageClassName: longhorn
+    - ReadWriteOnce
+  storageClassName: hcloud-volumes
   resources:
     requests:
       storage: 10Gi
