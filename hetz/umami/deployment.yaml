@@ -3,11 +3,11 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   namespace: nginx-static
-  name: nginx-umami-deployment
+  name: umami-deployment
   labels:
     app: umami
 spec:
-  replicas: 1
+  replicas: 2
   selector:
     matchLabels:
       app: umami
@@ -16,6 +16,18 @@ spec:
       labels:
         app: umami
     spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+            - weight: 100
+              podAffinityTerm:
+                labelSelector:
+                  matchExpressions:
+                    - key: app
+                      operator: In
+                      values:
+                        - umami
+                topologyKey: kubernetes.io/hostname
       containers:
         - image: ghcr.io/umami-software/umami:postgresql-v1.39.5
           name: umami
