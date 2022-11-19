@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: restic-ingress
+  namespace: restic-rest
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  tls:
+    - hosts:
+        - backup.spacemule.net
+      secretName: restic-tls-secret
+  ingressClassName: nginx
+  rules:
+    - host: backup.spacemule.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: restic
+                port:
+                  number: 8000

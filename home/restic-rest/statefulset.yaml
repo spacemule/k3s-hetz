@@ -1,0 +1,71 @@
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  namespace: restic-rest
+  name: restic
+  labels:
+    app: restic
+spec:
+  replicas: 1
+  serviceName: restic
+  selector:
+    matchLabels:
+      app: restic
+  template:
+    metadata:
+      labels:
+        app: restic
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - image: restic/rest-server:0.11.0
+          name: restic-http
+          securityContext:
+            runAsGroup: 1000
+            runAsUser: 1000
+          command:
+            - rest-server
+            - --listen=:8000
+            - --max-size=214748364800
+            - --path=/data
+            - --append-only
+            - --prometheus
+            - --prometheus-no-auth
+          volumeMounts:
+            - name: restic-data
+              mountPath: /data
+            - name: restic-htpasswd
+              mountPath: /data/.htpasswd
+              readOnly: true
+              subPath: htpasswd
+          ports:
+            - containerPort: 8000
+              name: restic-http
+              protocol: TCP
+          livenessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          readinessProbe:
+            tcpSocket:
+              port: 8000
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          env:
+          resources:
+            requests:
+              cpu: 200m
+              memory: 512Mi
+      volumes:
+        - name: restic-data
+          persistentVolumeClaim:
+            claimName: restic-pvc
+        - name: restic-htpasswd
+          secret:
+              secretName: restic-secret
+              items:
+              - key: htpasswd
+                path: htpasswd

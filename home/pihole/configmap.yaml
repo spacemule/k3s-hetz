@@ -31,6 +31,7 @@ data:
   custom.list: |
     10.42.0.1 dns.spacemule.net
     10.1.0.1 docs.spacemule.net
+    192.168.10.10 backup.spacemule.net
     192.168.10.10 jelly.spacemule.net
     192.168.10.10 transmission.spacemule.net
 ---
