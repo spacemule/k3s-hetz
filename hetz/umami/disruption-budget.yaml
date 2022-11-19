@@ -1,0 +1,10 @@
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: umami-pdb
+  namespace: nginx-static
+spec:
+  minAvailable: 0
+  selector:
+    matchLabels:
+      app: umami

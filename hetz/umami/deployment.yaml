@@ -1,0 +1,38 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: nginx-static
+  name: nginx-umami-deployment
+  labels:
+    app: umami
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: umami
+  template:
+    metadata:
+      labels:
+        app: umami
+    spec:
+      containers:
+        - image: ghcr.io/umami-software/umami:postgresql-v1.39.5
+          name: umami
+          ports:
+            - containerPort: 3000
+              name: umami
+              protocol: TCP
+          env:
+          - name: DATABASE_URL
+            valueFrom:
+              secretKeyRef:
+                name: umami-secret
+                key: DATABASE_URL
+          - name: DATABASE_TYPE
+            value: postgresql
+          - name: HASH_SALT
+            valueFrom:
+              secretKeyRef:
+                name: umami-secret
+                key: HASH_SALT
