@@ -48,3 +48,7 @@ spec:
               secretKeyRef:
                 name: umami-secret
                 key: HASH_SALT
+          resources:
+            requests:
+              cpu: 100m
+              memory: 256Mi
