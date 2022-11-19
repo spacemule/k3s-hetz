@@ -42,7 +42,7 @@ resource "hcloud_firewall" "cluster_apps" {
   rule {
     direction  = "in"
     protocol   = "udp"
-    port       = "22017"
+    port       = "21017"
     source_ips = [
       "0.0.0.0/0",
     ]

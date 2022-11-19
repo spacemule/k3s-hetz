@@ -50,6 +50,7 @@ spec:
         volumeMounts:
           - name: syncthing-mount
             mountPath: /var/syncthing
+            subPath: syncthing
         ports:
           - containerPort: 8384
             name: syncthing-gui
