@@ -242,7 +242,7 @@ runcmd:
 - dnf install python3-dnf-plugin-versionlock -y
 - dnf versionlock cloud-init
 - dnf update -y
-- dnf install -y iscsi-initiator-utils wireguard-tools nfs-utils dnf-automatic
+- dnf install -y iscsi-initiator-utils wireguard-tools nfs-utils dnf-automatic yum-utils
 
 # Enables routing and automatic updates
 - systemctl daemon-reload

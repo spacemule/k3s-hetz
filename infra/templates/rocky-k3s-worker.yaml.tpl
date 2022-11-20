@@ -69,7 +69,7 @@ runcmd:
 - dnf install python3-dnf-plugin-versionlock -y
 - dnf versionlock cloud-init
 - dnf update -y
-- dnf install -y iscsi-initiator-utils wireguard-tools nfs-utils dnf-automatic
+- dnf install -y iscsi-initiator-utils wireguard-tools nfs-utils dnf-automatic yum-utils
 - systemctl daemon-reload
 - systemctl enable --now dnf-automatic.timer
 - systemctl disable --now firewalld nm-cloud-setup.service nm-cloud-setup.timer
