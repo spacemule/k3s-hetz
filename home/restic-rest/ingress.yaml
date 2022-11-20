@@ -23,3 +23,10 @@ spec:
                 name: restic
                 port:
                   number: 8000
+          - path: /metrics
+            pathType: Prefix
+            backend:
+              service:
+                name: null-service
+                port:
+                  number: 8000

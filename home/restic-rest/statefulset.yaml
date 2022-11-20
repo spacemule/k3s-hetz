@@ -45,13 +45,15 @@ spec:
               name: restic-http
               protocol: TCP
           livenessProbe:
-            tcpSocket:
+            httpGet:
               port: 8000
+              path: /metrics
             initialDelaySeconds: 10
             periodSeconds: 5
           readinessProbe:
-            tcpSocket:
+            httpGet:
               port: 8000
+              path: /metrics
             initialDelaySeconds: 10
             periodSeconds: 5
           env:
