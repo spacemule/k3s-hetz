@@ -47,6 +47,14 @@ resource "hcloud_firewall" "cluster_apps" {
       "0.0.0.0/0",
     ]
   }
+  rule {
+    direction = "in"
+    protocol  = "tcp"
+    port      = "444"
+    source_ips = [
+      "0.0.0.0/0",
+    ]
+  }
 
   apply_to {
     label_selector = "type=master"
