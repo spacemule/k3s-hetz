@@ -60,4 +60,3 @@ resource "hcloud_firewall" "cluster_apps" {
     label_selector = "type=master"
   }
 }
-

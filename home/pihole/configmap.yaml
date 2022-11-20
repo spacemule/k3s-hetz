@@ -12,17 +12,6 @@ data:
 apiVersion: v1
 kind: ConfigMap
 metadata:
-  name: pihole-adlists
-  namespace: pihole
-  labels:
-    app: pihole
-data:
-  adlists.list: |
-    https://raw.githubusercontent.com/StevenBlack/hosts/master/hosts
----
-apiVersion: v1
-kind: ConfigMap
-metadata:
   name: pihole-custom
   namespace: pihole
   labels:
