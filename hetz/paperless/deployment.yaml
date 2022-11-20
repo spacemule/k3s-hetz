@@ -118,7 +118,7 @@ spec:
         app: tika
     spec:
       containers:
-        - image: docker.io/apache/tika:latest
+        - image: docker.io/apache/tika:2.6.0.1
           resources:
             requests:
               memory: "128Mi"
