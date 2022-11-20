@@ -1,0 +1,46 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: wireguard
+  name: wireguard-deployment
+  labels:
+    app: wireguard
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wireguard
+  template:
+    metadata:
+      labels:
+        app: wireguard
+    spec:
+      nodeSelector:
+        node-role.kubernetes.io/master: "true"
+      containers:
+        - image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/opensuse/wireguard:latest
+          imagePullPolicy: Always
+          name: wireguard
+          securityContext:
+            capabilities:
+              add:
+                - NET_ADMIN
+          volumeMounts:
+            - name: wg-conf-mount
+              mountPath: /etc/wireguard/
+              readOnly: true
+          resources:
+            requests:
+              cpu: 100m
+              memory: 128Mi
+      volumes:
+        - name: wg-conf-mount
+          secret:
+            secretName: wg-conf-secret
+        - name: nginx-conf-proxy
+          configMap:
+            name: nginx-conf-proxy
+            items:
+              - key: nginx.conf
+                path: nginx.conf

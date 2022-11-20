@@ -164,18 +164,29 @@ data:
             location / {
               proxy_set_header Host $host;
               proxy_set_header X-Real-IP $remote_addr;
-              proxy_pass http://192.168.10.10;
+              proxy_pass http://10.42.0.1;
             }
     }
 
     }
     stream {
+    
+        map $ssl_preread_server_name $backend {
+            backup.spacemule.net backend;
+            default null_backend;
+        }
         upstream backend {
-            server 192.168.10.10:443;
+            server 10.42.0.1:443;
+        }
+        
+        upstream null_backend {
+            server 192.168.1.1:443 down;
+            #This just makes sure nothing gets through
         }
     
         server {
           listen 443;
-          proxy_pass backend;
+          proxy_pass $backend;
+          ssl_preread on;
         }
     }

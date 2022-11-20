@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pihole
+  namespace: pihole
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+    nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/12
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - cloud-dns.spacemule.net
+      secretName: pihole-tls-secret
+  rules:
+    - host: cloud-dns.spacemule.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: pihole
+                port:
+                  name: pihole-admin

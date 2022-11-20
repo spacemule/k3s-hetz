@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: pihole-config
+  namespace: pihole
+  labels:
+    app: pihole
+data:
+  TZ: "Asia/Jerusalem"
+  VIRTUAL_HOST: "cloud-dns.spacemule.net"
+
