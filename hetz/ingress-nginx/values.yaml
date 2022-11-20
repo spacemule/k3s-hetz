@@ -933,7 +933,8 @@ imagePullSecrets: []
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
 ##
 tcp:
-  444: "wireguard/nginx-proxy-service:8082"
+  53:    "pihole/pihole:53"
+  444:   "wireguard/nginx-proxy-service:8082"
   22000: "syncthing/syncthing-service:22000"
 #  8080: "default/example-tcp-svc:9000"
 
@@ -941,6 +942,7 @@ tcp:
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
 ##
 udp:
+  53:    "pihole/pihole:53"
   21017: "syncthing/syncthing-service:22017"
   22001: "syncthing/syncthing-service:22001"
   51820: "wireguard/wireguard:51820"

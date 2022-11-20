@@ -19,5 +19,3 @@ spec:
     targetPort: 53
     protocol: UDP
     name: dns-udp
-#  externalIPs:
-#    - 10.42.0.1

@@ -34,6 +34,7 @@ data:
     192.168.10.10 backup.spacemule.net
     192.168.10.10 jelly.spacemule.net
     192.168.10.10 transmission.spacemule.net
+    10.1.0.1 cloud-dns.spacemule.net
 ---
 apiVersion: v1
 kind: ConfigMap
