@@ -41,6 +41,10 @@ spec:
           initialDelaySeconds: 90
           periodSeconds: 10
         env:
+        - name: PAPERLESS_OCR_LANGUAGES
+          value: "heb"
+        - name: PAPERLESS_OCR_LANGUAGE
+          value: "heb"
         - name: PAPERLESS_URL
           value: "https://docs.spacemule.net"
         - name: PAPERLESS_WEBSERVER_WORKERS
