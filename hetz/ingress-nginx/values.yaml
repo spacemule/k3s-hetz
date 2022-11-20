@@ -180,8 +180,8 @@ controller:
 
   # -- Additional command line arguments to pass to nginx-ingress-controller
   # E.g. to specify the default SSL certificate you can use
-  extraArgs:
-    enable-ssl-passthrough: ""
+  extraArgs: {}
+#    enable-ssl-passthrough: ""
   ## extraArgs:
   ##   default-ssl-certificate: "<namespace>/<secret_name>"
 
@@ -933,6 +933,7 @@ imagePullSecrets: []
 ## Ref: https://github.com/kubernetes/ingress-nginx/blob/main/docs/user-guide/exposing-tcp-udp-services.md
 ##
 tcp:
+  444: "wireguard/nginx-proxy-service:8082"
   22000: "syncthing/syncthing-service:22000"
 #  8080: "default/example-tcp-svc:9000"
 
