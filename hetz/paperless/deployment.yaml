@@ -29,7 +29,7 @@ spec:
         resources:
           requests:
             memory: "768Mi"
-            cpu: "1000m"
+            cpu: "500m"
         livenessProbe:
           tcpSocket:
             port: http
@@ -126,7 +126,7 @@ spec:
           resources:
             requests:
               memory: "128Mi"
-              cpu: "300m"
+              cpu: "200m"
           name: tika
           livenessProbe:
             httpGet:
@@ -185,4 +185,4 @@ spec:
           resources:
             requests:
               memory: "512Mi"
-              cpu: "300m"
+              cpu: "200m"
