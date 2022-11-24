@@ -17,6 +17,8 @@ spec:
       labels:
         app: restic
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: computemule
       securityContext:
         fsGroup: 1000
       containers:

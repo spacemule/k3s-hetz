@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ntfy
+  namespace: default
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ntfy
+  template:
+    metadata:
+      labels:
+        app: ntfy
+    spec:
+      containers:
+        - name: ntfy
+          securityContext:
+            runAsUser: 1000
+            runAsGroup: 1000
+          image: binwiederhier/ntfy:v1.29.1
+          args: ["serve"]
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: "100m"
+          ports:
+            - containerPort: 8080
+              name: http
+          volumeMounts:
+            - name: config
+              mountPath: "/etc/ntfy"
+              readOnly: true
+      volumes:
+        - name: config
+          configMap:
+            name: ntfy

@@ -1,0 +1,10 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ntfy
+  namespace: default
+data:
+  server.yml: |
+    base-url: https://ntfy.spacemule.net
+    listen-http: ":8080"
+    behind-proxy: true
