@@ -1,0 +1,79 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: nginx-static
+  name: nginx-test
+  labels:
+    app: nginx-test
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: nginx-test
+  template:
+    metadata:
+      labels:
+        app: nginx-test
+    spec:
+      affinity:
+        podAntiAffinity:
+          preferredDuringSchedulingIgnoredDuringExecution:
+          - weight: 100
+            podAffinityTerm:
+              labelSelector:
+                matchExpressions:
+                - key: app
+                  operator: In
+                  values:
+                  - nginx-test
+              topologyKey: kubernetes.io/hostname
+      initContainers:
+      - name: init-site
+        image: bitnami/git:2.38.1
+        command: ["/bin/sh", "-c", "git clone https://github.com/spacemule/hugo-sites.git /hugo-sites"]
+        volumeMounts:
+          - name: nginx-test-mount
+            mountPath: /hugo-sites
+      containers:
+      - image: nginx:stable
+        name: nginx
+        livenessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        readinessProbe:
+          httpGet:
+            path: /
+            port: 80
+          initialDelaySeconds: 5
+          periodSeconds: 5
+        resources:
+          requests:
+            cpu: 200m
+            memory: 128Mi
+        securityContext:
+          capabilities: {}
+        volumeMounts:
+          - name: nginx-test-mount
+            mountPath: /usr/share/nginx/html
+            subPath: spacemule/public
+          - name: nginx-conf-test
+            mountPath: /etc/nginx/nginx.conf
+            subPath: nginx.conf
+            readOnly: true
+        ports:
+          - containerPort: 80
+            name: nginx-http
+      volumes:
+      - name: nginx-test-mount
+        emptyDir:
+          sizeLimit: 250Mi
+      - name: nginx-conf-test
+        configMap:
+          name: nginx-conf-test
+          items:
+            - key: nginx.conf
+              path: nginx.conf

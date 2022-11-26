@@ -1,0 +1,19 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: nginx-test-ingress
+  namespace: nginx-static
+  annotations:
+spec:
+  ingressClassName: nginx
+  rules:
+  - host: test.spacemule.net
+    http:
+      paths:
+      - path: /
+        pathType: Prefix
+        backend:
+          service:
+            name: nginx-test-service
+            port:
+              number: 8082
