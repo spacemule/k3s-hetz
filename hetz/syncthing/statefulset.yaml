@@ -24,6 +24,8 @@ spec:
       labels:
         app: syncthing
     spec:
+      nodeSelector:
+        kubernetes.io/hostname: k3s-worker-0
       securityContext:
         fsGroup: 1000
       containers:
@@ -39,8 +41,8 @@ spec:
           initialDelaySeconds: 30
         resources:
           requests:
-            cpu: 500m
-            memory: 756Mi
+            cpu: 100m
+            memory: 512Mi
         env:
         - name: STGUIADDRESS
           value: "0.0.0.0:8384"
