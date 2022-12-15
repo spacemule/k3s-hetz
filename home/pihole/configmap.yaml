@@ -1,3 +1,5 @@
+###This file is symlinked between the two deployments
+---
 apiVersion: v1
 kind: ConfigMap
 metadata:
@@ -55,6 +57,14 @@ data:
     10.42.0.1 jelly.spacemule.net
     10.42.0.1 transmission.spacemule.net
     10.1.0.1 cloud-dns.spacemule.net
+    0.0.0.0 reddit.com
+    0.0.0.0 www.reddit.com
+    0.0.0.0 old.reddit.com
+    0.0.0.0 ads.reddit.com
+    0.0.0.0 api.reddit.com
+    0.0.0.0 beta.reddit.com
+    0.0.0.0 amp.reddit.com
+    0.0.0.0 alb.reddit.com
 ---
 apiVersion: v1
 kind: ConfigMap
