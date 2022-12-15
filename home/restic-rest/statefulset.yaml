@@ -18,7 +18,7 @@ spec:
         app: restic
     spec:
       nodeSelector:
-        kubernetes.io/hostname: computemule
+        kubernetes.io/hostname: zoggamule
       securityContext:
         fsGroup: 1000
       containers:
@@ -66,7 +66,7 @@ spec:
       volumes:
         - name: restic-data
           persistentVolumeClaim:
-            claimName: restic-pvc
+            claimName: restic-data
         - name: restic-htpasswd
           secret:
               secretName: restic-secret

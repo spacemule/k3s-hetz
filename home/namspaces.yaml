@@ -4,3 +4,7 @@ kind: Namespace
 metadata:
   name: syncthing
 ---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: restic-rest
