@@ -1,1 +1,124 @@
-../../home/pihole/pihole.yaml
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: pihole
+  name: pihole-deployment
+  labels:
+    app: pihole
+spec:
+  replicas: 2
+  strategy:
+    type: Recreate
+  selector:
+    matchLabels:
+      app: pihole
+  template:
+    metadata:
+      labels:
+        app: pihole
+    spec:
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - pihole
+              topologyKey: kubernetes.io/hostname
+      dnsPolicy: "None"
+      dnsConfig:
+        nameservers:
+          # upstream DNS used by pihole.
+          - 9.9.9.9
+          - 1.1.1.1
+          - 9.9.9.10
+      containers:
+      - image: pihole/pihole:latest
+        name: pihole
+        ports:
+        - containerPort: 80
+          name: pihole-admin
+          protocol: TCP
+        - containerPort: 53
+          name: dns-tcp
+          protocol: TCP
+        - containerPort: 53
+          name: dns-udp
+          protocol: UDP
+        securityContext:
+          capabilities: {}
+        env:
+        - name: TZ
+          valueFrom:
+            configMapKeyRef:
+              name: pihole-config
+              key: TZ
+        - name: VIRTUAL_HOST
+          valueFrom:
+            configMapKeyRef:
+              name: pihole-config
+              key: VIRTUAL_HOST
+        resources:
+          requests:
+            memory: "100Mi"
+            cpu: "250m"
+        livenessProbe:
+          tcpSocket:
+            port: 53
+          initialDelaySeconds: 25
+          periodSeconds: 5
+        readinessProbe:
+          tcpSocket:
+            port: 53
+          initialDelaySeconds: 25
+          periodSeconds: 5
+        volumeMounts:
+          - name: pihole-ftl
+            mountPath: "/etc/pihole/pihole-FTL.conf"
+            subPath: pihole-FTL.conf
+          - name: pihole-setupvars
+            mountPath: "/etc/pihole/setupVars.conf"
+            subPath: setupVars.conf
+          - name: pihole-custom
+            mountPath: "/etc/pihole/custom.list"
+            subPath: custom.list
+          - name: pihole-adlists
+            mountPath: "/etc/pihole/adlists.list"
+            subPath: adlists.list
+          - name: pihole-dnsmasq
+            mountPath: "/etc/dnsmasq.d/01-k8s.conf"
+            subPath: 01-k8s.conf
+      volumes:
+      - name: pihole-ftl
+        configMap:
+          name: pihole-ftl
+          items:
+            - key: pihole-FTL.conf
+              path: pihole-FTL.conf
+      - name: pihole-setupvars
+        configMap:
+          name: pihole-setupvars
+          items:
+            - key: setupVars.conf
+              path: setupVars.conf
+      - name: pihole-custom
+        configMap:
+          name: pihole-custom
+          items:
+            - key: custom.list
+              path: custom.list
+      - name: pihole-adlists
+        configMap:
+          name: pihole-adlists
+          items:
+            - key: adlists.list
+              path: adlists.list
+      - name: pihole-dnsmasq
+        configMap:
+          name: pihole-dnsmasq
+          items:
+            - key: 01-k8s.conf
+              path: 01-k8s.conf

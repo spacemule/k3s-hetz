@@ -26,7 +26,7 @@ spec:
         app: syncthing
     spec:
       nodeSelector:
-        kubernetes.io/hostname: zoggamule
+        kubernetes.io/hostname: routermule
       securityContext:
         fsGroup: 1000
       containers:
@@ -42,8 +42,8 @@ spec:
           initialDelaySeconds: 30
         resources:
           requests:
-            cpu: 100m
-            memory: 512Mi
+            cpu: 75m
+            memory: 128Mi
         env:
         - name: STGUIADDRESS
           value: "0.0.0.0:8384"
@@ -53,7 +53,6 @@ spec:
         volumeMounts:
           - name: syncthing-mount
             mountPath: /var/syncthing
-            subPath: syncthing
         ports:
           - containerPort: 8384
             name: syncthing-gui
@@ -67,5 +66,5 @@ spec:
             name: syncthing-data
       volumes:
       - name: syncthing-mount
-        persistentVolumeClaim:
-          claimName: syncthing-pvc
+        hostPath:
+          path: /var/mnt/syncthing

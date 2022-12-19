@@ -18,7 +18,7 @@ spec:
         app: restic
     spec:
       nodeSelector:
-        kubernetes.io/hostname: zoggamule
+        kubernetes.io/hostname: routermule
       securityContext:
         fsGroup: 1000
       containers:
@@ -61,12 +61,12 @@ spec:
           env:
           resources:
             requests:
-              cpu: 200m
-              memory: 512Mi
+              cpu: 100m
+              memory: 128Mi
       volumes:
         - name: restic-data
-          persistentVolumeClaim:
-            claimName: restic-data
+          hostPath:
+            path: /var/mnt/restic
         - name: restic-htpasswd
           secret:
               secretName: restic-secret
