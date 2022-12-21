@@ -1,1 +1,12 @@
-../../home/pihole/disruption-budget.yaml
+# This file is symlinked between the two deployments
+---
+apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: pihole-pdb
+  namespace: pihole
+spec:
+  minAvailable: 1
+  selector:
+    matchLabels:
+      app: pihole

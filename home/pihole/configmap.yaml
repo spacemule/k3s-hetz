@@ -51,11 +51,11 @@ metadata:
     app: pihole
 data:
   custom.list: |
-    10.42.0.1 dns.spacemule.net
+    10.42.1.1 dns.spacemule.net
     10.1.0.1 docs.spacemule.net
-    10.42.0.1 backup.spacemule.net
-    10.42.0.1 jelly.spacemule.net
-    10.42.0.1 transmission.spacemule.net
+    10.42.1.1 backup.spacemule.net
+    10.42.1.1 jelly.spacemule.net
+    10.42.1.1 transmission.spacemule.net
     10.1.0.1 cloud-dns.spacemule.net
     0.0.0.0 reddit.com
     0.0.0.0 www.reddit.com
