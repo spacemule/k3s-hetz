@@ -1,0 +1,43 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: test-mnt
+  namespace: kube-system
+spec:
+  schedule: "*/5 * * * *"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: shell
+              image: docker.io/alpine:3.13
+              command:
+                - |
+                  nsenter -t 1 -m -u -n -i sh -c \
+                  'if test -f "/var/mnt/sentinel"; \
+                  then echo "mount exists, exiting"; \
+                  exit 0; \
+                  else echo "mount does not exist, rebooting node"; \
+                  kubectl cordon $(hostname); \
+                  kubectl drain $(hostname) --ignore-daemonsets; \
+                  reboot; \
+                  fi'
+              imagePullPolicy: IfNotPresent
+              securityContext:
+                privileged: true
+          terminationGracePeriodSeconds: 0
+          restartPolicy: Never
+          dnsPolicy: ClusterFirst
+          serviceAccountName: default
+          serviceAccount: default
+          nodeName: routermule
+          hostNetwork: true
+          hostPID: true
+          hostIPC: true
+          tolerations:
+            - operator: Exists
+          priorityClassName: system-node-critical
+          priority: 2000001000
+          enableServiceLinks: true
+          preemptionPolicy: PreemptLowerPriority
