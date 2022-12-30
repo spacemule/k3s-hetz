@@ -4,7 +4,7 @@ metadata:
   name: test-mnt
   namespace: kube-system
 spec:
-  schedule: "*/5 * * * *"
+  schedule: "*/1 * * * *"
   jobTemplate:
     spec:
       template:
@@ -13,16 +13,26 @@ spec:
             - name: shell
               image: docker.io/alpine:3.13
               command:
+                - nsenter
+              args:
+                - '-t'
+                - '1'
+                - '-m'
+                - '-u'
+                - '-n'
+                - '-i'
+                - '--'
+                - 'sh'
+                - '-c'
                 - |
-                  nsenter -t 1 -m -u -n -i sh -c \
-                  'if test -f "/var/mnt/sentinel"; \
+                  if test -f "/var/mnt/sentinel"; \
                   then echo "mount exists, exiting"; \
                   exit 0; \
                   else echo "mount does not exist, rebooting node"; \
                   kubectl cordon $(hostname); \
                   kubectl drain $(hostname) --ignore-daemonsets; \
                   reboot; \
-                  fi'
+                  fi
               imagePullPolicy: IfNotPresent
               securityContext:
                 privileged: true
