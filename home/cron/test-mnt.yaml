@@ -26,8 +26,14 @@ spec:
                 - 'sh'
                 - '-c'
                 - |
+                  COUNT=`kubectl --namespace kube-system get pods | grep test-mnt | grep Running | wc -l`
+                  if [ $COUNT -gt 1 ]; then
+                    echo "More than one test-mnt pod is running. Exiting."
+                    exit 0
+                  fi; \
                   if test -f "/var/mnt/sentinel"; \
-                  then echo "mount exists, exiting"; \
+                  then echo "mount exists. uncordoning node and exiting"; \
+                  kubectl uncordon $(hostname); \
                   exit 0; \
                   else echo "mount does not exist, rebooting node"; \
                   kubectl cordon $(hostname); \
