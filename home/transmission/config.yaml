@@ -6,7 +6,7 @@ metadata:
 data:
   settings.json: |
     {
-      "alt-speed-down": 500,
+      "alt-speed-down": 2048,
       "alt-speed-enabled": false,
       "alt-speed-time-begin": 540,
       "alt-speed-time-day": 127,
