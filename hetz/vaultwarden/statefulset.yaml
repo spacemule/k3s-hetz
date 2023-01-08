@@ -1,0 +1,44 @@
+#Much of this from https://github.com/icicimov/kubernetes-bitwarden_rs
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vaultwarden
+  namespace: default
+  labels:
+    app: vaultwarden
+spec:
+  serviceName: vaultwarden
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vaultwarden
+  template:
+      metadata:
+      labels:
+        app: vaultwarden
+      spec:
+        securityContext:
+          fsGroup: 33
+          runAsUser: 33
+        containers:
+        - name: vaultwarden
+          image: vaultwarden/server:1.27.0
+          imagePullPolicy: IfNotPresent
+          ports:
+          - containerPort: 8000
+            name: http
+            protocol: TCP
+          - containerPort: 3012
+            name: websocket
+            protocol: TCP
+          envFrom:
+          - configMapRef:
+            name: vaultwarden
+          volumeMounts:
+          - mountPath: /data
+            name: data
+          resources:
+            requests:
+              cpu: 50m
+              memory: 128Mi
