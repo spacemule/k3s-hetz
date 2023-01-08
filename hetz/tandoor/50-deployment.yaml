@@ -94,7 +94,7 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 128Mi
+            memory: 64Mi
         volumeMounts:
           - mountPath: /media
             name: recipes
@@ -138,7 +138,7 @@ spec:
         resources:
           requests:
             cpu: 50m
-            memory: 256Mi
+            memory: 128Mi
         volumeMounts:
           - mountPath: /opt/recipes/mediafiles
             name: recipes
