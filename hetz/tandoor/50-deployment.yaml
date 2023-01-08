@@ -93,7 +93,7 @@ spec:
             name: gunicorn
         resources:
           requests:
-            cpu: 250m
+            cpu: 50m
             memory: 128Mi
         volumeMounts:
           - mountPath: /media
@@ -137,7 +137,7 @@ spec:
           periodSeconds: 30
         resources:
           requests:
-            cpu: 250m
+            cpu: 50m
             memory: 256Mi
         volumeMounts:
           - mountPath: /opt/recipes/mediafiles
