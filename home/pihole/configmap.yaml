@@ -41,6 +41,7 @@ data:
     https://raw.githubusercontent.com/AssoEchap/stalkerware-indicators/master/generated/hosts
     https://urlhaus.abuse.ch/downloads/hostfile/
     https://zerodot1.gitlab.io/CoinBlockerLists/hosts_browser
+    https://raw.githubusercontent.com/chadmayfield/pihole-blocklists/master/lists/pi_blocklist_porn_top1m.list
 ---
 apiVersion: v1
 kind: ConfigMap
