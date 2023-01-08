@@ -15,9 +15,10 @@ spec:
       app: vaultwarden
   template:
       metadata:
-      labels:
-        app: vaultwarden
+        labels:
+          app: vaultwarden
       spec:
+        serviceAccountName: vaultwarden
         securityContext:
           fsGroup: 33
           runAsUser: 33
@@ -32,9 +33,25 @@ spec:
           - containerPort: 3012
             name: websocket
             protocol: TCP
+          env:
+          - name: SMTP_USERNAME
+            valueFrom:
+              secretKeyRef:
+                name: vaultwarden-smtp
+                key: emailUser
+          - name: SMTP_PASSWORD
+            valueFrom:
+              secretKeyRef:
+                name: vaultwarden-smtp
+                key: emailPassword
+          - name: ADMIN_TOKEN
+            valueFrom:
+              secretKeyRef:
+                name: vaultwarden-smtp
+                key: admin_token
           envFrom:
           - configMapRef:
-            name: vaultwarden
+              name: vaultwarden
           volumeMounts:
           - mountPath: /data
             name: data
@@ -42,3 +59,13 @@ spec:
             requests:
               cpu: 50m
               memory: 128Mi
+  volumeClaimTemplates:
+  - metadata:
+      name: data
+    spec:
+      accessModes:
+        - "ReadWriteOnce"
+      resources:
+        requests:
+          storage: "1Gi"
+      storageClassName: longhorn
