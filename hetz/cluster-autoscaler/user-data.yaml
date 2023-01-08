@@ -8,4 +8,4 @@ runcmd:
 - nmcli connection modify private ipv4.dns 9.9.9.9
 - nmcli connection up private
 - nmcli device set enp7s0 managed yes
-- systemctl enable --now k3s-agent.service
+- systemctl enable --now k3s-agent.service iscsid.service

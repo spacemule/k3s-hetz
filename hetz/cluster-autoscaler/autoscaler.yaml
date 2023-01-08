@@ -182,10 +182,10 @@ spec:
           - name: HCLOUD_TOKEN
             valueFrom:
               secretKeyRef:
-                name: hcloud-csi
+                name: hcloud
                 key: token
           - name: HCLOUD_CLOUD_INIT
-            value: "I2Nsb3VkLWNvbmZpZwoKcnVuY21kOgotIGRuZiByZW1vdmUgLXkgaGMtdXRpbHMKLSBkbmYgaW5zdGFsbCAteSB5dW0tdXRpbHMKIyMgQWRkIGEgY29ubmVjdGlvbiBvbiBwcml2YXRlIGlmYWNlCi0gbm1jbGkgY29ubmVjdGlvbiBhZGQgdHlwZSBldGhlcm5ldCBjb24tbmFtZSBwcml2YXRlIGlmbmFtZSBlbnA3czAgYXV0b2Nvbm5lY3QgeWVzCi0gbm1jbGkgY29ubmVjdGlvbiBtb2RpZnkgcHJpdmF0ZSBpcHY0LmRucyA5LjkuOS45Ci0gbm1jbGkgY29ubmVjdGlvbiB1cCBwcml2YXRlCi0gbm1jbGkgZGV2aWNlIHNldCBlbnA3czAgbWFuYWdlZCB5ZXMKLSBzeXN0ZW1jdGwgZW5hYmxlIC0tbm93IGszcy1hZ2VudC5zZXJ2aWNl"
+            value: "I2Nsb3VkLWNvbmZpZwoKcnVuY21kOgotIGRuZiByZW1vdmUgLXkgaGMtdXRpbHMKLSBkbmYgaW5zdGFsbCAteSB5dW0tdXRpbHMKIyMgQWRkIGEgY29ubmVjdGlvbiBvbiBwcml2YXRlIGlmYWNlCi0gbm1jbGkgY29ubmVjdGlvbiBhZGQgdHlwZSBldGhlcm5ldCBjb24tbmFtZSBwcml2YXRlIGlmbmFtZSBlbnA3czAgYXV0b2Nvbm5lY3QgeWVzCi0gbm1jbGkgY29ubmVjdGlvbiBtb2RpZnkgcHJpdmF0ZSBpcHY0LmRucyA5LjkuOS45Ci0gbm1jbGkgY29ubmVjdGlvbiB1cCBwcml2YXRlCi0gbm1jbGkgZGV2aWNlIHNldCBlbnA3czAgbWFuYWdlZCB5ZXMKLSBzeXN0ZW1jdGwgZW5hYmxlIC0tbm93IGszcy1hZ2VudC5zZXJ2aWNlIGlzY3NpZC5zZXJ2aWNl"
           - name: HCLOUD_SSH_KEY
             value: "8913345"
           - name: HCLOUD_NETWORK

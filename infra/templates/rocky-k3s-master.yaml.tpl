@@ -247,7 +247,7 @@ runcmd:
 # Enables routing and automatic updates
 - systemctl daemon-reload
 - systemctl enable manifests.timer delete-jobs.timer
-- systemctl enable --now dnf-automatic.timer
+- systemctl enable --now dnf-automatic.timer iscsid.service
 - systemctl disable --now firewalld nm-cloud-setup.service nm-cloud-setup.timer
 
 
