@@ -1,0 +1,24 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: syncthing-ingress
+  namespace: wireguard
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt
+spec:
+  ingressClassName: nginx
+  tls:
+    - hosts:
+        - sync2.spacemule.net
+      secretName: sync2-tls-secret
+  rules:
+    - host: sync2.spacemule.net
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: nginx-proxy-service
+                port:
+                  number: 8081
