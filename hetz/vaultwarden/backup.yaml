@@ -20,7 +20,8 @@ spec:
               apk add --no-cache sqlite rsync && \
               mkdir -p /data-backup && \
               rsync -avz /data/ /data-backup/ && \
-              sqlite3 data/db.sqlite3 ".backup '/data-backup/db-$(date '+%Y%m%d-%H%M').sqlite3'"  && \
+              rm /data-backup/db.sqlite3 && \
+              sqlite3 data/db.sqlite3 ".backup '/data-backup/db.sqlite3'"  && \
               restic backup --tag vaultwarden /data-backup && \
               restic forget --tag vaultwarden --keep-last 7 --keep-daily 7 --keep-weekly 4 --keep-monthly 12 --keep-yearly 10 --prune
             env:
