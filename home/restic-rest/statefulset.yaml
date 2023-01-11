@@ -32,7 +32,6 @@ spec:
             - --listen=:8000
             - --max-size=214748364800
             - --path=/data
-            - --append-only
             - --prometheus
             - --prometheus-no-auth
           volumeMounts:
