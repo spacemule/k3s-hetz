@@ -3,11 +3,11 @@ kind: CronJob
 metadata:
   name: backup-vaultwarden
 spec:
-  # run hourly
-  schedule: "15 * * * *"
+  # run every fifteen minutes
+  schedule: "*/15 * * * *"
   jobTemplate:
     spec:
-      ttlSecondsAfterFinished: 4000
+      ttlSecondsAfterFinished: 2700
       template:
         spec:
           containers:
