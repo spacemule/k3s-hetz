@@ -98,7 +98,7 @@ spec:
       volumes:
       - name: paperless-mount
         persistentVolumeClaim:
-          claimName: paperless-pvc
+          claimName: paperless-pvc-longhorn
       - name: consumption
         emptyDir: {}
       - name: trash

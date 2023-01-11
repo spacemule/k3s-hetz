@@ -24,8 +24,6 @@ spec:
       labels:
         app: syncthing
     spec:
-      nodeSelector:
-        kubernetes.io/hostname: k3s-worker-0
       securityContext:
         fsGroup: 1000
       containers:
@@ -67,4 +65,4 @@ spec:
       volumes:
       - name: syncthing-mount
         persistentVolumeClaim:
-          claimName: syncthing-pvc
+          claimName: syncthing-pvc-longhorn
