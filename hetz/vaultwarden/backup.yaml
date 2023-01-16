@@ -3,8 +3,8 @@ kind: CronJob
 metadata:
   name: backup-vaultwarden
 spec:
-  # run every fifteen minutes
-  schedule: "*/15 * * * *"
+  # run every thirty minutes
+  schedule: "*/30 * * * *"
   jobTemplate:
     spec:
       ttlSecondsAfterFinished: 2700
@@ -24,7 +24,7 @@ spec:
               rm /data-backup/db.sqlite3 && \
               sqlite3 /data/db.sqlite3 ".backup '/data-backup/db.sqlite3'"  && \
               restic backup --tag vaultwarden --host vaultwarden-0 /data-backup && \
-              restic forget --group-by tags --tag vaultwarden --keep-last 97 --keep-daily 7 --keep-weekly 4 --keep-monthly 12 --keep-yearly 10 --prune
+              restic forget --group-by tags --tag vaultwarden --keep-last 96 --keep-daily 7 --keep-weekly 4 --keep-monthly 12 --keep-yearly 10 --prune
             env:
               - name: RESTIC_REPOSITORY
                 value: b2:spacemule-k8s:/vaultwarden
