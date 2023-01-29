@@ -11,7 +11,6 @@ spec:
     - hosts:
         - backup.spacemule.net
       secretName: restic-tls-secret
-  ingressClassName: nginx
   rules:
     - host: backup.spacemule.net
       http:
@@ -30,3 +29,19 @@ spec:
                 name: null-service
                 port:
                   number: 8000
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: restic-ingress
+  # needs namespace of traefik
+  namespace: kube-system
+spec:
+  entryPoints:
+    - restic
+  routes:
+    - services:
+      - name: traefik
+        port: 443
+      match: HostSNI(`*`)
+      #does not work with domain

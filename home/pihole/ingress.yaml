@@ -6,7 +6,6 @@ metadata:
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
 spec:
-  ingressClassName: nginx
   tls:
     - hosts:
         - dns.spacemule.net
@@ -22,3 +21,16 @@ spec:
                 name: pihole
                 port:
                   name: pihole-admin
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteUDP
+metadata:
+  name: pihole
+  namespace: pihole
+spec:
+    entryPoints:
+      - dns
+    routes:
+      - services:
+        - name: pihole
+          port: 53

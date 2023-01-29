@@ -4,7 +4,6 @@ metadata:
   name: syncthing-ingress
   namespace: syncthing
 spec:
-  ingressClassName: nginx
   rules:
   - host: sync2.spacemule.net
     http:
@@ -16,3 +15,44 @@ spec:
             name: syncthing-gui-service
             port:
               number: 8081
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteUDP
+metadata:
+  name: syncthing-ingress-udp
+  namespace: syncthing
+spec:
+    entryPoints:
+      - syncthing-udp
+    routes:
+      - services:
+        - name: syncthing-service
+          port: 22001
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: syncthing-ingress-tcp
+  namespace: syncthing
+spec:
+    entryPoints:
+      - syncthing-tcp
+    routes:
+      - services:
+        - name: syncthing-service
+          port: 22000
+        match: HostSNI(`*`)
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: syncthing-ingress-unk
+  namespace: syncthing
+spec:
+    entryPoints:
+      - syncthing
+    routes:
+      - services:
+        - name: syncthing-service
+          port: 21017
+        match: HostSNI(`*`)
