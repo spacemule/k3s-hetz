@@ -44,7 +44,7 @@ spec:
         match: HostSNI(`*`)
 ---
 apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRouteTCP
+kind: IngressRouteUDP
 metadata:
   name: syncthing-ingress-unk
   namespace: syncthing
@@ -55,4 +55,3 @@ spec:
       - services:
         - name: syncthing-service
           port: 21017
-        match: HostSNI(`*`)

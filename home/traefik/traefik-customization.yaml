@@ -25,6 +25,7 @@ spec:
         expose: true
         exposedPort: 22000
       syncthing:
+        protocol: UDP
         port: 21017
         expose: true
         exposedPort: 21017
