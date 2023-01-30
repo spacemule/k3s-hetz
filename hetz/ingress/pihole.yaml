@@ -4,7 +4,6 @@ metadata:
   name: pihole-ingress
   namespace: wireguard
 spec:
-  ingressClassName: nginx
   rules:
   - host: dns.spacemule.net
     http:

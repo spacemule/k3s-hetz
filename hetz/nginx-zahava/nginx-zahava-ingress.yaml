@@ -5,8 +5,8 @@ metadata:
   namespace: nginx-static
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-redirect-to-https@kubernetescrd
 spec:
-  ingressClassName: nginx
   tls:
   - hosts:
     - zahava-is-cool.com

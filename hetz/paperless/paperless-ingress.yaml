@@ -5,9 +5,7 @@ metadata:
   namespace: paperless
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
-    nginx.ingress.kubernetes.io/whitelist-source-range: 10.0.0.0/12
 spec:
-  ingressClassName: nginx
   tls:
   - hosts:
     - docs.spacemule.net

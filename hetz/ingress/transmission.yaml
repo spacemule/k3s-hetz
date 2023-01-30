@@ -4,7 +4,6 @@ metadata:
   name: transmission-ingress
   namespace: wireguard
 spec:
-  ingressClassName: nginx
   rules:
   - host: transmission.spacemule.net
     http:

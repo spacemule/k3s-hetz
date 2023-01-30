@@ -4,7 +4,6 @@ metadata:
   name: jelly-ingress
   namespace: wireguard
 spec:
-  ingressClassName: nginx
   rules:
   - host: jelly.spacemule.net
     http:

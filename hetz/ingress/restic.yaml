@@ -4,7 +4,6 @@ metadata:
   name: restic-ingress
   namespace: wireguard
 spec:
-  ingressClassName: nginx
   rules:
     - host: backup.spacemule.net
       http:
@@ -16,3 +15,17 @@ spec:
                 name: nginx-proxy-service
                 port:
                   number: 8081
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteTCP
+metadata:
+  name: restic
+  namespace: wireguard
+spec:
+  entryPoints:
+    - restic
+  routes:
+    - services:
+        - name: nginx-proxy-service
+          port: 8082
+      match: HostSNI(`*`)

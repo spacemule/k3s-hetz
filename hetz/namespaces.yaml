@@ -11,6 +11,16 @@ kind: Namespace
 metadata:
   creationTimestamp: null
   labels:
-    istio-injection: enabled
     kubernetes.io/metadata.name: default
   name: default
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  creationTimestamp: null
+  labels:
+    kubernetes.io/metadata.name: metallb
+    pod-security.kubernetes.io/enforce: privileged
+    pod-security.kubernetes.io/audit: privileged
+    pod-security.kubernetes.io/warn: privileged
+  name: metallb

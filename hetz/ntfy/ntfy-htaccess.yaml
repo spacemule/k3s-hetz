@@ -1,0 +1,15 @@
+apiVersion: bitnami.com/v1alpha1
+kind: SealedSecret
+metadata:
+  creationTimestamp: null
+  name: basic-auth-ntfy
+  namespace: default
+spec:
+  encryptedData:
+    users: AgA3MQYypk9p17ugE3wYna/pjSkOoX7UPKOwAio38OCLAbvBeombYhYiO6Jle4lVV4iUiRbhhezNS/y9bBwcp2SN48AUQuz6Md2IAGZVgj6xZzryRBvTTT0Nf8WeeinUiwFbvW9tbEkmb0mqXMvXbUm8qT9LSwRx4FDsjhhaxFL5OiUaOpV+b+G0ZaOuxATOYHZa/ldrgv7+2G2+z8Cx8DbXSWfZRqcMYZCb5eCEyhQ8q4D/1TLrSZz8DlX8sVxcDiQw+LqcbS7lNoQPKx1PCz36Ucio3HyvQAn8pCnYXEJr385DXCLUEULSy438cMregyGtd0pdmnB3hND8h6TP2qkzY20bNj5pMmI+tXTV32VOqi/hHf7ZX2zO7s3Fv6uGjAB/TnvwpoB3SNm/G/xGL4SLhPOxQR0zEYLZ9zIDLebgCsZmWNd6uAbQBS6gkuAfOx2wYgqZ3wOdVTNW3pJwvFz+DLVmOgg4osmQX6MWBNqQWDlIUxvpL2dKRDhodulMeUf2ZLdSY3byFXEO5PCjGLsAbl+ZSq5tZcyt9ZkdDvbINR5oNuxnjLHRzyJyBEpE9tU6t2XlqMKXRbjQcbEC6bscJN6K8UHOWrOThs/ijKcCmLtWwquntIPTz3y+FWsaPC1Ov2NXehVGX9SXzw+tg0zrDixiWJPc1r3BQX9vHSDWf05GWVe3nW8kde6kOX99HKsJJ7AgEFZL1aejjlgRPmeEV9SIMfYsYfPb8kyc8ELQqtZ5Zi4qMnd4pmn6k+K+aio=
+  template:
+    metadata:
+      creationTimestamp: null
+      name: basic-auth-ntfy
+      namespace: default
+

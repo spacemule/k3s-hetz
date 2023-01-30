@@ -1,0 +1,12 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRouteUDP
+metadata:
+  name: wireguard
+  namespace: wireguard
+spec:
+  entryPoints:
+    - wireguard
+  routes:
+    - services:
+        - name: wireguard
+          port: 51820

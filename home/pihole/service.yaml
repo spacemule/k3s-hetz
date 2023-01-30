@@ -1,4 +1,3 @@
-# This file is symlinked between the two deployments
 ---
 apiVersion: v1
 kind: Service

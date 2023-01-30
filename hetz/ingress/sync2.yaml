@@ -5,8 +5,8 @@ metadata:
   namespace: wireguard
   annotations:
     cert-manager.io/cluster-issuer: letsencrypt
+    traefik.ingress.kubernetes.io/router.middlewares: kube-system-redirect-to-https@kubernetescrd
 spec:
-  ingressClassName: nginx
   tls:
     - hosts:
         - sync2.spacemule.net

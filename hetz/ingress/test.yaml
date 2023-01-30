@@ -10,7 +10,6 @@ spec:
     - hosts:
         - test.spacemule.net
       secretName: test-spacemule-tls-secret
-  ingressClassName: nginx
   rules:
     - host: test.spacemule.net
       http:

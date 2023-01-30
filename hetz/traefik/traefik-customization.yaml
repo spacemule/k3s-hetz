@@ -1,0 +1,59 @@
+apiVersion: helm.cattle.io/v1
+kind: HelmChartConfig
+metadata:
+  name: traefik
+  namespace: kube-system
+spec:
+  valuesContent: |-
+    ports:
+      restic:
+        port: 8444
+        expose: true
+        exposedPort: 444
+      syncthing-udp:
+        protocol: UDP
+        port: 22001
+        expose: true
+        exposedPort: 22001
+      syncthing-tcp:
+        port: 22000
+        expose: true
+        exposedPort: 22000
+      syncthing:
+        protocol: UDP
+        port: 21017
+        expose: true
+        exposedPort: 21017
+      wireguard:
+        port: 51820
+        expose: true
+        exposedPort: 51820
+        protocol: UDP
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: http-to-https-redirect
+  namespace: kube-system
+spec:
+  entryPoints:
+    - web
+  routes:
+    - kind: Rule
+      match: PathPrefix(`/`)
+      priority: 1
+      middlewares:
+        - name: redirect-to-https
+      services:
+        - kind: TraefikService
+          name: noop@internal
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: redirect-to-https
+  namespace: kube-system
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
