@@ -5,6 +5,12 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    ingressClass:
+      enabled: true
+      isDefaultClass: true
+    logs:
+      general:
+        level: DEBUG
     ports:
       restic:
         port: 8444
@@ -35,24 +41,6 @@ spec:
         metallb.universe.tf/address-pool: default
 ---
 apiVersion: traefik.containo.us/v1alpha1
-kind: IngressRoute
-metadata:
-  name: http-to-https-redirect
-  namespace: kube-system
-spec:
-  entryPoints:
-    - web
-  routes:
-    - kind: Rule
-      match: PathPrefix(`/`)
-      priority: 1
-      middlewares:
-        - name: redirect-to-https
-      services:
-        - kind: TraefikService
-          name: noop@internal
----
-apiVersion: traefik.containo.us/v1alpha1
 kind: Middleware
 metadata:
   name: redirect-to-https
@@ -61,3 +49,30 @@ spec:
   redirectScheme:
     scheme: https
     permanent: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: TLSOption
+metadata:
+  name: default
+  namespace: kube-system
+spec:
+  minVersion: VersionTLS12
+  cipherSuites:
+    - TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384   # TLS 1.2
+    - TLS_ECDHE_RSA_WITH_CHACHA20_POLY1305    # TLS 1.2
+    - TLS_AES_256_GCM_SHA384                  # TLS 1.3
+    - TLS_CHACHA20_POLY1305_SHA256            # TLS 1.3
+  curvePreferences:
+    - CurveP521
+    - CurveP384
+  sniStrict: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: whitelist
+  namespace: kube-system
+spec:
+  ipWhiteList:
+    sourceRange:
+      - 10.0.0.0/12
