@@ -29,6 +29,10 @@ spec:
         expose: true
         exposedPort: 51820
         protocol: UDP
+    service:
+      annotations:
+        metallb.universe.tf/allow-shared-ip: default
+        metallb.universe.tf/address-pool: default
 ---
 apiVersion: traefik.containo.us/v1alpha1
 kind: IngressRoute

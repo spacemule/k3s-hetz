@@ -34,8 +34,8 @@ spec:
               protocol: UDP
           resources:
             requests:
-              cpu: 100m
-              memory: 128Mi
+              cpu: 50m
+              memory: 64Mi
         - image: nginx:stable
           name: nginx
           securityContext:
@@ -52,8 +52,8 @@ spec:
               name: nginx-https
           resources:
             requests:
-              cpu: 100m
-              memory: 256Mi
+              cpu: 50m
+              memory: 128Mi
       volumes:
         - name: wg-conf-mount
           secret:

@@ -10,6 +10,16 @@ spec:
       ttlSecondsAfterFinished: 2700
       template:
         spec:
+          affinity:
+            podAffinity:
+              requiredDuringSchedulingIgnoredDuringExecution:
+                - labelSelector:
+                    matchExpressions:
+                      - key: app
+                        operator: In
+                        values:
+                          - vaultwarden
+                  topologyKey: kubernetes.io/hostname
           containers:
           - name: restic
             image: restic/restic:0.14.0

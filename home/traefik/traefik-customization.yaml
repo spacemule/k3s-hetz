@@ -6,11 +6,6 @@ metadata:
 spec:
   valuesContent: |-
     ports:
-      dns:
-        protocol: UDP
-        port: 5353
-        expose: true
-        exposedPort: 53
       restic:
         port: 8444
         expose: true
@@ -29,3 +24,7 @@ spec:
         port: 21017
         expose: true
         exposedPort: 21017
+    service:
+      annotations:
+        metallb.universe.tf/allow-shared-ip: default
+        metallb.universe.tf/address-pool: default
