@@ -12,6 +12,16 @@ module "k3s" {
 
 resource "hcloud_firewall" "cluster_apps" {
   name = "cluster_apps"
+  # http3
+  rule {
+    direction  = "in"
+    protocol   = "udp"
+    port       = "443"
+    source_ips = [
+      "0.0.0.0/0",
+    ]
+  }
+
   # Wireguard
   rule {
     direction  = "in"

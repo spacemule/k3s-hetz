@@ -5,10 +5,20 @@ metadata:
   namespace: kube-system
 spec:
   valuesContent: |-
+    experimental:
+      http3:
+        enabled: true
     ingressClass:
       enabled: true
       isDefaultClass: true
+    logs:
+      general:
+        level: INFO
     ports:
+      websecure:
+        http3:
+          enabled: true
+          advertisedPort: 443
       restic:
         port: 8444
         expose: true
