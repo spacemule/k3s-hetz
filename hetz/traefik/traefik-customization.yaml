@@ -10,7 +10,7 @@ spec:
       isDefaultClass: true
     logs:
       general:
-        level: DEBUG
+        level: INFO
     ports:
       restic:
         port: 8444
