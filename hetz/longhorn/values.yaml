@@ -152,11 +152,11 @@ defaultSettings:
   storageNetwork: ~
   deletingConfirmationFlag: ~
   engineReplicaTimeout: ~
-  snapshotDataIntegrity: ~
+  snapshotDataIntegrity: fast-check
   snapshotDataIntegrityImmediateCheckAfterSnapshotCreation: ~
   snapshotDataIntegrityCronjob: ~
   removeSnapshotsDuringFilesystemTrim: ~
-  fastReplicaRebuildEnabled: ~
+  fastReplicaRebuildEnabled: true
   replicaFileSyncHttpClientTimeout: ~
 privateRegistry:
   createSecret: ~
