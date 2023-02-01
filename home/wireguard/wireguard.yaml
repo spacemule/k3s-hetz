@@ -16,8 +16,6 @@ spec:
       labels:
         app: wireguard
     spec:
-      nodeSelector:
-        node-role.kubernetes.io/master: "true"
       containers:
         - image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/opensuse/wireguard:latest
           imagePullPolicy: Always

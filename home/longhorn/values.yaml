@@ -99,10 +99,10 @@ persistence:
 
 csi:
   kubeletRootDir: ~
-  attacherReplicaCount: ~
-  provisionerReplicaCount: ~
-  resizerReplicaCount: ~
-  snapshotterReplicaCount: ~
+  attacherReplicaCount: 2
+  provisionerReplicaCount: 2
+  resizerReplicaCount: 2
+  snapshotterReplicaCount: 2
 
 defaultSettings:
   backupTarget: ~
