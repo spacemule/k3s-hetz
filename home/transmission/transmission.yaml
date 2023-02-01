@@ -20,8 +20,6 @@ spec:
         runAsUser: 1000
         runAsGroup: 1000
         fsGroup: 1000
-      nodeSelector:
-        node-role.kubernetes.io/master: "true"
       containers:
       - image: registry.opensuse.org/home/spacemule/branches/opensuse/templates/images/tumbleweed/containers/transmission
         name: transmission
@@ -37,15 +35,15 @@ spec:
         securityContext:
           capabilities: {}
         volumeMounts:
-          - name: transmission-torrents-mount
+          - name: jellyfin-pvc
             mountPath: /torrents
-          - name: transmission-incomplete-mount
-            mountPath: /incomplete
+            subPath: torrents
           - name: config-vol
             mountPath: /conf/settings.json
             subPath: settings.json
-          - name: state-mount
+          - name: jellyfin-pvc
             mountPath: /conf
+            subPath: transmission-conf
         resources:
           requests:
             memory: "300Mi"
@@ -66,15 +64,9 @@ spec:
             initialDelaySeconds: 15
             timeoutSeconds: 5
       volumes:
-      - name: transmission-torrents-mount
-        hostPath:
-          path: /var/mnt/torrents
-      - name: transmission-incomplete-mount
-        hostPath:
-          path: /var/mnt/incomplete
+      - name: jellyfin-pvc
+        persistentVolumeClaim:
+          claimName: jellyfin-pvc
       - name: config-vol
         configMap:
           name: transmission-config
-      - name: state-mount
-        hostPath:
-          path: /var/mnt/transmission-conf

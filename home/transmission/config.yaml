@@ -26,7 +26,7 @@ data:
       "idle-seeding-limit": 30,
       "idle-seeding-limit-enabled": false,
       "incomplete-dir": "/incomplete",
-      "incomplete-dir-enabled": true,
+      "incomplete-dir-enabled": false,
       "lpd-enabled": false,
       "message-level": 2,
       "peer-id-ttl-hours": 6,
