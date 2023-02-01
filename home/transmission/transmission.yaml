@@ -46,8 +46,8 @@ spec:
             subPath: transmission-conf
         resources:
           requests:
-            memory: "300Mi"
-            cpu: "400m"
+            memory: "128Mi"
+            cpu: "50m"
         ports:
           - containerPort: 9091
             name: transmission
