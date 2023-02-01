@@ -39,16 +39,15 @@ spec:
         securityContext:
           capabilities: {}
         volumeMounts:
-          - name: jellyfin-config-mount
+          - name: jellyfin-pvc
             mountPath: /config
-          - name: jellyfin-cache-mount
+            subPath: jellyfin/config
+          - name: jellyfin-pvc
             mountPath: /cache
-          - name: jellyfin-media-mount
-            mountPath: /media
-          - name: jellyfin-torrents-mount
+            subPath: jellyfin/cache
+          - name: jellyfin-pvc
             mountPath: /media/torrents
-          - name: jellyfin-music-mount
-            mountPath: /media/Music
+            subPath: torrents
         ports:
           - containerPort: 8096
             name: jellyfin-http
@@ -65,18 +64,6 @@ spec:
           initialDelaySeconds: 60
           timeoutSeconds: 5
       volumes:
-      - name: jellyfin-config-mount
-        hostPath:
-          path: /var/mnt/jellyfin/config
-      - name: jellyfin-cache-mount
-        hostPath:
-          path: /var/mnt/jellyfin/cache
-      - name: jellyfin-torrents-mount
-        hostPath:
-          path: /var/mnt/torrents
-      - name: jellyfin-media-mount
-        hostPath:
-          path: /var/mnt/jellyfin/media/
-      - name: jellyfin-music-mount
-        hostPath:
-          path: /var/mnt/Music/
+      - name: jellyfin-pvc
+        persistentVolumeClaim:
+          claimName: jellyfin-pvc
