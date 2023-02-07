@@ -16,6 +16,16 @@ spec:
       labels:
         app: transmission
     spec:
+      affinity:
+        podAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+          - labelSelector:
+              matchExpressions:
+              - key: app
+                operator: In
+                values:
+                - jellyfin
+            topologyKey: kubernetes.io/hostname
       securityContext:
         runAsUser: 1000
         runAsGroup: 1000
@@ -65,8 +75,8 @@ spec:
             timeoutSeconds: 5
       volumes:
       - name: jellyfin-pvc
-        persistentVolumeClaim:
-          claimName: jellyfin-pvc
+        hostPath:
+          path: /var/mnt/jfin
       - name: config-vol
         configMap:
           name: transmission-config

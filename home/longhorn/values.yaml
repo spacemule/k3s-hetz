@@ -80,7 +80,7 @@ persistence:
   defaultFsType: ext4
   defaultMkfsParams: ""
   defaultClassReplicaCount: 2
-  defaultDataLocality: disabled # best-effort otherwise
+  defaultDataLocality: best-effort #disabled # best-effort otherwise
   reclaimPolicy: Delete
   migratable: false
   recurringJobSelector:
@@ -110,13 +110,13 @@ defaultSettings:
   allowRecurringJobWhileVolumeDetached: ~
   createDefaultDiskLabeledNodes: ~
   defaultDataPath: /var/mnt/longhorn
-  defaultDataLocality: ~
+  defaultDataLocality: best-effort
   replicaSoftAntiAffinity: ~
   replicaAutoBalance: ~
   storageOverProvisioningPercentage: ~
   storageMinimalAvailablePercentage: 5
   upgradeChecker: ~
-  defaultReplicaCount: ~
+  defaultReplicaCount: 2
   defaultLonghornStaticStorageClass: ~
   backupstorePollInterval: ~
   failedBackupTTL: ~
@@ -135,7 +135,7 @@ defaultSettings:
   allowNodeDrainWithLastHealthyReplica: ~
   mkfsExt4Parameters: ~
   disableReplicaRebuild: ~
-  replicaReplenishmentWaitInterval: ~
+  replicaReplenishmentWaitInterval: 1200
   concurrentReplicaRebuildPerNodeLimit: ~
   concurrentVolumeBackupRestorePerNodeLimit: ~
   disableRevisionCounter: ~

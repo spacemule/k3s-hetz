@@ -1,6 +1,6 @@
 ---
 apiVersion: apps/v1
-kind: StatefulSet
+kind: Deployment
 metadata:
   namespace: restic-rest
   name: restic
@@ -8,7 +8,6 @@ metadata:
     app: restic
 spec:
   replicas: 1
-  serviceName: restic
   selector:
     matchLabels:
       app: restic
@@ -18,7 +17,17 @@ spec:
         app: restic
     spec:
       nodeSelector:
-        kubernetes.io/hostname: routermule
+        kubernetes.io/hostname: computemule
+      affinity:
+        podAntiAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            - labelSelector:
+                matchExpressions:
+                  - key: app
+                    operator: In
+                    values:
+                      - restic
+              topologyKey: kubernetes.io/hostname
       securityContext:
         fsGroup: 1000
       containers:
@@ -66,6 +75,7 @@ spec:
         - name: restic-data
           hostPath:
             path: /var/mnt/restic
+            type: Directory
         - name: restic-htpasswd
           secret:
               secretName: restic-secret

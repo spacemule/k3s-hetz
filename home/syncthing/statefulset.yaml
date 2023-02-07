@@ -26,7 +26,7 @@ spec:
         app: syncthing
     spec:
       nodeSelector:
-        kubernetes.io/hostname: routermule
+        kubernetes.io/hostname: computemule
       securityContext:
         fsGroup: 1000
       containers:
@@ -68,3 +68,4 @@ spec:
       - name: syncthing-mount
         hostPath:
           path: /var/mnt/syncthing
+          type: Directory
