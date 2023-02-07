@@ -5,7 +5,7 @@ metadata:
   namespace: syncthing
 spec:
   rules:
-  - host: sync2.spacemule.net
+  - host: home-sync.spacemule.net
     http:
       paths:
       - path: /
