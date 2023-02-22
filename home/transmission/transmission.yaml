@@ -65,13 +65,13 @@ spec:
           httpGet:
             path: /transmission/web/
             port: transmission
-          initialDelaySeconds: 15
+          initialDelaySeconds: 5
           timeoutSeconds: 5
         readinessProbe:
             httpGet:
                 path: /transmission/web/
                 port: transmission
-            initialDelaySeconds: 15
+            initialDelaySeconds: 5
             timeoutSeconds: 5
       volumes:
       - name: jellyfin-pvc
