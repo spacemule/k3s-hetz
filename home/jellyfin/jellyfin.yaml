@@ -48,6 +48,9 @@ spec:
           - name: jellyfin-pvc
             mountPath: /media/torrents
             subPath: torrents
+          - name: jellyfin-pvc
+            mountPath: /media/music
+            subPath: music
         ports:
           - containerPort: 8096
             name: jellyfin-http
@@ -55,13 +58,13 @@ spec:
           httpGet:
             path: /web/index.html
             port: jellyfin-http
-          initialDelaySeconds: 30
+          initialDelaySeconds: 10
           timeoutSeconds: 5
         readinessProbe:
           httpGet:
             path: /web/index.html
             port: jellyfin-http
-          initialDelaySeconds: 30
+          initialDelaySeconds: 10
           timeoutSeconds: 5
       volumes:
       - name: jellyfin-pvc
