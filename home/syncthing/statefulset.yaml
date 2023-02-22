@@ -35,11 +35,11 @@ spec:
         livenessProbe:
           tcpSocket:
             port: 22000
-          initialDelaySeconds: 30
+          initialDelaySeconds: 5
         readinessProbe:
           tcpSocket:
             port: 22000
-          initialDelaySeconds: 30
+          initialDelaySeconds: 5
         resources:
           requests:
             cpu: 75m
@@ -53,6 +53,8 @@ spec:
         volumeMounts:
           - name: syncthing-mount
             mountPath: /var/syncthing
+          - name: music-mount
+            mountPath: /var/syncthing/Music
         ports:
           - containerPort: 8384
             name: syncthing-gui
@@ -68,4 +70,8 @@ spec:
       - name: syncthing-mount
         hostPath:
           path: /var/mnt/syncthing
+          type: Directory
+      - name: music-mount
+        hostPath:
+          path: /var/mnt/jfin/music
           type: Directory
