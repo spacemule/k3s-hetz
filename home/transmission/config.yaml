@@ -21,7 +21,7 @@ data:
       "dht-enabled": true,
       "download-dir": "/torrents",
       "download-queue-enabled": true,
-      "download-queue-size": 15,
+      "download-queue-size": 50,
       "encryption": 1,
       "idle-seeding-limit": 30,
       "idle-seeding-limit-enabled": false,
