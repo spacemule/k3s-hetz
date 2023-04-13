@@ -52,8 +52,6 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
     {{- end }}
-
-    {{- if .Values.prometheus.prometheusRule.addressPoolUsage.enabled }}
     {{- range .Values.prometheus.prometheusRule.addressPoolUsage.thresholds }}
     - alert: MetalLBAddressPoolUsage{{ .percent }}Percent
       annotations:
@@ -64,7 +62,6 @@ spec:
       labels:
         {{- toYaml . | nindent 8 }}
       {{- end }}
-    {{- end }}
     {{- end }}
     {{- if .Values.prometheus.prometheusRule.bgpSessionDown.enabled }}
     - alert: MetalLBBGPSessionDown
