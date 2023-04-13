@@ -22,6 +22,15 @@ resource "hcloud_firewall" "cluster_apps" {
     ]
   }
 
+  # gitea
+  rule {
+      direction  = "in"
+      protocol   = "tcp"
+      port       = "2222"
+      source_ips = [
+      "0.0.0.0/0",
+      ]
+  }
   # Wireguard
   rule {
     direction  = "in"

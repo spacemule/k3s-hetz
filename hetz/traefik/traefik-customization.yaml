@@ -15,6 +15,10 @@ spec:
       general:
         level: INFO
     ports:
+      git:
+        port: 2222
+        expose: true
+        exposedPort: 2222
       websecure:
         http3:
           enabled: true

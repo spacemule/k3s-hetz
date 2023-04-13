@@ -15,3 +15,4 @@ unsealed
 **/unsealed
 *.key
 *.pem
+hetz/gitea/values.yaml
