@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: joplin
+  namespace: default
+  labels:
+    app: joplin
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: joplin
+  template:
+    metadata:
+      name: joplin
+      labels:
+        app: joplin
+    spec:
+      securityContext:
+        fsGroup: 1001
+      containers:
+        - name: joplin
+          image: joplin/server:2.10-beta
+          imagePullPolicy: Always
+          env:
+            - name: APP_PORT
+              value: "22300"
+            - name: APP_BASE_URL
+              value: https://joplin.spacemule.net
+            - name: STORAGE_DRIVER
+              value: "Type=Filesystem; Path=/data"
+            - name: DB_CLIENT
+              value: pg
+            - name: POSTGRES_HOST
+              value: postgresql.databases.svc.cluster.local
+            - name: POSTGRES_PORT
+              value: "5432"
+            - name: POSTGRES_USER
+              value: joplin
+            - name: POSTGRES_DATABASE
+              value: joplin
+          envFrom:
+            - secretRef:
+                name: joplin-config
+          volumeMounts:
+            - mountPath: /data
+              name: joplin-data
+          ports:
+            - containerPort: 22300
+              name: joplin
+              protocol: TCP
+      restartPolicy: Always
+      volumes:
+        - name: joplin-data
+          persistentVolumeClaim:
+            claimName: joplin-data

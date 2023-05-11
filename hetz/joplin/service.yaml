@@ -1,0 +1,14 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: joplin
+  namespace: default
+spec:
+  selector:
+    app: joplin
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 22300
+  type: ClusterIP
+
