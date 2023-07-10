@@ -1,14 +1,14 @@
 apiVersion: v2
-appVersion: 1.19.0
+appVersion: 1.19.3
 dependencies:
 - condition: memcached.enabled
   name: memcached
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 6.3.13
+  version: 6.3.14
 - condition: postgresql.enabled
   name: postgresql
   repository: oci://registry-1.docker.io/bitnamicharts
-  version: 12.2.6
+  version: 12.4.1
 description: Gitea Helm chart for Kubernetes
 icon: https://docs.gitea.io/images/gitea.png
 keywords:
@@ -37,4 +37,4 @@ sources:
 - https://github.com/go-gitea/gitea
 - https://hub.docker.com/r/gitea/gitea/
 type: application
-version: 8.0.2
+version: 8.3.0

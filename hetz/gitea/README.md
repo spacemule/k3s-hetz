@@ -1,15 +1,13 @@
 # Gitea Helm Chart
 
-[Gitea](https://gitea.io/en-us/) is a community managed lightweight code hosting
-solution written in Go. It is published under the MIT license.
+[Gitea](https://gitea.io/en-us/) is a community managed lightweight code hosting solution written in Go.
+It is published under the MIT license.
 
 ## Introduction
 
-This helm chart has taken some inspiration from [jfelten's helm
-chart](https://github.com/jfelten/gitea-helm-chart). But takes a completely
-different approach in providing a database and cache with dependencies.
-Additionally, this chart provides LDAP and admin user configuration with values,
-as well as being deployed as a statefulset to retain stored repositories.
+This helm chart has taken some inspiration from [jfelten's helm chart](https://github.com/jfelten/gitea-helm-chart).
+But takes a completely different approach in providing a database and cache with dependencies.
+Additionally, this chart provides LDAP and admin user configuration with values, as well as being deployed as a statefulset to retain stored repositories.
 
 ## Update and versioning policy
 
@@ -29,9 +27,8 @@ Yet most often no issues will be encountered and the chart maintainers aim to co
 
 ## Dependencies
 
-Gitea can be run with an external database and cache. This chart provides those
-dependencies, which can be enabled, or disabled via
-configuration.
+Gitea can be run with an external database and cache.
+This chart provides those dependencies, which can be enabled, or disabled via configuration.
 
 Dependencies:
 
@@ -46,8 +43,7 @@ helm repo update
 helm install gitea gitea-charts/gitea
 ```
 
-When upgrading, please refer to the [Upgrading](#upgrading) section at the bottom
-of this document for major and breaking changes.
+When upgrading, please refer to the [Upgrading](#upgrading) section at the bottom of this document for major and breaking changes.
 
 ## Prerequisites
 
@@ -59,8 +55,8 @@ of this document for major and breaking changes.
 
 ### Gitea Configuration
 
-Gitea offers lots of configuration options. This is fully described in the
-[Gitea Cheat Sheet](https://docs.gitea.io/en-us/config-cheat-sheet/).
+Gitea offers lots of configuration options.
+This is fully described in the [Gitea Cheat Sheet](https://docs.gitea.io/en-us/config-cheat-sheet/).
 
 ```yaml
 gitea:
@@ -74,18 +70,17 @@ gitea:
 
 ### Default Configuration
 
-This chart will set a few defaults in the Gitea configuration based on the
-service and ingress settings. All defaults can be overwritten in `gitea.config`.
+This chart will set a few defaults in the Gitea configuration based on the service and ingress settings.
+All defaults can be overwritten in `gitea.config`.
 
-INSTALL_LOCK is always set to true, since we want to configure Gitea with this
-helm chart and everything is taken care of.
+INSTALL_LOCK is always set to true, since we want to configure Gitea with this helm chart and everything is taken care of.
 
 _All default settings are made directly in the generated app.ini, not in the Values._
 
 #### Database defaults
 
-If a builtIn database is enabled the database configuration is set
-automatically. For example, PostgreSQL builtIn will appear in the app.ini as:
+If a builtIn database is enabled the database configuration is set automatically.
+For example, PostgreSQL builtIn will appear in the app.ini as:
 
 ```ini
 [database]
@@ -98,8 +93,8 @@ USER = gitea
 
 #### Memcached defaults
 
-Memcached is handled the exact same way as database builtIn. Once Memcached
-builtIn is enabled, this chart will generate the following part in the `app.ini`:
+Memcached is handled the exact same way as database builtIn.
+Once Memcached builtIn is enabled, this chart will generate the following part in the `app.ini`:
 
 ```ini
 [cache]
@@ -110,9 +105,9 @@ HOST = RELEASE-NAME-memcached.default.svc.cluster.local:11211
 
 #### Server defaults
 
-The server defaults are a bit more complex. If ingress is `enabled`, the
-`ROOT_URL`, `DOMAIN` and `SSH_DOMAIN` will be set accordingly. `HTTP_PORT`
-always defaults to `3000` as well as `SSH_PORT` to `22`.
+The server defaults are a bit more complex.
+If ingress is `enabled`, the `ROOT_URL`, `DOMAIN` and `SSH_DOMAIN` will be set accordingly.
+`HTTP_PORT` always defaults to `3000` as well as `SSH_PORT` to `22`.
 
 ```ini
 [server]
@@ -141,14 +136,11 @@ ENABLED = false
 > **The [generic](https://docs.gitea.io/en-us/config-cheat-sheet/#overall-default)
 > section cannot be defined that way.**
 
-Some settings inside _app.ini_ (like passwords or whole authentication configurations)
-must be considered sensitive and therefore should not be passed via plain text
-inside the _values.yaml_ file. In times of _GitOps_ the values.yaml could be stored
-in a Git repository where sensitive data should never be accessible.
+Some settings inside _app.ini_ (like passwords or whole authentication configurations) must be considered sensitive and therefore should not be passed via plain text inside the _values.yaml_ file.
+In times of _GitOps_ the values.yaml could be stored in a Git repository where sensitive data should never be accessible.
 
 The Helm Chart supports this approach and let the user define custom sources like
-Kubernetes Secrets to be loaded as environment variables during _app.ini_ creation
-or update.
+Kubernetes Secrets to be loaded as environment variables during _app.ini_ creation or update.
 
 ```yaml
 gitea:
@@ -161,8 +153,7 @@ gitea:
 
 This would mount the two additional volumes (`oauth` and `some-additionals`)
 from different sources to the init containerwhere the _app.ini_ gets updated.
-All files mounted that way will be read and converted to environment variables
-and then added to the _app.ini_ using [environment-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini).
+All files mounted that way will be read and converted to environment variables and then added to the _app.ini_ using [environment-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini).
 
 The key of such additional source represents the section inside the _app.ini_.
 The value for each key can be multiline ini-like definitions.
@@ -199,19 +190,15 @@ stringData:
 
 #### User defined environment variables in app.ini
 
-Users are able to define their own environment variables,
-which are loaded into the containers. We also support to
-directly interact with the generated _app.ini_.
+Users are able to define their own environment variables, which are loaded into the containers.
+We also support to directly interact with the generated _app.ini_.
 
-To inject self defined variables into the _app.ini_ a
-certain format needs to be honored. This is
-described in detail on the [env-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini)
-page.
+To inject self defined variables into the _app.ini_ a certain format needs to be honored.
+This is described in detail on the [env-to-ini](https://github.com/go-gitea/gitea/tree/main/contrib/environment-to-ini) page.
 
 Note that the Prefix on this helm chart is `ENV_TO_INI`.
 
-For example a database setting needs to have the following
-format:
+For example a database setting needs to have the following format:
 
 ```yaml
 gitea:
@@ -228,8 +215,8 @@ gitea:
 Priority (highest to lowest) for defining app.ini variables:
 
 1. Environment variables prefixed with `ENV_TO_INI`
-2. Additional config sources
-3. Values defined in `gitea.config`
+1. Additional config sources
+1. Values defined in `gitea.config`
 
 ### External Database
 
@@ -255,7 +242,8 @@ postgresql:
 
 ### Ports and external url
 
-By default port `3000` is used for web traffic and `22` for ssh. Those can be changed:
+By default port `3000` is used for web traffic and `22` for ssh.
+Those can be changed:
 
 ```yaml
 service:
@@ -265,15 +253,14 @@ service:
     port: 22
 ```
 
-This helm chart automatically configures the clone urls to use the correct
-ports. You can change these ports by hand using the `gitea.config` dict. However
-you should know what you're doing.
+This helm chart automatically configures the clone urls to use the correct ports.
+You can change these ports by hand using the `gitea.config` dict.
+However you should know what you're doing.
 
 ### ClusterIP
 
-By default the clusterIP will be set to None, which is the default for headless
-services. However if you want to omit the clusterIP field in the service, use
-the following values:
+By default the `clusterIP` will be set to `None`, which is the default for headless services.
+However if you want to omit the clusterIP field in the service, use the following values:
 
 ```yaml
 service:
@@ -289,9 +276,8 @@ service:
 
 ### SSH and Ingress
 
-If you're using ingress and want to use SSH, keep in mind, that ingress is not
-able to forward SSH Ports. You will need a LoadBalancer like `metallb` and a
-setting in your ssh service annotations.
+If you're using ingress and want to use SSH, keep in mind, that ingress is not able to forward SSH Ports.
+You will need a LoadBalancer like `metallb` and a setting in your ssh service annotations.
 
 ```yaml
 service:
@@ -302,8 +288,8 @@ service:
 
 ### SSH on crio based kubernetes cluster
 
-If you use crio as container runtime it is not possible to read from a remote
-repository. You should get an error message like this:
+If you use `crio` as container runtime it is not possible to read from a remote repository.
+You should get an error message like this:
 
 ```bash
 $ git clone git@k8s-demo.internal:admin/test.git
@@ -320,15 +306,15 @@ More about this issue [here](https://gitea.com/gitea/helm-chart/issues/161).
 
 ### Cache
 
-This helm chart can use a built in cache. The default is Memcached from bitnami.
+This helm chart can use a built in cache.
+The default is Memcached from bitnami.
 
 ```yaml
 memcached:
   enabled: true
 ```
 
-If the built in cache should not be used simply configure the cache in
-`gitea.config`.
+If the built in cache should not be used simply configure the cache in `gitea.config`.
 
 ```yaml
 gitea:
@@ -342,15 +328,14 @@ gitea:
 
 ### Persistence
 
-Gitea will be deployed as a statefulset. By simply enabling the persistence and
-setting the storage class according to your cluster everything else will be
-taken care of. The following example will create a PVC as a part of the
-statefulset. This PVC will not be deleted even if you uninstall the chart.
+Gitea will be deployed as a statefulset.
+By simply enabling the persistence and setting the storage class according to your cluster everything else will be taken care of.
+The following example will create a PVC as a part of the statefulset.
+This PVC will not be deleted even if you uninstall the chart.
 
-Please note, that an empty storageClass in the persistence will result in
-kubernetes using your default storage class.
+Please note, that an empty storageClass in the persistence will result in kubernetes using your default storage class.
 
-If you want to use your own storageClass define it as followed:
+If you want to use your own storage class define it as follows:
 
 ```yaml
 persistence:
@@ -358,8 +343,7 @@ persistence:
   storageClass: myOwnStorageClass
 ```
 
-When using PostgreSQL as dependency, this will also be deployed as a statefulset
-by default.
+When using PostgreSQL as dependency, this will also be deployed as a statefulset by default.
 
 If you want to manage your own PVC you can simply pass the PVC name to the chart.
 
@@ -383,10 +367,11 @@ postgresql:
 
 ### Admin User
 
-This chart enables you to create a default admin user. It is also possible to
-update the password for this user by upgrading or redeloying the chart. It is
-not possible to delete an admin user after it has been created. This has to be
-done in the ui. You cannot use `admin` as username.
+This chart enables you to create a default admin user.
+It is also possible to update the password for this user by upgrading or redeloying the chart.
+It is not possible to delete an admin user after it has been created.
+This has to be done in the ui.
+You cannot use `admin` as username.
 
 ```yaml
 gitea:
@@ -439,7 +424,7 @@ gitea:
       publicSSHKeyAttribute: publicSSHKey
 ```
 
-You can also use an existing secret to set the bindDn and bindPassword:
+You can also use an existing secret to set the `bindDn` and `bindPassword`:
 
 ```yaml
 apiVersion: v1
@@ -459,9 +444,9 @@ gitea:
         ...
 ```
 
-⚠️ Some options are just flags and therefore don't have any values. If they
-are defined in `gitea.ldap` configuration, they will be passed to the Gitea CLI
-without any value. Affected options:
+⚠️ Some options are just flags and therefore don't have any values.
+If they are defined in `gitea.ldap` configuration, they will be passed to the Gitea CLI without any value.
+Affected options:
 
 - notActive
 - skipTlsVerify
@@ -471,9 +456,9 @@ without any value. Affected options:
 
 ### OAuth2 Settings
 
-Like the admin user, OAuth2 settings can be updated and disabled but not
-deleted. Deleting OAuth2 settings has to be done in the ui. All OAuth2 values,
-which are documented [here](https://docs.gitea.io/en-us/command-line/#admin), are
+Like the admin user, OAuth2 settings can be updated and disabled but not deleted.
+Deleting OAuth2 settings has to be done in the ui.
+All OAuth2 values, which are documented [here](https://docs.gitea.io/en-us/command-line/#admin), are
 available.
 
 Multiple OAuth2 sources can be configured with additional OAuth list items.
@@ -516,15 +501,12 @@ gitea:
 
 ## Configure commit signing
 
-When using the rootless image the gpg key folder is not persistent by
-default. If you consider using signed commits for internal Gitea activities
-(e.g. initial commit), you'd need to provide a signing key. Prior to
-[PR186](https://gitea.com/gitea/helm-chart/pulls/186), imported keys had to be
-re-imported once the container got replaced by another.
+When using the rootless image the gpg key folder is not persistent by default.
+If you consider using signed commits for internal Gitea activities (e.g. initial commit), you'd need to provide a signing key.
+Prior to [PR186](https://gitea.com/gitea/helm-chart/pulls/186), imported keys had to be re-imported once the container got replaced by another.
 
-The mentioned PR introduced a new configuration object `signing` allowing you to
-configure prerequisites for commit signing. By default this section is disabled
-to maintain backwards compatibility.
+The mentioned PR introduced a new configuration object `signing` allowing you to configure prerequisites for commit signing.
+By default this section is disabled to maintain backwards compatibility.
 
 ```yaml
 signing:
@@ -532,9 +514,8 @@ signing:
   gpgHome: /data/git/.gnupg
 ```
 
-Regardless of the used container image the `signing` object allows to specify a
-private gpg key. Either using the `signing.privateKey` to define the key inline,
-or refer to an existing secret containing the key data by using `signing.existingSecret`.
+Regardless of the used container image the `signing` object allows to specify a private gpg key.
+Either using the `signing.privateKey` to define the key inline, or refer to an existing secret containing the key data by using `signing.existingSecret`.
 
 ```yaml
 apiVersion: v1
@@ -554,19 +535,15 @@ signing:
   existingSecret: custom-gitea-gpg-key
 ```
 
-To use the gpg key, Gitea needs to be configured accordingly. A detailed description
-can be found in the [official Gitea documentation](https://docs.gitea.io/en-us/signing/#general-configuration).
+To use the gpg key, Gitea needs to be configured accordingly.
+A detailed description can be found in the [official Gitea documentation](https://docs.gitea.io/en-us/signing/#general-configuration).
 
 ### Metrics and profiling
 
-A Prometheus `/metrics` endpoint on the `HTTP_PORT` and `pprof` profiling
-endpoints on port 6060 can be enabled under `gitea`. Beware that the metrics
-endpoint is exposed via the ingress, manage access using ingress annotations for
-example.
+A Prometheus `/metrics` endpoint on the `HTTP_PORT` and `pprof` profiling endpoints on port 6060 can be enabled under `gitea`.
+Beware that the metrics endpoint is exposed via the ingress, manage access using ingress annotations for example.
 
-To deploy the `ServiceMonitor`, you first need to ensure that you have deployed
-`prometheus-operator` and its
-[CRDs](https://github.com/prometheus-operator/prometheus-operator#customresourcedefinitions).
+To deploy the `ServiceMonitor`, you first need to ensure that you have deployed `prometheus-operator` and its [CRDs](https://github.com/prometheus-operator/prometheus-operator#customresourcedefinitions).
 
 ```yaml
 gitea:
@@ -672,6 +649,7 @@ gitea:
 | `tolerations`                               | Tolerations for the statefulset                        | `[]`  |
 | `affinity`                                  | Affinity for the statefulset                           | `{}`  |
 | `dnsConfig`                                 | dnsConfig for the statefulset                          | `{}`  |
+| `priorityClassName`                         | priorityClassName for the statefulset                  | `""`  |
 | `statefulset.env`                           | Additional environment variables to pass to containers | `[]`  |
 | `statefulset.terminationGracePeriodSeconds` | How long to wait until forcefully kill the pod         | `60`  |
 | `statefulset.labels`                        | Labels for the statefulset                             | `{}`  |
@@ -696,9 +674,12 @@ gitea:
 
 ### Init
 
-| Name            | Description                                                           | Value |
-| --------------- | --------------------------------------------------------------------- | ----- |
-| `initPreScript` | Bash shell script copied verbatim to the start of the init-container. | `""`  |
+| Name                                       | Description                                                                          | Value   |
+| ------------------------------------------ | ------------------------------------------------------------------------------------ | ------- |
+| `initPreScript`                            | Bash shell script copied verbatim to the start of the init-container.                | `""`    |
+| `initContainers.resources.limits`          | initContainers.limits Kubernetes resource limits for init containers                 | `{}`    |
+| `initContainers.resources.requests.cpu`    | initContainers.requests.cpu Kubernetes cpu resource limits for init containers       | `100m`  |
+| `initContainers.resources.requests.memory` | initContainers.requests.memory Kubernetes memory resource limits for init containers | `128Mi` |
 
 ### Signing
 
@@ -775,7 +756,7 @@ gitea:
 | Name                                                    | Description                                                      | Value   |
 | ------------------------------------------------------- | ---------------------------------------------------------------- | ------- |
 | `postgresql.enabled`                                    | Enable PostgreSQL                                                | `true`  |
-| `postgresql.global.postgresql.auth.password`            | Password for the "Gitea" user (overrides `auth.password`)        | `gitea` |
+| `postgresql.global.postgresql.auth.password`            | Password for the `gitea` user (overrides `auth.password`)        | `gitea` |
 | `postgresql.global.postgresql.auth.database`            | Name for a custom database to create (overrides `auth.database`) | `gitea` |
 | `postgresql.global.postgresql.auth.username`            | Name for a custom user to create (overrides `auth.username`)     | `gitea` |
 | `postgresql.global.postgresql.service.ports.postgresql` | PostgreSQL service port (overrides `service.ports.postgresql`)   | `5432`  |
@@ -789,6 +770,7 @@ gitea:
 | `test.enabled`     | Set it to false to disable test-connection Pod.                    | `true`    |
 | `test.image.name`  | Image name for the wget container used in the test-connection Pod. | `busybox` |
 | `test.image.tag`   | Image tag for the wget container used in the test-connection Pod.  | `latest`  |
+| `extraDeploy`      | Array of extra objects to deploy with the release                  | `[]`      |
 
 ## Contributing
 
@@ -827,26 +809,21 @@ See [Configure commit signing](#configure-commit-signing) for details.
 
 #### Different volume mounts for init-containers and runtime container
 
-**The `extraVolumeMounts` is deprecated** in favor of `extraInitVolumeMounts` and
-`extraContainerVolumeMounts`. You can now have different mounts for the initialization
-phase and Gitea runtime. The deprecated `extraVolumeMounts` will still be available
-for the time being and is mounted into every container. If you want to switch to
-the new settings and want to mount specific volumes into all containers, you have
-to configure their mount points within both new settings.
+**The `extraVolumeMounts` is deprecated** in favor of `extraInitVolumeMounts` and `extraContainerVolumeMounts`.
+You can now have different mounts for the initialization phase and Gitea runtime.
+The deprecated `extraVolumeMounts` will still be available for the time being and is mounted into every container.
+If you want to switch to the new settings and want to mount specific volumes into all containers, you have to configure their mount points within both new settings.
 
-**Combining values from the deprecated setting with values from the new settings
-is not possible.**
+**Combining values from the deprecated setting with values from the new settings is not possible.**
 
 #### New `enabled` flag for `startupProbe`
 
-Prior to this version the `startupProbe` was just a commented sample within the
-`values.yaml`. With the migration to an auto-generated [Parameters](#parameters)
-section, a new parameter `gitea.startupProbe.enabled` has been introduced set to
+Prior to this version the `startupProbe` was just a commented sample within the `values.yaml`.
+With the migration to an auto-generated [Parameters](#parameters) section, a new parameter `gitea.startupProbe.enabled` has been introduced set to
 `false` by default.
 
-If you are using the `startupProbe` you need to add that new
-parameter and set it to `true`. Otherwise, your defined probe won't be considered
-after the upgrade.
+If you are using the `startupProbe` you need to add that new parameter and set it to `true`.
+Otherwise, your defined probe won't be considered after the upgrade.
 
 ### To 5.0.0
 
@@ -854,9 +831,7 @@ after the upgrade.
 
 #### Enable Dependencies
 
-The values to enable the dependencies,
-such as PostgreSQL, Memcached, MySQL and MariaDB.
-have been moved from `gitea.database.builtIn.` to the dependency values.
+The values to enable the dependencies, such as PostgreSQL, Memcached, MySQL and MariaDB have been moved from `gitea.database.builtIn.` to the dependency values.
 
 You can now enable the dependencies as followed:
 
@@ -876,39 +851,32 @@ mariadb:
 
 #### App.ini generation
 
-The app.ini generation has changed and now utilizes the environment-to-ini
-script provided by newer Gitea versions. This change ensures, that the app.ini
-is now persistent.
+The app.ini generation has changed and now utilizes the environment-to-ini script provided by newer Gitea versions.
+This change ensures, that the app.ini is now persistent.
 
 ##### Secret Key generation
 
-Gitea secret keys (SECRET_KEY, INTERNAL_TOKEN, JWT_SECRET) are now generated
-automatically in certain situations:
+Gitea secret keys (SECRET_KEY, INTERNAL_TOKEN, JWT_SECRET) are now generated automatically in certain situations:
 
-- New install: By default the secrets are created automatically. If you provide
-  secrets via `gitea.config` they will be used instead of automatic generation.
-- Existing installs: The secrets won't be deployed, neither via
-  configuration nor via auto generation. We explicitly prevent to set new secrets.
+- New install: By default the secrets are created automatically.
+  If you provide secrets via `gitea.config` they will be used instead of automatic generation.
+- Existing installs: The secrets won't be deployed, neither via configuration nor via auto generation.
+  We explicitly prevent to set new secrets.
 
-> 💡 It would be possible to set new secret keys manually by entering
-> the running container and rewriting the app.ini by hand. However, this it is
-> not advisable to do so for existing installations. Certain settings like
-> _LDAP_ would not be readable anymore.
+> 💡 It would be possible to set new secret keys manually by entering the running container and rewriting the app.ini by hand.
+> However, this it is not advisable to do so for existing installations.
+> Certain settings like _LDAP_ would not be readable anymore.
 
 #### Probes
 
-`gitea.customLivenessProbe`, `gitea.customReadinessProbe` and `gitea.customStartupProbe`
-have been removed.
+`gitea.customLivenessProbe`, `gitea.customReadinessProbe` and `gitea.customStartupProbe` have been removed.
 
-They are replaced by the settings `gitea.livenessProbe`, `gitea.readinessProbe`
-and `gitea.startupProbe` which are now fully configurable and used _as-is_ for
+They are replaced by the settings `gitea.livenessProbe`, `gitea.readinessProbe` and `gitea.startupProbe` which are now fully configurable and used _as-is_ for
 a Chart deployment.
-If you have customized their values instead of using the `custom` prefixed settings,
-please ensure that you remove the `enabled` property from each of them.
+If you have customized their values instead of using the `custom` prefixed settings, please ensure that you remove the `enabled` property from each of them.
 
-In case you want to disable one of these probes, let's say the `livenessProbe`, add
-the following to your values. The `podAnnotation` is just there to have a bit more
-context.
+In case you want to disable one of these probes, let's say the `livenessProbe`, add the following to your values.
+The `podAnnotation` is just there to have a bit more context.
 
 ```diff
 gitea:
@@ -918,20 +886,17 @@ gitea:
 
 #### Multiple OAuth and LDAP authentication sources
 
-With `5.0.0` of this Chart it is now possible to configure Gitea with multiple
-OAuth and LDAP sources. As a result, you need to update an existing OAuth/LDAP configuration
-in your customized `values.yaml` by replacing the object with settings to a list
-of settings objects. See [OAuth2 Settings](#oauth2-settings) and
-[LDAP Settings](#ldap-settings) section for details.
+With `5.0.0` of this Chart it is now possible to configure Gitea with multiple OAuth and LDAP sources.
+As a result, you need to update an existing OAuth/LDAP configuration in your customized `values.yaml` by replacing the object with settings to a list
+of settings objects.
+See [OAuth2 Settings](#oauth2-settings) and [LDAP Settings](#ldap-settings) section for details.
 
 ### To 4.0.0
 
 #### Ingress changes
 
-To provide a more flexible Ingress configuration we now support not only host
-settings but also provide configuration for the path and pathType. So this
-change changes the hosts from a simple string list, to a list containing a more
-complex object for more configuration.
+To provide a more flexible Ingress configuration we now support not only host settings but also provide configuration for the path and pathType.
+So this change changes the hosts from a simple string list, to a list containing a more complex object for more configuration.
 
 ```diff
 ingress:
@@ -952,8 +917,7 @@ ingress:
   #      - git.example.com
 ```
 
-If you want everything as it was before, you can simply add the following code
-to all your host entries.
+If you want everything as it was before, you can simply add the following code to all your host entries.
 
 ```yaml
 paths:
@@ -963,41 +927,34 @@ paths:
 
 #### Dropped kebab-case support
 
-In 3.x.x it was possible to provide an ldap configuration via kebab-case, this
-support has now been dropped and only camel case is supported. See [LDAP
-section](#ldap-settings) for more information.
+In 3.x.x it was possible to provide an ldap configuration via kebab-case, this support has now been dropped and only camel case is supported.
+See [LDAP section](#ldap-settings) for more information.
 
 #### Dependency update
 
-The chart comes with multiple databases and Memcached as dependency, the latest
-release updated the dependencies.
+The chart comes with multiple databases and Memcached as dependency, the latest release updated the dependencies.
 
 - Memcached: `4.2.20` -> `5.9.0`
 - PostgreSQL: `9.7.2` -> `10.3.17`
 - MariaDB: `8.0.0` -> `9.3.6`
 
-If you're using the builtin databases you will most likely redeploy the chart in
-order to update the database correctly.
+If you're using the builtin databases you will most likely redeploy the chart in order to update the database correctly.
 
 #### Execution of initPreScript
 
-Generally spoken, this might not be a breaking change, but it is worth to be
-mentioned.
+Generally spoken, this might not be a breaking change, but it is worth to be mentioned.
 
-Prior to `4.0.0` only one init container was used to both setup directories and
-configure Gitea. As of now the actual Gitea configuration is separated from the
-other pre-execution. This also includes the execution of _initPreScript_. If you
-have such script, please be aware of this. Dynamically prepare the Gitea setup
-during execution by e.g. adding environment variables to the execution context
-won't work anymore.
+Prior to `4.0.0` only one init container was used to both setup directories and configure Gitea.
+As of now the actual Gitea configuration is separated from the other pre-execution.
+This also includes the execution of _initPreScript_.
+If you have such script, please be aware of this.
+Dynamically prepare the Gitea setup during execution by e.g. adding environment variables to the execution context won't work anymore.
 
 ### Misc
 
 #### Gitea Version 1.14.X repository ROOT
 
-Previously the ROOT folder for the Gitea repositories was located at
-`/data/git/gitea-repositories`. In version `1.14` has the path been changed to
-`/data/gitea-repositories`.
+Previously the ROOT folder for the Gitea repositories was located at `/data/git/gitea-repositories`.
+In version `1.14` has the path been changed to `/data/gitea-repositories`.
 
-This chart will set the `gitea.config.repository.ROOT` value default to
-`/data/git/gitea-repositories`.
+This chart will set the `gitea.config.repository.ROOT` value default to `/data/git/gitea-repositories`.
