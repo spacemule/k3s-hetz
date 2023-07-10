@@ -41,9 +41,9 @@ spec:
           requests:
             cpu: 100m
             memory: 512Mi
-        env:
-        - name: STGUIADDRESS
-          value: "0.0.0.0:8384"
+#        env:
+#        - name: STGUIADDRESS
+#          value: "0.0.0.0:8384"
         securityContext:
           runAsGroup: 1000
           runAsUser: 1000

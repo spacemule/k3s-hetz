@@ -21,7 +21,7 @@ source "hcloud" "worker" {
   snapshot_labels = {
     "type" = "worker"
   }
-  user_data_file = "../hetz/unsealed/userdata.yaml"
+  user_data_file = "../../hetz/unsealed/userdata.yaml"
 }
 
 build {
